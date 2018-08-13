@@ -26,7 +26,7 @@ public class MenuAndroid extends MenuBase {
      */
     @Override
     public void checkMenuScreenIsDisplayed() {
-        Logger.beginTest("Checking sign in screen is displayed or not ?");
+        Logger.logAction("Checking menu screen is displayed or not ?");
         try {
             if (isElementDisplayedById(NAVIGATION_MENU_VIEW)){
                 Logger.logStep("Menu screen is displayed");

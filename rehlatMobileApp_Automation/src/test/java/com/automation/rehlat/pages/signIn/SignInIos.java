@@ -137,4 +137,16 @@ public class SignInIos extends SignInBase {
             Logger.logError("Encountered error: Unable to tap on the element name :- "+LOGIN_BUTTON);
         }
     }
+
+    /**
+     * Checking all the fields are filled with information is valid or not
+     */
+    public static void checkAllTheFieldsAreFilledWithValidInformation() throws Exception{
+        Logger.logAction("Checking the entered information is valid or not");
+        try {
+
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to check all the fields are filled with valid information or not ?");
+        }
+    }
 }

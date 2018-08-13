@@ -78,12 +78,21 @@ public interface Flights {
      */
      void tapOnDepartureButton() throws Exception;
 
+     /**
+     * Tap on return booking button in flights tab
+     */
+    void tapOnReturnDateBookingButton() throws Exception;
 
     /**
      * selectDeparture date
      * @throws Exception
      */
      void selectDepartureDate(String departureMonthAndYear, String departureDay) throws Exception;
+
+    /**
+     * Select Return date
+     */
+    void selectReturnDate(String departureMonthAndYear, String departureDay);
 
     /**
      * Tap on Done button in calendar view

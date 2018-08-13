@@ -4,7 +4,6 @@ import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -25,6 +24,7 @@ public class FlightsIos extends FlightsBase {
     public static final String MENU_BUTTON = "menu";
     public static final String SEARCH_BUTTON = "Search";
     public static final String DEPARTURE_BUTTON = "Departure";
+    public static final String RETURN_BUTTON = "Return";
     public static final String XPATH_OF_MONTH_AND_DAY_DEPARTURE_IN_CALENDAR_VIEW = "(//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther";
     public static final String XPATH_OF_MONTH_DEPARTURE_IN_CALENDAR_VIEW = "(//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther";
     public static final String CALENDER_MODAL_VIEW_XPATH = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElementTypeCollectionView";
@@ -95,9 +95,18 @@ public class FlightsIos extends FlightsBase {
     public void selectCountryOfUser(String userCountryName) {
         Logger.logAction("selecting the country of user");
         try{
-            if (isElementDisplayedByName(userCountryName)){
+            if (!userCountryName.equals("India")){
+                if (isElementDisplayedByName("Other")){
+                    Logger.logComment("Tapping on element - " +userCountryName);
+                    driver.findElementByName(userCountryName).click();
+                }else {
+                    Logger.logError(userCountryName+" :- element name is not displaying in the current active screen");
+                }
+            } else if (isElementDisplayedByName(userCountryName)){
                 Logger.logComment("Tapping on element - " +userCountryName);
                 driver.findElementByName(userCountryName).click();
+            }else {
+                Logger.logError(userCountryName+" :- element name is not displaying in the current active screen");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to select the user country from select country modal");
@@ -244,6 +253,20 @@ public class FlightsIos extends FlightsBase {
     }
 
     /**
+     * Tap on Return date booking button in flights tab
+     */
+    @Override
+    public void tapOnReturnDateBookingButton() throws Exception {
+        try{
+            if (isElementDisplayedByName(RETURN_BUTTON)){
+                driver.findElementByName(RETURN_BUTTON).click();
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on Departure button");
+        }
+    }
+
+    /**
      * Select the departure date
      * @param departureMonthAndYear
      * @param departureDay
@@ -317,6 +340,119 @@ public class FlightsIos extends FlightsBase {
                         Logger.logError("Accurate Date is not displayed in the departure");
                     }
                 }
+
+
+//                if (isElementDisplayedByName("20")){
+//                    driver.findElementByName("20").click();
+//                    WebElement selectedDepartureDateMonthOne = driver.findElement(By.xpath(XPATH_OF_MONTH_AND_DAY_DEPARTURE_IN_CALENDAR_VIEW));
+//                    String monthNameOne = selectedDepartureDateMonthOne.findElement(By.xpath(XPATH_OF_MONTH_DEPARTURE_IN_CALENDAR_VIEW)).getAttribute("name");
+//                    if (monthNameOne.equals("Dec")){
+//                        Logger.logComment("Departure date is accurately selected");
+//                    }else{
+//                        scrollDown();
+//                        driver.findElementByName("20").click();
+//                        WebElement selectedDepartureDateMonthTwo = driver.findElement(By.xpath(XPATH_OF_MONTH_AND_DAY_DEPARTURE_IN_CALENDAR_VIEW));
+//                        String monthNameTwo = selectedDepartureDateMonthTwo.findElement(By.xpath(XPATH_OF_MONTH_DEPARTURE_IN_CALENDAR_VIEW)).getAttribute("name");
+//                        if (monthNameTwo.equals("Dec")){
+//                            Logger.logComment("Departure date is accurately selected");
+//                        }else{
+//                            scrollUp();
+//                            driver.findElementByName("20").click();
+//                            WebElement selectedDepartureDateMonthThree = driver.findElement(By.xpath(XPATH_OF_MONTH_AND_DAY_DEPARTURE_IN_CALENDAR_VIEW));
+//                            String monthNameThree = selectedDepartureDateMonthThree.findElement(By.xpath(XPATH_OF_MONTH_DEPARTURE_IN_CALENDAR_VIEW)).getAttribute("name");
+//                            if (monthNameThree.equals("Dec")){
+//                                Logger.logComment("Departure date is accurately selected");
+//                            }else{
+//                                Logger.logError("Unable to tap on accurate departure date");
+//                            }
+//                        }
+//                        }
+//                    }else {
+//                    scrollDown();
+//                    driver.findElementByName("20").click();
+                }
+            }else{
+                Logger.logError("Calendar view is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered Error: Unable to select the date in the date modal");
+        }
+    }
+
+    /**
+     * Select the return date
+     * @param departureMonthAndYear
+     * @param departureDay
+     */
+    @Override
+    public void selectReturnDate(String departureMonthAndYear, String departureDay) {
+        Logger.logAction("Selecting the departure date : Month & Year -" + departureMonthAndYear + ", Day - "+departureDay);
+        try {
+            if (isElementDisplayedByXPath(CALENDER_MODAL_VIEW_XPATH)){
+                scrollToAnElementByName(departureMonthAndYear,true);
+                // yet to implement an proper method to select the accurate departure date when multiple days with same name are displaying
+                //                scrollToElementById("Dec 2018", true);
+                //                scrollDown();
+                //                scrollUp();
+                if (isElementDisplayedByName(departureMonthAndYear)){
+                    if (isElementDisplayedByName(departureDay)) {
+                        WebElement  calenderView = driver.findElementByClassName("XCUIElementTypeCollectionView");
+                        List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
+                        int departureDaysSize = departureDays.size();
+                        if (departureDaysSize >= 2){
+                            Logger.logComment("Two departure days are displayed in the calender view with same return day: "+departureDay+"");
+                            // Implement a logic that exactly taps on accurate day when there are multiple days with same name
+//                            scr
+//                            swipeOnElement(calenderView,DIRECTION_UP);
+//                            swipeOnElement(calenderView,DIRECTION_DOWN);
+                            if (departureDaysSize >= 2){
+                                Logger.logWarning("Two accurate dates are displayed in the return calender, so tapping on nearest possible date");
+                                driver.findElementByName(departureDay).click();
+                            }else {
+                                driver.findElementByName(departureDay).click();
+                            }
+                        }else {
+                            Logger.logComment("One return day is displayed in the return calender: "+departureDay+"");
+                            driver.findElementByName(departureDay).click();
+                        }
+                    }else {
+                        Logger.logError("Accurate Date is not displayed in the departure");
+                    }
+                }else{
+                    scrollToAnElementByName(departureMonthAndYear,false);
+                    if (isElementDisplayedByName(departureMonthAndYear)){
+                        if (isElementDisplayedByName(departureDay)) {
+                            WebElement  calenderView = driver.findElementByClassName("XCUIElementTypeCollectionView");
+                            List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
+                            int departureDaysSize = departureDays.size();
+                            if (departureDaysSize >= 2){
+                                Logger.logComment("Two return days are displayed in the calender view with same return day: "+departureDay+"");
+                                // Implement a logic that exactly taps on accurate day when there are multiple days with same name
+//                            scr
+//                            swipeOnElement(calenderView,DIRECTION_UP);
+//                            swipeOnElement(calenderView,DIRECTION_DOWN);
+                                if (departureDaysSize >= 2){
+                                    Logger.logWarning("Two accurate dates are displayed in the return calender, so tapping on nearest possible date");
+                                    driver.findElementByName(departureDay).click();
+                                }else {
+                                    driver.findElementByName(departureDay).click();
+                                }
+                            }else {
+                                Logger.logComment("One return day is displayed in the calender: "+departureDay+"");
+                                driver.findElementByName(departureDay).click();
+                            }
+                        }else {
+                            Logger.logError("Accurate Date is not displayed in the return calender");
+                        }
+                    }else{
+                        Logger.logWarning("Two accurate dates are displayed in the return calender, so tapping on nearest possible date");
+                        scrollToAnElementByName(departureMonthAndYear,true);
+                        if (isElementDisplayedByName(departureDay)) {
+                            driver.findElementByName(departureDay).click();
+                        }else {
+                            Logger.logError("Accurate Date is not displayed in the return");
+                        }
+                    }
 
 
 //                if (isElementDisplayedByName("20")){

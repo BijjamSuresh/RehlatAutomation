@@ -22,6 +22,7 @@ public class FlightsAndroid extends FlightsBase{
     public static final String TO_TEXTFIELD = "com.app.rehlat:id/toAirportLinearLayout";
     public static final String CONTINUE_BUTTON = "com.app.rehlat:id/domainDialogClose";
     public static final String DEPARTURE_BUTTON = "com.app.rehlat:id/departureLayout";
+    public static final String RETURN_BUTTON = "com.app.rehlat:id/returnDayTextView";
     public static final String MENU_BUTTON = "com.app.rehlat:id/menuclick";
     public static final String DOMAIN_LIST_VIEW = "com.app.rehlat:id/domainListView";
     public static final String TEXT_VIEW = "android.widget.TextView";
@@ -263,7 +264,7 @@ public class FlightsAndroid extends FlightsBase{
      * Tap on Departure button in flights tab
      */
     @Override
-    public void tapOnDepartureButton() {
+    public void tapOnDepartureButton() throws Exception{
         try{
             if (isElementDisplayedById(DEPARTURE_BUTTON)){
                 driver.findElementById(DEPARTURE_BUTTON).click();
@@ -274,7 +275,21 @@ public class FlightsAndroid extends FlightsBase{
     }
 
     /**
-     * select Departure date
+     * Tap on return booking button in flights tab
+     */
+    @Override
+    public void tapOnReturnDateBookingButton() throws Exception {
+        try{
+            if (isElementDisplayedById(RETURN_BUTTON)){
+                driver.findElementById(RETURN_BUTTON).click();
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on Departure button");
+        }
+    }
+
+    /**
+     * Select Departure date
      */
     @Override
     public void selectDepartureDate(String departureMonthAndYear, String departureDay) {
@@ -290,6 +305,33 @@ public class FlightsAndroid extends FlightsBase{
                         tapOnDayInTheCalender(departureMonthAndYear,departureDay);
                     }else {
                         Logger.logWarning("Unable to select the accurate departure date :- " +departureDay+ "," + departureMonthAndYear+"..., Going with the default selected date");
+                    }
+                }
+            }else{
+                Logger.logError("Calendar view is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered Error: Unable to select the date in the date modal");
+        }
+    }
+
+    /**
+     * Select Return date
+     */
+    @Override
+    public void selectReturnDate(String departureMonthAndYear, String departureDay) {
+        Logger.logAction("Selecting the departure date : Month & Year -" + departureMonthAndYear + ", Day - "+departureDay);
+        try {
+            if (isElementDisplayedById(CALENDER_MODAL_VIEW)){
+                scrollToTheParsingCalendarMonthAndYear(departureMonthAndYear,true);
+                if (isParsingCalenderMonthIsDisplayed(departureMonthAndYear)){
+                    tapOnDayInTheCalender(departureMonthAndYear,departureDay);
+                }else {
+                    scrollToTheParsingCalendarMonthAndYear(departureMonthAndYear,false);
+                    if (isParsingCalenderMonthIsDisplayed(departureMonthAndYear)){
+                        tapOnDayInTheCalender(departureMonthAndYear,departureDay);
+                    }else {
+                        Logger.logWarning("Unable to select the accurate return date :- " +departureDay+ "," + departureMonthAndYear+"..., Going with the default selected date");
                     }
                 }
             }else{

@@ -19,7 +19,7 @@ public class MenuIos extends MenuBase {
      */
     @Override
     public void checkMenuScreenIsDisplayed() {
-        Logger.beginTest("Checking sign in screen is displayed or not ?");
+        Logger.logAction("Checking menu screen is displayed or not ?");
         try {
             if (isElementDisplayedById(TRIPS_OPTION) && isElementDisplayedById(SETTINGS_OPTION) && isElementDisplayedById(TWENTY_FOUR_BAR_SEVEN_SUPPORT_OPTION)){
                 Logger.logStep("Menu screen is displayed");

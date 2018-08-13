@@ -111,6 +111,8 @@ public class ReviewBookingIos extends ReviewBookingBase {
                 Logger.logComment("Booking seat cost in Review booking screen :- "+Labels.SELECTED_SEAT_BOOKING_COST + "\n" +"        -> Booking seat cost in Flights Search results screen :- "+bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen);
                 Logger.logStep("Selected seat booking cost is matches in review booking screen and in search results screen");
             } else {
+                Logger.logComment("Booking seat cost in Review booking screen : "+Labels.SELECTED_SEAT_BOOKING_COST + "\n" +"        -> Booking seat cost in Flights Search results screen :- "+bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen);
+                Logger.logStep("Selected seat booking cost is not matches in review booking screen and in search results screen.., So checking the booking flight cost again by disabling the toggle button");
                 disableSecurityCheckInToggle();
                 Thread.sleep(Labels.WAIT_TIME_MIN);
                 bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen = getTheDisplayedTicketBookingValue();

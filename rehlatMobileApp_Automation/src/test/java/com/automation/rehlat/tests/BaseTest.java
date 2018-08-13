@@ -47,8 +47,9 @@ public class BaseTest extends Base {
 
     public static final String KUWAIT_AIRPORT_NAME_XPATH_IN_SEARCH_RESULTS = "//XCUIElementTypeStaticText[@name=\"Kuwait - Kuwait Intl - Kuwait\"]";
     public static final String DEPARTURE_DAY = "1";
-    public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS = "3"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
-    public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS_WHEN_SOLDOUT_POPUP_INTERRUPTRED = "2"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
+    public static final String RETURN_DAY = "5";
+    public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS = "2"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
+    public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS_WHEN_SOLDOUT_POPUP_INTERRUPTRED = "1"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
     public static final String TESTING_BANK_CARD = "Knet Test Card [KNET1]";
 
 

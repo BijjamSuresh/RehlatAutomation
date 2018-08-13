@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class ReviewBookingAndroid extends ReviewBookingBase {
     public static final String REVIEW_BOOKING_SCREEN_TITTLE = "com.app.rehlat:id/reviewBookingTextView";
@@ -159,22 +161,39 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
     /**
      * Scroll to the toggle button
      */
-    public static void scrollToToggleButton() {
+    public static void scrollToToggleButton() throws Exception {
         Logger.logAction("Scrolling to toggle button");
-        try {
-            if (isElementDisplayedById(TOGGLE_SWITCH)){
-                Logger.logComment("Toggle button is already displayed, no need to scroll the screen");
-            }else {
-                TouchAction touchAction = new TouchAction(driver);
-                touchAction.press(507, 909).moveTo(507, 600).release().perform();
-                Thread.sleep(Labels.WAIT_TIME_MIN);
-//                scrollTheScreenUpwards();
-//                touchAction.press(507, 809).moveTo(507, 600).release().perform();
+        int counter = 0;
+        WebElement element = null;
+        while (counter < Labels.MIN_ATTEMPTS) {
+            try {
+                element = driver.findElementById(TOGGLE_SWITCH);
+                if (element.isDisplayed()) {
+                    Logger.logComment(TOGGLE_SWITCH + " - element id is displayed and moving forward to next step");
+                    break;
+                }
+            } catch (Exception e) {
+                driver.swipe(507,850,507,450,Labels.SWIPE_DURATION_MIN);
+                Logger.logComment(counter + " time trying to find the element id of - " + TOGGLE_SWITCH);
             }
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to scroll to toggle button");
+            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            counter++;
         }
+        Logger.logWarning(TOGGLE_SWITCH + " - element id is not displayed in the current active screen");
     }
+//        try {
+//            if (isElementDisplayedById(TOGGLE_SWITCH)){
+//                Logger.logComment("Toggle button is already displayed, no need to scroll the screen");
+//            }else {
+//                scrollTheScreenUpwards();
+//                scrollTheScreenUpwards();
+//                driver.swipe(507,800,507,600,Labels.SWIPE_DURATION_MIN);
+//            }
+//        }catch (Exception exception){
+//            exception.printStackTrace();
+//            Logger.logError("Encountered error: Unable to scroll to toggle button");
+//        }
+//    }
 
     /**
      * Compare the selected booking seat cost in search results screen and displayed in review booking screen

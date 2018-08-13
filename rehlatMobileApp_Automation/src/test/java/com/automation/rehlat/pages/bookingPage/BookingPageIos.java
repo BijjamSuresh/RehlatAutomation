@@ -39,7 +39,7 @@ public class BookingPageIos extends BookingPageBase {
      * Check booking page screen is displayed
      */
     @Override
-    public void checkBookingPageScreenIsDisplayed() {
+    public void checkBookingPageScreenIsDisplayed() throws Exception{
         Logger.logAction("Checking the Booking page screen is displayed or not ?");
         try{
             if (isElementDisplayedByName(CONTACT_DETAILS_VIEW)){
@@ -56,7 +56,7 @@ public class BookingPageIos extends BookingPageBase {
      * Check booking page screen is displayed
      */
     @Override
-    public boolean isUserIsSignedIn() {
+    public boolean isUserIsSignedIn() throws Exception{
         Logger.logAction("Checking the Booking page screen is displayed or not ?");
         try{
             if (isElementDisplayedByName(SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON)){
@@ -75,7 +75,7 @@ public class BookingPageIos extends BookingPageBase {
      * Enter user booking information
      */
     @Override
-    public void enterUserBookingInfo() {
+    public void enterUserBookingInfo() throws Exception{
         Logger.logAction("Entering the user information");
         try {
             if (isUserIsSignedIn()){
@@ -108,7 +108,7 @@ public class BookingPageIos extends BookingPageBase {
      * Tap on continue button
      */
     @Override
-    public void tapOnContinueButton() {
+    public void tapOnContinueButton() throws Exception{
         Logger.logAction("Tapping on continue button");
         try{
             if (isElementDisplayedByName(CONTINUE_BUTTON)){
@@ -126,7 +126,7 @@ public class BookingPageIos extends BookingPageBase {
      * Tap on add travellers details button
      */
     @Override
-    public void tapOnAdultAddTravellersDetailsButton() {
+    public void tapOnAdultAddTravellersDetailsButton() throws Exception {
         Logger.logAction("Tapping on adult add travellers details button");
         try{
             scrollDown();
@@ -146,7 +146,7 @@ public class BookingPageIos extends BookingPageBase {
      * @return
      */
     @Override
-    public boolean isTicketSoldOutPopUpIsDisplayed() {
+    public boolean isTicketSoldOutPopUpIsDisplayed() throws Exception{
         Logger.logAction("Checking the ticket sold out popup is displayed or not ?");
         try{
             if (isElementDisplayedByName(TICKET_SOLD_OUT_POPUP)){
@@ -166,7 +166,7 @@ public class BookingPageIos extends BookingPageBase {
      * Tap on ok button in ticket sold out popup
      */
     @Override
-    public void tapOnOkButtonInTicketSoldOutPopup() {
+    public void tapOnOkButtonInTicketSoldOutPopup() throws Exception {
         Logger.logAction("Tapping on "+OK_BUTTON+ " button");
         try {
             if (isElementDisplayedByName(OK_BUTTON)){
@@ -183,7 +183,7 @@ public class BookingPageIos extends BookingPageBase {
      * Tap on sign in for faster bookings button
      */
     @Override
-    public void tapOnSignInForFasterBookingsButton() {
+    public void tapOnSignInForFasterBookingsButton() throws Exception {
         try {
             if (isElementDisplayedById(SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON)){
                 driver.findElement(By.id(SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON)).click();
@@ -199,7 +199,7 @@ public class BookingPageIos extends BookingPageBase {
      * Check the final fare calculations are correct
      */
     @Override
-    public void checkFinalFareCalculationIsCorrect() {
+    public void checkFinalFareCalculationIsCorrect() throws Exception{
         Logger.logAction("Checking the final fare calculation is correct or not ?");
         try {
             Double bookingSeatCostInReviewBookingScreen = null;
@@ -236,8 +236,10 @@ public class BookingPageIos extends BookingPageBase {
               Logger.logAction("All the values are ready for to calculate the math");
             }
             if (displayedActualFare.equals(bookingSeatCostInReviewBookingScreen)){
-                Double finalFareMathCalculation = displayedActualFare-couponAmount-karamPoints;
+                Double finalFareMathCalculation = (displayedActualFare)-(couponAmount)-(karamPoints); // Internal math calculation logic
                 if (finalFareMathCalculation.equals(finalDisplayedFare)){
+                    Logger.logStep("Final fare calculation is correct");
+                }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This method is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
                     Logger.logStep("Final fare calculation is correct");
                 }else {
                     Logger.logError("Final fare calculation is in correct");
@@ -256,7 +258,7 @@ public class BookingPageIos extends BookingPageBase {
      * @param indexOfAPriceDisplayingInOffersAndDiscountsCell
      * @return
      */
-    public Double getThePriceOf(String priceType, Integer indexOfAPriceDisplayingInOffersAndDiscountsCell){
+    public Double getThePriceOf(String priceType, Integer indexOfAPriceDisplayingInOffersAndDiscountsCell) throws Exception {
         Logger.logAction("Getting the price of element :-"+indexOfAPriceDisplayingInOffersAndDiscountsCell);
         Double priceValue = null;
         try{
@@ -301,7 +303,7 @@ public class BookingPageIos extends BookingPageBase {
     /**
      * Set the xpath indexes for price details in offers and discounts
      */
-    public void setTheXpathIndexesForPriceDetailsInOffersAndDiscountsCell() {
+    public void setTheXpathIndexesForPriceDetailsInOffersAndDiscountsCell() throws Exception{
         Logger.logAction("Setting xpath indexes for price details in offers and discounts cell");
         try {
             if (isUserIsSignedIn()){
@@ -335,7 +337,7 @@ public class BookingPageIos extends BookingPageBase {
      * Get the actual displaying fare
      * @return
      */
-    public static String getDisplayedActualFare(Integer indexOfActualFareElementXPAth) {
+    public static String getDisplayedActualFare(Integer indexOfActualFareElementXPAth) throws Exception{
         Logger.logAction("Getting the displayed actual fare");
         String actualDisplayingFare = null;
         try
@@ -356,7 +358,7 @@ public class BookingPageIos extends BookingPageBase {
      * Get the coupon applied amount
      * @return
      */
-    public static String getCouponAmount(Integer indexOfAppliedCouponAmountElementXPAth) {
+    public static String getCouponAmount(Integer indexOfAppliedCouponAmountElementXPAth) throws Exception {
         Logger.logAction("Getting the coupon amount");
         String couponAmount = "0";
         String xPathOfActualFare;
@@ -395,7 +397,7 @@ public class BookingPageIos extends BookingPageBase {
      * Get the applied karam points
      * @return
      */
-    public static String getKaramPoints() {
+    public static String getKaramPoints() throws Exception{
         Logger.logAction("Getting the karam points");
         String karamPoints = "0";
         try
@@ -419,7 +421,7 @@ public class BookingPageIos extends BookingPageBase {
      * Get the final displaying fare
      * @return
      */
-    public static String getFinalDisplayedFare(Integer indexOfFinalFareElementXPAth) {
+    public static String getFinalDisplayedFare(Integer indexOfFinalFareElementXPAth) throws Exception{
         Logger.logAction("Getting the displayed final fare");
         String finalDisplayedFare = null;
         try
@@ -440,7 +442,7 @@ public class BookingPageIos extends BookingPageBase {
      * Check karam points toggle is enabled
      * @return
      */
-    public static boolean isKaramPointsToggleSwitchEnabled() {
+    public static boolean isKaramPointsToggleSwitchEnabled() throws Exception{
         Logger.logAction("Checking the karam points toggle is enabled");
         try
         {
@@ -464,7 +466,7 @@ public class BookingPageIos extends BookingPageBase {
      * Enable the karam points toggle
      * @return
      */
-    public static void enableKaramPointsToggleSwitch() {
+    public static void enableKaramPointsToggleSwitch() throws Exception{
         Logger.logAction("Enabling the karam points toggle");
         try
         {
@@ -483,7 +485,7 @@ public class BookingPageIos extends BookingPageBase {
      * Disable the karam points toggle
      * @return
      */
-    public static void disableKaramPointsToggleSwitch() {
+    public static void disableKaramPointsToggleSwitch() throws Exception{
         Logger.logAction("Enabling the karam points toggle");
         try
         {
@@ -503,7 +505,7 @@ public class BookingPageIos extends BookingPageBase {
      * Apply coupon code
      */
     @Override
-    public void applyTheCouponCode() {
+    public void applyTheCouponCode() throws Exception {
         Logger.logAction("Applying the coupon code");
         try {
             sendKeysToCouponCodeTextField();
@@ -521,8 +523,8 @@ public class BookingPageIos extends BookingPageBase {
     /**
      * Send keys to coupon code text field
      */
-    public void sendKeysToCouponCodeTextField() {
-        Logger.logAction("Sending the keys to coupon code");
+    public void sendKeysToCouponCodeTextField() throws Exception{
+        Logger.logAction("Sending the keys to coupon code :- "+Labels.COUPON_CODE);
         try {
             if (isElementDisplayedByXPath(XPATH_OF_COUPON_CODE_TEXT_VIEW)){
                 driver.findElement(By.xpath(XPATH_OF_COUPON_CODE_TEXT_VIEW)).sendKeys(Labels.COUPON_CODE);
@@ -538,7 +540,7 @@ public class BookingPageIos extends BookingPageBase {
     /**
      * Tap on apply coupon code button
      */
-    public void tapOnApplyCouponCodeButton() {
+    public void tapOnApplyCouponCodeButton() throws Exception{
         Logger.logAction("Tapping on apply coupon code");
         try {
             if (isElementDisplayedById(APPLY_COUPON_CODE_BUTTON)){
@@ -556,7 +558,7 @@ public class BookingPageIos extends BookingPageBase {
     /**
      * Check the applied coupon code is applied successfully
      */
-    public static boolean isCouponCodeApplied() {
+    public static boolean isCouponCodeApplied() throws Exception{
         Logger.logAction("Checking coupon code is applied successfully");
         try {
             if (isElementDisplayedByXPath(XPATH_OF_OFFERS_AND_DISCOUNTS_VIEW)){

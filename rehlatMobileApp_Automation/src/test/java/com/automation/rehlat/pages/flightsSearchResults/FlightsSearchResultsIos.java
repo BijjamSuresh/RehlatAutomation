@@ -13,6 +13,9 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
     public static final String XPATH_OF_FIRST_FLIGHT_SEARCH_RESULTS_CELL = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[";
     public static final String XPATH_OF_BOOKING_COST_IN_FIRST_CELL_WITHOUT_SIMILAR_OPTIONS_IN_SEARCH_RESULTS = "//XCUIElementTypeApplication[@name=\\\"Rehlat\\\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[3]";
     public static final String XPATH_OF_BOOKING_COST_IN_FIRST_CELL_WITH_SIMILAR_OPTIONS_IN_SEARCH_RESULTS = "//XCUIElementTypeApplication[@name=\\\"Rehlat\\\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[4]";
+    public static final String PRICE_LABLE = "Price";
+    public static final String ALL_AIRLINES_LABLE = "All Airlines";
+
     /**
      * Check flights search results screen is displayed or not
      */
@@ -20,7 +23,8 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
     public void checkFlightsSearchResultsScreenIsDisplayed() {
         Logger.logAction("Checking the flights search results screen is displayed or not");
         try {
-            if (waitTillFlightsSearchResultsScreenIsDisplayed())
+            waitTillFlightsSearchResultsScreenIsDisplayed();
+            if (isElementDisplayedByName(PRICE_LABLE) && isElementDisplayedByName(ALL_AIRLINES_LABLE))
             {
                 Logger.logStep("Flights search results screen is displayed");
             }else {
@@ -36,16 +40,14 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
      * Wait till the flights search results screen is displayed
      * @return
      */
-    public static boolean waitTillFlightsSearchResultsScreenIsDisplayed() {
+    public static void waitTillFlightsSearchResultsScreenIsDisplayed() {
         Logger.logAction("Waiting till the active screen is loaded");
         try{
             driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XPATH_OF_ALL_AIRLINES_TAB_BAR)));
             Logger.logStep("Active screen is loaded and moving to check the screen name");
-            return true;
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to find the visibility of an element");
         }
-        return false;
     }
 
     /**
@@ -82,7 +84,7 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
      * @return
      */
     public static String getTheBookingCostOfSelectingFlightInSearchResults(String selectedFlightCellTypeNumber) {
-        Logger.logAction("Getting the booking cost of "+selectedFlightCellTypeNumber+"flight in search results");
+        Logger.logAction("Getting the booking cost of "+selectedFlightCellTypeNumber+" flight in search results");
         String xPathOfBookingFlightCellType = XPATH_OF_FIRST_FLIGHT_SEARCH_RESULTS_CELL+ selectedFlightCellTypeNumber + "]";
         try{
             if (isElementDisplayedByXPath(xPathOfBookingFlightCellType)){

@@ -29,6 +29,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     public static final String CALENDER_MONTH_VIEW_ANDROID ="android:id/month_view";
     public static final String TRAVELLERS_DETAILS_MODAL ="com.app.rehlat:id/travellers_details_viewpager";
     public static final String XPATH_OF_FIRST_FILTER_RESULT_IN_SELECT_COUNTRY_SCREEN ="/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[1]";
+    public static final String XPATH_OF_SECOND_FILTER_RESULT_IN_SELECT_COUNTRY_SCREEN ="/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.TextView[1]";
 
     /**
      * Check the travellers details screen is displayed
@@ -464,7 +465,12 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                     if (firstSearchResult.getText().equals(countryName)){
                         firstSearchResult.click();
                     }else {
-                        Logger.logError(countryName+" - is not matched with the displayed country name in first search cell - "+firstSearchResult.getText());
+                        WebElement secondSearchResult = driver.findElementByXPath(XPATH_OF_SECOND_FILTER_RESULT_IN_SELECT_COUNTRY_SCREEN);
+                        if (secondSearchResult.getText().equals(countryName)){
+                            secondSearchResult.click();
+                        }else {
+                            Logger.logError(countryName+" - is not matched with the displayed country name in second search cell :- "+firstSearchResult.getText());
+                        }
                     }
                 }else {
                     Logger.logError(countryName+" is not displaying in the current active screen");

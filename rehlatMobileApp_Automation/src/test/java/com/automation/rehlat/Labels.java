@@ -83,8 +83,8 @@ public class Labels extends Base{
                                                                                         ////////////////////  Types of devices ////////////////////
     public static final String IOS="iOS";
     public static final String ANDROID="Android";
-    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type everytime w.r.t. the testing device platform
-//    public static final String DEFAULT_PLATFORM = "iOS";
+//    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type everytime w.r.t. the testing device platform
+    public static final String DEFAULT_PLATFORM = "iOS";
 
 
                                                                                     ////////////////////  Web element attribute values ////////////////////
@@ -158,6 +158,7 @@ public class Labels extends Base{
     public static String INDIA_LANGUAGE_COUNTRY_LABEL ;
     public static String KUWAIT_LANGUAGE_COUNTRY_LABEL ;
     public static String DEPARTURE_MONTH ;
+    public static String RETURN_DATE_BOOKING_MONTH ;
     public static String FLIGHT_BOOKING_TYPE;
                                                                                     ///////////////// Kuwait Country Labels /////////////////
     public static final String KUWAIT_LANGUAGE_COUNTRY_LABEL_FOR_IOS = "KUWAIT";
@@ -170,6 +171,8 @@ public class Labels extends Base{
     public static final String KUWAIT_AIRPORT_CODE = "KWI";
     public static final String DEPARTURE_MONTH_FOR_IOS = "Jan 2019";
     public static final String DEPARTURE_MONTH_FOR_ANDROID = "DEC 2018";
+    public static final String RETURN_MONTH_FOR_IOS = "Jan 2019";
+    public static final String RETURN_MONTH_FOR_ANDROID = "DEC 2018";
     public static final String TRAVELLERS_PASSPORT_NUMBER="ASDFGHJKLZXCV";
     public static final String KNET_PAYMENT_CARD_NUMBER="0000000001";
     public static final String KNET_PAYMENT_CARD_PIN_NUMBER="1234";
@@ -202,7 +205,7 @@ public class Labels extends Base{
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";
     public static final String REFERRAL_CODE = "chaitu";
     public static String phoneNumber = "8050510545";
-    public static final String COUPON_CODE = "gorehlat";
+    public static final String COUPON_CODE = "gorehlat"; // Both for international and national flights searching should be the same
     public static final String IOS_APPLIED_KARAM_POINTS = "1";
 
 
@@ -249,8 +252,9 @@ public class Labels extends Base{
             Labels.TO_DOMESTIC_AIRPORT_CODE = BANGALORE_AIRPORT_CODE;
             Labels.INDIA_LANGUAGE_COUNTRY_LABEL = INDIA_LANGUAGE_COUNTRY_LABEL_FOR_IOS;
 
-            ////////////////////////// DEPARTURE MONTH FOR BOTH INTERNATIONAL AND DOMESTIC AIRPORTS ///////////////////////
+            ////////////////////////// DEPARTURE & RETURN MONTHS FOR BOTH INTERNATIONAL AND DOMESTIC AIRPORTS ///////////////////////
             Labels.DEPARTURE_MONTH = DEPARTURE_MONTH_FOR_IOS;
+            Labels.RETURN_DATE_BOOKING_MONTH = RETURN_MONTH_FOR_IOS;
 
 
         }else if (Labels.platform.equals(Labels.ANDROID)){
@@ -268,8 +272,10 @@ public class Labels extends Base{
             Labels.TO_DOMESTIC_AIRPORT_CODE = BANGALORE_AIRPORT_CODE;
             Labels.INDIA_LANGUAGE_COUNTRY_LABEL = INDIA_LANGUAGE_COUNTRY_LABEL_FOR_ANDROID;
 
-            ////////////////////////// DEPARTURE MONTH FOR BOTH INTERNATIONAL AND DOMESTIC AIRPORTS ///////////////////////
+            ////////////////////////// DEPARTURE & RETURN MONTH FOR BOTH INTERNATIONAL AND DOMESTIC AIRPORTS ///////////////////////
             Labels.DEPARTURE_MONTH = DEPARTURE_MONTH_FOR_ANDROID;
+            Labels.RETURN_DATE_BOOKING_MONTH = RETURN_MONTH_FOR_ANDROID;
+
 
         }
             ////////////////////////// FLIGHT BOOKING TYPE ///////////////////////
