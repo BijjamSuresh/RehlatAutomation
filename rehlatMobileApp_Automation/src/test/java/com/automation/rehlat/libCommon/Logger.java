@@ -2,6 +2,7 @@ package com.automation.rehlat.libCommon;
 
 import org.junit.Assert;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.automation.rehlat.Base;
 
@@ -13,12 +14,15 @@ public class Logger extends Base {
     private static String step = "==========================================================";
     private static String warning = "#######################";
     private static String error = "*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*";
+    private static Date theTimeTheTestBegan;
+    private static Date theTimeTheTestEnded;
+
 
 
     //These methods below are the most used in the suite. Proceed with caution if editing
     public static void beginTest(final String testName) {
 
-        Date theTimeTheTestBegan = new Date();
+        theTimeTheTestBegan = new Date();
         System.out.println(banner);
         System.out.println("                       Beginning test " + testName + " at " + theTimeTheTestBegan);
         System.out.println(banner);
@@ -28,10 +32,15 @@ public class Logger extends Base {
     }
 
     public static void endTest(final String testName) {
-        Date theTimeTheTestEnded = new Date();
+        theTimeTheTestEnded = new Date();
         System.out.println();
         System.out.println();
         System.out.println(banner);
+        try {
+            totalTimeTakenForScriptToFinish();
+        }catch (Exception exception){
+            Logger.logComment("unable to print the time taken to complete the current script");
+        }
         System.out.println("                       Finishing test " + testName + " at " + theTimeTheTestEnded);
         System.out.println(banner);
     }
@@ -67,5 +76,33 @@ public class Logger extends Base {
         System.out.println("### Error: " + msg);
         System.out.println(error);
         Assert.fail(msg);
+    }
+
+    /**
+     * Total time taken for script to finish
+     * @throws Exception
+     */
+    public static void totalTimeTakenForScriptToFinish() throws Exception{
+        Integer minutesTime = null;
+        Integer secondsTime = null;
+        try{
+            Integer minutesTimeWhileTestScriptBegan = Integer.valueOf(new SimpleDateFormat("mm").format(theTimeTheTestBegan));
+            Integer secondsTimeWhileTestScriptBegan = Integer.valueOf(new SimpleDateFormat("ss").format(theTimeTheTestBegan));
+            Integer minutesTimeWhileTestScriptEnded = Integer.valueOf(new SimpleDateFormat("mm").format(theTimeTheTestEnded));
+            Integer secondsTimeWhileTestScriptEnded = Integer.valueOf(new SimpleDateFormat("ss").format(theTimeTheTestEnded));
+            if (minutesTimeWhileTestScriptBegan > minutesTimeWhileTestScriptEnded){
+                minutesTime = minutesTimeWhileTestScriptBegan - minutesTimeWhileTestScriptEnded;
+            }else if (minutesTimeWhileTestScriptEnded > minutesTimeWhileTestScriptBegan){
+                minutesTime = minutesTimeWhileTestScriptEnded - minutesTimeWhileTestScriptBegan;
+            }
+            if (secondsTimeWhileTestScriptBegan > secondsTimeWhileTestScriptEnded){
+                secondsTime = secondsTimeWhileTestScriptBegan - secondsTimeWhileTestScriptEnded;
+            }else if (secondsTimeWhileTestScriptEnded > secondsTimeWhileTestScriptBegan){
+                secondsTime = secondsTimeWhileTestScriptEnded - secondsTimeWhileTestScriptBegan;
+            }
+            Logger.logComment("Time taken to complete to complete the test script is :-" +minutesTime+ ":" +secondsTime);
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the total time for the script to finish");
+        }
     }
 }

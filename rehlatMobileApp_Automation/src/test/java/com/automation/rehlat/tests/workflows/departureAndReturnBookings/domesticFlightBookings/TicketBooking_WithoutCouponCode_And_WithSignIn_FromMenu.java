@@ -33,7 +33,7 @@ public class TicketBooking_WithoutCouponCode_And_WithSignIn_FromMenu extends Bas
         MenuScreen.navigateToFlightsTab();
         MenuScreen.navigateToFlightsTab();
         FlightsScreen.tapOnFromTextField();
-//        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
+        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
         FlightsScreen.checkSearchViewScreenIsDisplayed();
         FlightsScreen.checkKeyboardIsDisplayed();
         FlightsScreen.enterAirportName(FROM_DOMESTIC_AIRPORT_NAME); // Automation Defect: search results are not matching w.r.t. the send keys and due to that using Xpath of first element in search results

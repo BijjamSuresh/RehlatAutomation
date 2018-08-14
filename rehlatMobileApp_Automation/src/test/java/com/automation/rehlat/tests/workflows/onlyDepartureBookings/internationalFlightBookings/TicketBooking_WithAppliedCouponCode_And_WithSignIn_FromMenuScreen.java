@@ -8,7 +8,6 @@ import org.junit.Test;
 import static com.automation.rehlat.Labels.*;
 
 public class TicketBooking_WithAppliedCouponCode_And_WithSignIn_FromMenuScreen extends BaseTest {
-
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithSignInFromMenuScreen() throws Exception{
         Logger.beginTest("- Ticket booking with sign in menu screen and with applied coupon code");
@@ -132,7 +131,7 @@ public class TicketBooking_WithAppliedCouponCode_And_WithSignIn_FromMenuScreen e
             PaymentOptionsScreen.checkKnetPaymentOptionsScreenIsDisplayed();
             PaymentOptionsScreen.selectingBankName(TESTING_BANK_CARD);
             PaymentOptionsScreen.enterCardNumber(); // Automation Defect: Card number text field is not intractable in iOS Platform
-            PaymentOptionsScreen.enterPinNumber();
+             PaymentOptionsScreen.enterPinNumber();
             PaymentOptionsScreen.tapOnSubmitButton();
             PaymentOptionsScreen.checkPostTransactionScreenIsDisplayed();
             PaymentOptionsScreen.tapOnConfirmButton();

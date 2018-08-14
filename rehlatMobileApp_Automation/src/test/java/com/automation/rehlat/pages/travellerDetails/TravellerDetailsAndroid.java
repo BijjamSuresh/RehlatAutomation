@@ -35,7 +35,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Check the travellers details screen is displayed
      */
     @Override
-    public void checkTravellersDetailsScreenIsDisplayed() {
+    public void checkTravellersDetailsScreenIsDisplayed() throws Exception {
         Logger.logAction("Checking the travellers details screen is displayed or not ?");
         try {
             if (isElementDisplayedById(TRAVELLERS_DETAILS_SCREEN_TITLE_LAYOUT)){
@@ -58,7 +58,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Decline the auto fill populate modal if displayed
      */
     @Override
-    public void declineAutoFillPopulateModalIfDisplayed() {
+    public void declineAutoFillPopulateModalIfDisplayed() throws Exception {
         Logger.logAction("Declining the auto fill popup if displayed");
         try{
             if (isElementDisplayedById("com.app.rehlat:id/traveller_prepopulated_list_layout")){
@@ -80,7 +80,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Enter adult travellers details
      */
     @Override
-    public void enterAdultTravellersDetails(String travellersCountry) {
+    public void enterAdultTravellersDetails(String travellersCountry) throws Exception{
         Logger.logAction("Entering the adult travellers details");
         try{
             if (isElementDisplayedById(TRAVELLERS_DETAILS_MODAL)){
@@ -97,7 +97,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers details
      */
-    public static void enterTravellersDetails(String travellersCountry) {
+    public static void enterTravellersDetails(String travellersCountry) throws Exception {
         Logger.logAction("Entering travellers details");
         try{
             enterTravellersFirstName();
@@ -112,7 +112,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                 scrollTheScreenUpwards();
                 selectPassportIssuingCountry(travellersCountry);
                 TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
-                enterTravellersPassportExpiryDate();
+                selectTravellersPassportExpiryDate();
                 TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
             }else if (Labels.FLIGHT_BOOKING_TYPE.equals(Labels.DOMESTIC_FLIGHT_BOOKING)){
                 Logger.logStep("For domestic flights DOB, Passport and its expiry date and passport issuing country are might or might not necessary.., So filling the necessary information for the current flight ...,");
@@ -129,7 +129,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                     selectPassportIssuingCountry(travellersCountry);
                     TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
                 }if (isElementDisplayedById(TRAVELLERS_PASSPORT_EXPIRY_TEXTFIELD)){
-                    enterTravellersPassportExpiryDate();
+                    selectTravellersPassportExpiryDate();
                     TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
                 }
             }
@@ -141,7 +141,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers first name
      */
-    public static void enterTravellersFirstName() {
+    public static void enterTravellersFirstName() throws Exception {
         Logger.logStep("Entering travellers first name");
         try{
             if (isElementDisplayedById(TRAVELLERS_FIRST_NAME)){
@@ -160,7 +160,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers middle name
      */
-    public static void enterTravellersMiddleName() {
+    public static void enterTravellersMiddleName() throws Exception {
         Logger.logStep("Entering travellers middle name");
         try{
             if (isElementDisplayedById(TRAVELLERS_MIDDLE_NAME)){
@@ -179,7 +179,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers last name
      */
-    public static void enterTravellersLastName() {
+    public static void enterTravellersLastName() throws Exception {
         Logger.logStep("Entering travellers last name");
         try{
             if (isElementDisplayedById(TRAVELLERS_LAST_NAME)){
@@ -198,7 +198,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers Date of Birth
      */
-    public static void enterTravellersDateOfBirth() {
+    public static void enterTravellersDateOfBirth() throws Exception {
         Logger.logStep("Entering travellers Date of Birth");
         try{
             if (isElementDisplayedById(TRAVELLERS_DATEOFBIRTH_NAME)){
@@ -228,7 +228,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Swipe the calender view to a particular date based on calendar type
      * @param parsingDate
      */
-    public static void swipeTheCalendarViewToDate(String dateType, String parsingDate) {
+    public static void swipeTheCalendarViewToDate(String dateType, String parsingDate) throws Exception {
         Logger.logAction("Swiping the calendar view to date:- "+parsingDate);
         try {
             if (dateType.equals(Labels.DATEOFBIRTH_CALENDAR)){
@@ -246,7 +246,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Swipe the date of birth calendar // For now only adult Date of birth logic is implemented, yet to implement for infant and child type also
      */
-    public static void swipeDateOfBirthCalendar(String parsingDate) {
+    public static void swipeDateOfBirthCalendar(String parsingDate) throws Exception {
         try {
             String time = new SimpleDateFormat("yyyy").format(new Date());
             Integer currentCalendarYear = Integer.valueOf(time);
@@ -289,7 +289,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Swipe the date of birth calendar // For now only adult Date of birth logic is implemented, yet to implement for infant and child type also
      */
-    public static void swipePassportExpiryCalendar(String parsingDate) {
+    public static void swipePassportExpiryCalendar(String parsingDate) throws Exception {
         try {
             String time = new SimpleDateFormat("yyyy").format(new Date());
             Integer currentCalendarYear = Integer.valueOf(time);
@@ -326,7 +326,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Close the date picker for Android Platform
      */
-    public static void closeTheCalendarView() {
+    public static void closeTheCalendarView() throws Exception {
         try{
             if (isElementDisplayedById(CALENDAR_OK_BUTTON)){
                 driver.findElementById(CALENDAR_OK_BUTTON).click();
@@ -341,7 +341,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Close the auto tutorial dialog of calendar
      */
-    public static void closeAutoTutorialDialog() {
+    public static void closeAutoTutorialDialog()throws Exception {
         try{
             if (isElementDisplayedById("com.app.rehlat:id/tutorialDialog")){
                 Logger.logComment("Tutorial is displayed and going to close it by tapping on it");
@@ -357,7 +357,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers passport number
      */
-    public static void enterTravellersPassportNumber() {
+    public static void enterTravellersPassportNumber()throws Exception {
         Logger.logStep("Entering travellers passport number");
         try{
             if (isElementDisplayedById(TRAVELLERS_PASSPORT_TEXTFIELD)){
@@ -375,8 +375,8 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers passport expiry date
      */
-    public static void enterTravellersPassportExpiryDate() {
-        Logger.logStep("Entering travellers passport expiry date");
+    public static void selectTravellersPassportExpiryDate() throws Exception {
+        Logger.logStep("Selecting travellers passport expiry date");
         try{
             if (isElementDisplayedById(TRAVELLERS_PASSPORT_EXPIRY_TEXTFIELD)){
                 driver.findElementById(TRAVELLERS_PASSPORT_EXPIRY_TEXTFIELD).click();
@@ -404,7 +404,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Select passport issuing country name
      */
-    public static void selectPassportIssuingCountry(String passportIssuingCountryName) {
+    public static void selectPassportIssuingCountry(String passportIssuingCountryName) throws Exception {
         Logger.logAction("Selecting the passport issuing country");
         try{
             if (isElementDisplayedById(TRAVELLERS_PASSPORT_ISSUING_COUNTRY)){
@@ -429,7 +429,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Select traveller nationality
      */
-    public static void selectTravellersNationality(String travellersNationality) {
+    public static void selectTravellersNationality(String travellersNationality) throws Exception {
         Logger.logAction("Selecting the travellers nationality");
         try{
             if (isElementDisplayedById(TRAVELLERS_NATIONALITY)){
@@ -456,7 +456,8 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * @param countryName
      */
     // To do: Implement a method such that automatically select the country name (if country name is not on visible list scroll to that element and click on it)
-    public static void selectCountry(String countryName) {
+    public static void selectCountry(String countryName) throws Exception {
+        Logger.logAction("Selecting the country :- "+countryName);
         try{
             if (isElementDisplayedById(SEARCH_TEXTFIELD_IN_SELECT_COUNTRY_MODAL)){
                 driver.findElementById(SEARCH_TEXTFIELD_IN_SELECT_COUNTRY_MODAL).sendKeys(countryName);
@@ -487,7 +488,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Tap on save button
      */
     @Override
-    public void tapOnSaveButton() {
+    public void tapOnSaveButton() throws Exception {
         Logger.logAction("Tapping on save travellers details button");
         try{
             if (isElementDisplayedById(SAVE_BUTTON)){

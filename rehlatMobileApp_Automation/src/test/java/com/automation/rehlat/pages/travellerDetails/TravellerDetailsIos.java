@@ -29,7 +29,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Check the travellers details screen is displayed
      */
     @Override
-    public void checkTravellersDetailsScreenIsDisplayed() {
+    public void checkTravellersDetailsScreenIsDisplayed() throws Exception {
         Logger.logAction("Checking the travellers details screen is displayed or not ?");
         try {
             if (isElementDisplayedByName(TRAVELLERS_DETAILS_SCREEN_TITLE)){
@@ -46,7 +46,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Decline the auto fill populate modal if displayed
      */
     @Override
-    public void declineAutoFillPopulateModalIfDisplayed() {
+    public void declineAutoFillPopulateModalIfDisplayed() throws Exception {
         Logger.logAction("Declining the auto fill popup if displayed");
         try{
             if (isElementDisplayedByClassName("XCUIElementTypeSheet")){
@@ -74,7 +74,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter adult travellers details
      */
     @Override
-    public void enterAdultTravellersDetails(String travellersCountry) {
+    public void enterAdultTravellersDetails(String travellersCountry) throws Exception {
         Logger.logAction("Entering the adult travellers details");
         try{
             if (isElementDisplayedByXPath(XPATH_OF_TRAVELLERS_DETAILS_MODAL)){
@@ -91,7 +91,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers details
      */
-    public static void enterTravellersDetails(String travellersCountry) {
+    public static void enterTravellersDetails(String travellersCountry) throws Exception {
         Logger.logAction("Entering travellers details");
         try{
             enterTravellersFirstName();
@@ -133,7 +133,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers first name
      */
-    public static void enterTravellersFirstName() {
+    public static void enterTravellersFirstName() throws Exception {
         Logger.logStep("Entering travellers first name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_FIRST_NAME)){
@@ -151,7 +151,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers middle name
      */
-    public static void enterTravellersMiddleName() {
+    public static void enterTravellersMiddleName() throws Exception {
         Logger.logStep("Entering travellers middle name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_MIDDLE_NAME)){
@@ -169,7 +169,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers last name
      */
-    public static void enterTravellersLastName() {
+    public static void enterTravellersLastName() throws Exception {
         Logger.logStep("Entering travellers last name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_LAST_NAME)){
@@ -186,7 +186,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers Date of Birth
      */
-    public static void enterTravellersDateOfBirth() {
+    public static void enterTravellersDateOfBirth() throws Exception {
         Logger.logStep("Entering travellers Date of Birth");
         try{
             if (isElementDisplayedByName(TRAVELLERS_DATEOFBIRTH_NAME)){
@@ -215,7 +215,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers passport number
      */
-    public static void enterTravellersPassportNumber() {
+    public static void enterTravellersPassportNumber() throws Exception {
         Logger.logStep("Entering travellers passport number");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_NUMBER)){
@@ -231,7 +231,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers passport expiry date
      */
-    public static void enterTravellersPassportExpiryDate() {
+    public static void enterTravellersPassportExpiryDate() throws Exception {
         Logger.logStep("Entering travellers passport expiry date");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_EXPIRY_NUMBER)){
@@ -260,7 +260,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Select passport issuing country name
      */
-    public static void selectPassportIssuingCountry(String passportIssuingCountryName) {
+    public static void selectPassportIssuingCountry(String passportIssuingCountryName) throws Exception {
         Logger.logAction("Selecting the passport issuing country");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_ISSUING_COUNTRY)){
@@ -282,7 +282,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Select traveller nationality
      */
-    public static void selectTravellersNationality(String travellersNationality) {
+    public static void selectTravellersNationality(String travellersNationality) throws Exception {
         Logger.logAction("Selecting the travellers nationality");
         try{
             if (isElementDisplayedByName(TRAVELLERS_NATIONALITY)){
@@ -306,7 +306,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * @param countryName
      */
     // To do: Implement a method such that automatically select the country name (if country name is not on visible list scroll to that element and click on it)
-    public static void chooseCountry(String countryName) {
+    public static void chooseCountry(String countryName) throws Exception {
         try{
             if (isElementDisplayedByName(countryName)){
                 driver.findElementByName(countryName).click();
@@ -317,11 +317,12 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
             Logger.logError("Encountered error: Unable to choose the country name");
         }
     }
+
     /**
      * Tap on save button
      */
     @Override
-    public void tapOnSaveButton() {
+    public void tapOnSaveButton() throws Exception {
         Logger.logAction("Tapping on save button");
         try{
             if (isElementDisplayedByName(SAVE_BUTTON)){

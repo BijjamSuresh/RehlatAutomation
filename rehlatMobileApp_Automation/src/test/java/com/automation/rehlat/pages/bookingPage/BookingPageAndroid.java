@@ -264,6 +264,7 @@ public class BookingPageAndroid extends BookingPageBase {
             Logger.logComment("Final Fare cost of booking flight :- "+finalDisplayedFare);
             if (displayedActualFare.equals(bookingSeatCostInReviewBookingScreen)) {
                 Double finalFareMathCalculation = displayedActualFare-couponAmount-karamPoints;
+                Logger.logComment("final fare math calculation value is :- "+finalFareMathCalculation);
                 if (finalFareMathCalculation.equals(finalDisplayedFare)) {
                     Logger.logStep("Final fare calculation is correct");
                 }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This method is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
@@ -368,7 +369,7 @@ public class BookingPageAndroid extends BookingPageBase {
         Logger.logAction("Getting the displayed final fare");
         Double finalDisplayedFare = 0.00;
         try {
-            if (isUserIsSignedIn() || isCouponCodeAppliedSuccessfully()){
+            if (isUserIsSignedIn() && isCouponCodeAppliedSuccessfully()){
                 if (isElementDisplayedById(FINAL_FARE)) {
                     String amount = driver.findElement(By.id(FINAL_FARE)).getText();
                     finalDisplayedFare = Double.valueOf(amount);
@@ -377,7 +378,17 @@ public class BookingPageAndroid extends BookingPageBase {
                     Logger.logError(FINAL_FARE + " - element name is not displayed in the current active screen");
                     return finalDisplayedFare;
                 }
-            }else {
+            }else if (isUserIsSignedIn() && !isCouponCodeAppliedSuccessfully()){
+                if (isElementDisplayedById(FINAL_FARE)) {
+                    String amount = driver.findElement(By.id(FINAL_FARE)).getText();
+                    finalDisplayedFare = Double.valueOf(amount);
+                    return finalDisplayedFare;
+                } else {
+                    Logger.logComment(FINAL_FARE + " - element name is not displayed in the current active screen");
+                    return finalDisplayedFare;
+                }
+            }
+            else {
                 Logger.logComment("User is neither signed in nor applied coupon code .., So the final fare will not be displayed in the current active screen");
                 finalDisplayedFare = displayedActualFare;
                 return finalDisplayedFare;

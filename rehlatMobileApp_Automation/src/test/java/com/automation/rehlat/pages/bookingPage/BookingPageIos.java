@@ -237,6 +237,7 @@ public class BookingPageIos extends BookingPageBase {
             }
             if (displayedActualFare.equals(bookingSeatCostInReviewBookingScreen)){
                 Double finalFareMathCalculation = (displayedActualFare)-(couponAmount)-(karamPoints); // Internal math calculation logic
+                Logger.logComment("final fare math calculation value is :- "+finalFareMathCalculation);
                 if (finalFareMathCalculation.equals(finalDisplayedFare)){
                     Logger.logStep("Final fare calculation is correct");
                 }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This method is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
@@ -366,26 +367,31 @@ public class BookingPageIos extends BookingPageBase {
         try
         {
             xPathOfActualFare = XPATH_OF_OFFERS_AND_DISCOUNTS_VIEW+"/XCUIElementTypeStaticText["+indexOfAppliedCouponAmountElementXPAth+"]"; // "indexOfFinalFareElementXPath" is the hard coded value of final fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
-            ActualFareWithCurrentName = driver.findElementByXPath(xPathOfActualFare).getAttribute(Labels.VALUE_ATTRIBUTE);
-            if(ActualFareWithCurrentName.contains(APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT)){
-                String couponAmountPrice = ActualFareWithCurrentName.replace(APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT,"");
-                Logger.logComment("Applied Coupon amount of booking flight :- "+couponAmountPrice);
-                couponAmount = couponAmountPrice;
-                return couponAmount;
-            }else {
-                indexOfAppliedCouponAmountElementXPAth = indexOfAppliedCouponAmountElementXPAth+1;
-                xPathOfActualFare = XPATH_OF_OFFERS_AND_DISCOUNTS_VIEW+"/XCUIElementTypeStaticText["+indexOfAppliedCouponAmountElementXPAth+"]"; // "indexOfFinalFareElementXPath" is the hard coded value of final fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
+            try {
                 ActualFareWithCurrentName = driver.findElementByXPath(xPathOfActualFare).getAttribute(Labels.VALUE_ATTRIBUTE);
-                if (ActualFareWithCurrentName.contains(APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT)){
+                if(ActualFareWithCurrentName.contains(APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT)){
                     String couponAmountPrice = ActualFareWithCurrentName.replace(APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT,"");
                     Logger.logComment("Applied Coupon amount of booking flight :- "+couponAmountPrice);
                     couponAmount = couponAmountPrice;
-                    indexOfFinalFareElementXPath = 7;
                     return couponAmount;
+                }else {
+                    indexOfAppliedCouponAmountElementXPAth = indexOfAppliedCouponAmountElementXPAth+1;
+                    xPathOfActualFare = XPATH_OF_OFFERS_AND_DISCOUNTS_VIEW+"/XCUIElementTypeStaticText["+indexOfAppliedCouponAmountElementXPAth+"]"; // "indexOfFinalFareElementXPath" is the hard coded value of final fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
+                    ActualFareWithCurrentName = driver.findElementByXPath(xPathOfActualFare).getAttribute(Labels.VALUE_ATTRIBUTE);
+                    if (ActualFareWithCurrentName.contains(APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT)){
+                        String couponAmountPrice = ActualFareWithCurrentName.replace(APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT,"");
+                        Logger.logComment("Applied Coupon amount of booking flight :- "+couponAmountPrice);
+                        couponAmount = couponAmountPrice;
+                        indexOfFinalFareElementXPath = 7;
+                        return couponAmount;
+                    }
+                    else {
+                        Logger.logError(ActualFareWithCurrentName+" - element is not matching with the coupon amount nor with the actual fare");
+                    }
                 }
-                else {
-                Logger.logError(ActualFareWithCurrentName+" - element is not matching with the coupon amount nor with the actual fare");
-                }
+            }catch (Exception exception){
+                Logger.logComment("Coupon code is not applied..,");
+                return couponAmount;
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to get the Coupon amount");

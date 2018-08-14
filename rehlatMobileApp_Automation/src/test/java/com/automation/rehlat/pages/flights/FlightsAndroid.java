@@ -204,7 +204,7 @@ public class FlightsAndroid extends FlightsBase{
     public void checkSearchViewScreenIsDisplayed() {
         Logger.logAction("Checking search view screen is displayed or not ?");
         try{
-            driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS); // Implemented wait time due to delay of search view displaying after tapping on TO/FROM airport button in flights tab
+            Thread.sleep(3); // Implemented wait time due to delay of search view displaying after tapping on TO/FROM airport button in flights tab
             if (isElementDisplayedById(SEARCH_VIEW)){
              Logger.logStep("Search view screen is displayed");
             }else {

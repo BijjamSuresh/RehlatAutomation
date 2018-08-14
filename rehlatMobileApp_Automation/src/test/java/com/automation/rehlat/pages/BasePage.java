@@ -171,8 +171,9 @@ public class BasePage extends Base {
                     }else {
                         Logger.logError(" - element id is not displayed in the current active screen");
                     }
+                }else {
+                    Logger.logError("Sync previous travellers data modal view is not displayed but another modal view is displayed");
                 }
-                Logger.logError("Sync previous travellers data modal view is not displayed but another modal view is displayed");
             }else {
                 Logger.logComment("No modal view is displayed");
             }

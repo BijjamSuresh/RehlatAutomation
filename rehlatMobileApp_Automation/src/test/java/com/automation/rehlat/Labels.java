@@ -83,8 +83,8 @@ public class Labels extends Base{
                                                                                         ////////////////////  Types of devices ////////////////////
     public static final String IOS="iOS";
     public static final String ANDROID="Android";
-//    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type everytime w.r.t. the testing device platform
-    public static final String DEFAULT_PLATFORM = "iOS";
+    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type everytime w.r.t. the testing device platform
+//    public static final String DEFAULT_PLATFORM = "iOS";
 
 
                                                                                     ////////////////////  Web element attribute values ////////////////////
@@ -199,7 +199,7 @@ public class Labels extends Base{
     public static String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String FIRST_NAME = "Suresh";
     public static final String LAST_NAME = "Reddy";
-    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestEmail10@gmail.com";
+    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestEmail103@gmail.com";
     public static final String EMAIL_ID_SIGN_IN = "rehlatAutomationTestEmail1@gmail.com";  // Always add the two digit email number so that on every test script a new email id is generated for to test sign up
     public static final String PASSWORD = "testPasswordFromLabels";
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";

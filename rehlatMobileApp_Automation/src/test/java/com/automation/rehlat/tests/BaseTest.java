@@ -86,14 +86,13 @@ public class BaseTest extends Base {
 
 //        waitTillTheSplashScreenIsInvisible();
         setCountryLanguageAndAirportFromAndToLabels();
-//        createNewSignUpEmailId();
 //        acceptAutoAlertsIfDisplayed();
     }
 
     /**
      * Auto accepting the alerts
      */
-    public static void acceptAutoAlertsIfDisplayed() {
+    public static void acceptAutoAlertsIfDisplayed() throws Exception {
         Logger.logStep("Auto accepting alerts if displayed");
         try
         {
@@ -115,19 +114,18 @@ public class BaseTest extends Base {
     }
 
     /**
-     * Auto accepting the alerts
+     * Creating new sign up email id every time when the new test script run...,Logic: Base email id should be changed in between the range of 101 to 109..,Eg: Base-101 then for every test script should create one new signup email id as 111,121,131,141,..,191..[Formula: Base Email id + 10]
      */
-    public static void createNewSignUpEmailId() {
+    public static void createNewSignUpEmailId() throws Exception{
         Logger.logStep("Creating new sign up email id for the current test run");
         try
         {
-//            = "rehlatAutomationTestEmail10@gmail.com";
-//            String currentEmailIdForSignUp = Labels.EMAIL_ID_SIGN_IN;
-//            Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(25,27));
-//            String latestEmailIdNumber = String.valueOf(currentEmailIdNumber+1);
-//            String latestEmailIdForSignUp = currentEmailIdForSignUp.replace(currentEmailIdForSignUp.substring(25,27),latestEmailIdNumber);
-//            Labels.EMAIL_ID_SIGN_IN = latestEmailIdForSignUp;
-//            Logger.logComment("Newly created email id for to the current test run is :-  "+latestEmailIdForSignUp);
+            String currentEmailIdForSignUp = Labels.EMAIL_ID_SIGN_UP;
+            Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(26,28));
+            String latestEmailIdNumber = String.valueOf(currentEmailIdNumber+10);
+            String latestEmailIdForSignUp = currentEmailIdForSignUp.replace(currentEmailIdForSignUp.substring(26,28),latestEmailIdNumber);
+            Labels.EMAIL_ID_SIGN_UP = latestEmailIdForSignUp;
+            Logger.logComment("Newly created email id for to the current test run is :-  "+latestEmailIdForSignUp);
         }catch (Exception elementNotFound){
             Logger.logError("Alerts are causing problems and not able to execute the test script");
         }

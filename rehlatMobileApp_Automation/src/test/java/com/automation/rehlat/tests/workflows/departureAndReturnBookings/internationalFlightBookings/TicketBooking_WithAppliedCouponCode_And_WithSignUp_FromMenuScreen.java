@@ -8,12 +8,13 @@ import org.junit.Test;
 import static com.automation.rehlat.Labels.*;
 
 public class TicketBooking_WithAppliedCouponCode_And_WithSignUp_FromMenuScreen extends BaseTest {
-    public static final String  newEmailForSignUp = Labels.EMAIL_ID_SIGN_UP.replace("10","57");
+//    public static String  newEmailForSignUp = Labels.EMAIL_ID_SIGN_UP.replace("10","81");
 
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithSignUpFromMenuScreen() throws Exception{
+        createNewSignUpEmailId();
         Logger.beginTest(" - Ticket booking with applied coupon code and with sign Up from menu screen");
-        Labels.EMAIL_ID_SIGN_UP = newEmailForSignUp;
+//        Labels.EMAIL_ID_SIGN_UP = newEmailForSignUp;
         FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.selectCountryNameAndMoveToFlightsTab(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();

@@ -8,7 +8,6 @@ import org.junit.Test;
 import static com.automation.rehlat.Labels.*;
 
 public class TicketBooking_WithoutCouponCode_And_WithoutSignUpOrSignIn extends BaseTest {
-
     @Test
     public void testTicketBookingWithoutCouponCodeAndWithoutSignUpOrSignIn() throws Exception{
         Logger.beginTest("- Ticket booking without couponCode and without sign up or sign in ");

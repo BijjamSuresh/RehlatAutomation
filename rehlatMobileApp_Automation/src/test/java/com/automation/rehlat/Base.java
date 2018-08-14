@@ -103,7 +103,8 @@ public class Base {
      */
     @AfterClass
     public static void tearDown() {
-//            driver.quit();
+        Logger.logComment("Sign Up email id used till yet :-"+Labels.EMAIL_ID_SIGN_UP);
+        driver.quit();
     }
 
     /**
