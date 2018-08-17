@@ -40,6 +40,7 @@ public class BaseTest extends Base {
     public static final String DENY = "DENY";
     public static final String ANDROID_SPLASH_SCREEN = "com.app.rehlat:id/splash_please_wait_dots";
     public static final String SPLASH_SCREEN_ID = "com.app.rehlat:id/splash_please_wait_dots";
+    public static final String SPLASH_SCREEN = "android.widget.ImageView";
 
     ////////////////////////////// Strings Related To The WorkFlows //////////////////////////////////////
     public static final String INTERNATIONALS_TRAVELLERS_COUNTRY_NAME = "Kuwait";
@@ -92,7 +93,7 @@ public class BaseTest extends Base {
     /**
      * Auto accepting the alerts
      */
-    public static void acceptAutoAlertsIfDisplayed() throws Exception {
+    public static void acceptAutoAlertsIfDisplayed() {
         Logger.logStep("Auto accepting alerts if displayed");
         try
         {
@@ -116,7 +117,7 @@ public class BaseTest extends Base {
     /**
      * Creating new sign up email id every time when the new test script run...,Logic: Base email id should be changed in between the range of 101 to 109..,Eg: Base-101 then for every test script should create one new signup email id as 111,121,131,141,..,191..[Formula: Base Email id + 10]
      */
-    public static void createNewSignUpEmailId() throws Exception{
+    public static void createNewSignUpEmailId() {
         Logger.logStep("Creating new sign up email id for the current test run");
         try
         {

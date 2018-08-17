@@ -152,7 +152,7 @@ public class SignInAndroid extends SignInBase{
             if (isElementDisplayedById(LOGIN_BUTTON)){
                 driver.findElement(By.id(LOGIN_BUTTON)).click();
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.ANDROID_ACTIVITY_INDICATOR)));
-                declineTheSyncPreviousTravellersDataModalView();
+                declineTheSyncPreviousTravellersDataModalView_Android();
             }else {
                 Logger.logError(LOGIN_BUTTON+" - element name is not displayed in the current active screen");
             }
@@ -164,7 +164,7 @@ public class SignInAndroid extends SignInBase{
     /**
      * Checking all the fields are filled with information is valid or not
      */
-    public static void checkAllTheFieldsAreFilledWithValidInformation() throws Exception{
+    public static void checkAllTheFieldsAreFilledWithValidInformation() {
         Logger.logAction("Checking the entered information is valid or not");
         try {
 

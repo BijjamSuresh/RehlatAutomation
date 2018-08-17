@@ -1,5 +1,6 @@
 package com.automation.rehlat.pages.menu;
 
+import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -73,6 +74,7 @@ public class MenuIos extends MenuBase {
     public void navigateToFlightsTab() {
         Logger.logAction("Navigating to flights tab");
         try {
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             if (isElementDisplayedByXPath(XPATH_OF_MENU_SCREEN)){
                 WebElement xpathOfMenuScreen = driver.findElementByXPath(XPATH_OF_MENU_SCREEN);
                 tapOnElementBasedOnLocation(xpathOfMenuScreen,"bottomRight");

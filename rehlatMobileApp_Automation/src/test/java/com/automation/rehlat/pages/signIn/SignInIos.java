@@ -5,8 +5,6 @@ import com.automation.rehlat.libCommon.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.util.concurrent.TimeUnit;
-
 public class SignInIos extends SignInBase {
     public static final String TOUCH_ID_ACCESS_MODAL_TITLE = "Would you like to login using your TouchID?";
     public static final String NO_BUTTON_ON_TOUCH_ID_ACCESS_MODAL = "No";
@@ -89,11 +87,11 @@ public class SignInIos extends SignInBase {
      * Entering login credentials
      */
     public static void enterEmailId() {
-        Logger.logAction("Entering email id");
+        Logger.logAction("Entering email id :-"+Labels.EMAIL_ID_SIGN_IN);
         try {
             if (isElementDisplayedByName(EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN)){
                 driver.findElement(By.name(EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN)).sendKeys(Labels.EMAIL_ID_SIGN_IN);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError("unable to find the element name :- "+EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN);
             }
@@ -106,11 +104,11 @@ public class SignInIos extends SignInBase {
      * Entering login credentials
      */
     public static void enterPassword() {
-        Logger.logAction("Entering password");
+        Logger.logAction("Entering password :- "+Labels.PASSWORD);
         try {
             if (isElementDisplayedByName(PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN)){
                 driver.findElement(By.name(PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN)).sendKeys(Labels.PASSWORD);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError("unable to find the element name :- "+PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN);
             }
@@ -141,7 +139,7 @@ public class SignInIos extends SignInBase {
     /**
      * Checking all the fields are filled with information is valid or not
      */
-    public static void checkAllTheFieldsAreFilledWithValidInformation() throws Exception{
+    public static void checkAllTheFieldsAreFilledWithValidInformation() {
         Logger.logAction("Checking the entered information is valid or not");
         try {
 

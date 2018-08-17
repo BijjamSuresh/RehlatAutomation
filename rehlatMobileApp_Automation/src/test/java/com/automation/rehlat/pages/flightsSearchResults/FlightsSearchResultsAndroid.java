@@ -54,7 +54,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
     /**
      * Check the round trip details list view is displayed
      */
-    public static boolean isRoundTripDetailsDisplayed() throws Exception{
+    public static boolean isRoundTripDetailsDisplayed() {
         Logger.logAction("Checking the round trip details is displayed");
         try {
             if (isElementDisplayedById(TWO_WAY_LIST_VIEW)){
@@ -134,7 +134,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                         Labels.SELECTED_SEAT_BOOKING_COST = bookingFlightPrice;
                         return  Labels.SELECTED_SEAT_BOOKING_COST ;
                     }else {
-                        scrollTheFlightSearchResultsScreenDownByACardGap();
+                        scrollTheFlightSearchResultsScreenDownByACardGap_Android();
                         if (isElementDisplayedByXPath(xPathOfBookingFlightPrice)){
                             WebElement bookingFlightPriceXpath = driver.findElementByXPath(xPathOfBookingFlightPrice);
                             String bookingFlightPrice = bookingFlightPriceXpath.getText();
@@ -157,7 +157,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                             Labels.SELECTED_SEAT_BOOKING_COST = bookingFlightPrice;
                             return  Labels.SELECTED_SEAT_BOOKING_COST ;
                         }else {
-                            scrollTheFlightSearchResultsScreenDownByACardGap();
+                            scrollTheFlightSearchResultsScreenDownByACardGap_Android();
                             if (isElementDisplayedByXPath(xPathOfBookingFlightPrice)){
                                 WebElement bookingFlightPriceXpath = driver.findElementByXPath(xPathOfBookingFlightPrice);
                                 String bookingFlightPrice = bookingFlightPriceXpath.getText();
@@ -173,7 +173,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                     }
                 }
             }catch (Exception exception){
-                scrollTheFlightSearchResultsScreenDownByACardGap();
+                scrollTheFlightSearchResultsScreenDownByACardGap_Android();
                 getTheBookingCostOfSelectingOnlyDepartureFlightInSearchResults(parsingFlightCellTypeNumber);
             }
         }catch (Exception exception){
@@ -203,7 +203,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                         Labels.SELECTED_SEAT_BOOKING_COST = bookingFlightPrice;
                         return  Labels.SELECTED_SEAT_BOOKING_COST ;
                     }else {
-                        scrollTheFlightSearchResultsScreenDownByACardGap();
+                        scrollTheFlightSearchResultsScreenDownByACardGap_Android();
                         if (isElementDisplayedByXPath(xPathOfBookingFlightPrice)){
                             WebElement bookingFlightPriceXpath = driver.findElementByXPath(xPathOfBookingFlightPrice);
                             String bookingFlightPrice = bookingFlightPriceXpath.getText();
@@ -226,7 +226,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                             Labels.SELECTED_SEAT_BOOKING_COST = bookingFlightPrice;
                             return  Labels.SELECTED_SEAT_BOOKING_COST ;
                         }else {
-                            scrollTheFlightSearchResultsScreenDownByACardGap();
+                            scrollTheFlightSearchResultsScreenDownByACardGap_Android();
                             if (isElementDisplayedByXPath(xPathOfBookingFlightPrice)){
                                 WebElement bookingFlightPriceXpath = driver.findElementByXPath(xPathOfBookingFlightPrice);
                                 String bookingFlightPrice = bookingFlightPriceXpath.getText();
@@ -242,7 +242,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                     }
                 }
             }catch (Exception exception){
-                scrollTheFlightSearchResultsScreenDownByACardGap();
+                scrollTheFlightSearchResultsScreenDownByACardGap_Android();
                 getTheBookingCostOfSelectingDepartureAndReturnFlightInSearchResults(parsingFlightCellTypeNumber);
             }
         }catch (Exception exception){
@@ -269,7 +269,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                     Logger.logComment(selectedFlightCellTypeNumber+" - Flight booking card not displayed in the current active screen");
                 }
             }catch (Exception exception){
-                scrollTheFlightSearchResultsScreenUpByACardGap();
+                scrollTheFlightSearchResultsScreenUpByACardGap_Android();
                 isParsingFlightBookingCardIsDisplayed(selectedFlightCellTypeNumber);
             }
         }catch (Exception exception){
@@ -291,7 +291,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                 if (down) {
                     while (!isParsingFlightBookingCardIsDisplayed(selectedFlightCellTypeNumber)) {
                         Logger.logComment(counter + "  time trying to find the parsing flight booking card number :- " + selectedFlightCellTypeNumber +" - by scrolling up ");
-                        scrollTheFlightSearchResultsScreenUpByThreeCardsGap();
+                        scrollTheFlightSearchResultsScreenUpByThreeCardsGap_Android();
                         counter++;
                         if (counter > 6) {
                             break;
@@ -300,7 +300,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                     if (!isParsingFlightBookingCardIsDisplayed(selectedFlightCellTypeNumber)) {
                         while (!isParsingFlightBookingCardIsDisplayed(selectedFlightCellTypeNumber)) {
                             Logger.logComment(counter + "  time trying to find the parsing flight booking card number :- " + selectedFlightCellTypeNumber +" - by scrolling down ");
-                            scrollTheFlightSearchResultsScreenDownByThreeCardsGap();
+                            scrollTheFlightSearchResultsScreenDownByThreeCardsGap_Android();
                             counter++;
                             if (counter > 12) {
                                 break;
@@ -310,7 +310,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                 } else {
                     while (!isParsingFlightBookingCardIsDisplayed(selectedFlightCellTypeNumber)) {
                         Logger.logComment(counter + "  time trying to find the parsing flight booking card number :- " + selectedFlightCellTypeNumber +" - by scrolling down ");
-                        scrollTheFlightSearchResultsScreenDownByThreeCardsGap();
+                        scrollTheFlightSearchResultsScreenDownByThreeCardsGap_Android();
                         counter++;
                         if (counter > 6) {
                             break;
@@ -319,7 +319,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                     if (!isParsingFlightBookingCardIsDisplayed(selectedFlightCellTypeNumber)) {
                         Logger.logComment(counter + "  time trying to find the parsing flight booking card number :- " + selectedFlightCellTypeNumber +" - by scrolling up ");
                         while (!isParsingFlightBookingCardIsDisplayed(selectedFlightCellTypeNumber)) {
-                            scrollTheFlightSearchResultsScreenUpByThreeCardsGap();
+                            scrollTheFlightSearchResultsScreenUpByThreeCardsGap_Android();
                             counter++;
                             if (counter > 12) {
                                 break;
@@ -328,7 +328,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                     }
                 }
             }else {
-                Logger.logComment("Parsing parsing flight booking card number - "+selectedFlightCellTypeNumber+ " - is already displayed in the current calender view");
+                Logger.logComment("Parsing flight booking card number - "+selectedFlightCellTypeNumber+ " - is already displayed in the current calender view");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to scroll to the parsing flight booking card number :- " +selectedFlightCellTypeNumber);

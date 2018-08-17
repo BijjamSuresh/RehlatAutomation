@@ -40,7 +40,6 @@ public class Base {
     public static DesiredCapabilities capabilities;
     public static AppiumDriver<WebElement> driver;
     public static WebDriverWait driverWait;
-    public static final String SPLASH_SCREEN = "android.widget.ImageView";
 
     /**
      * Reference: <a href="http://appium.io/slate/en/master/?ruby#appium-server-capabilities">http://appium.io/slate/en/master/?ruby#appium-server-capabilities</a>
@@ -85,6 +84,7 @@ public class Base {
             app = new File("../app_debug.apk");
             appPAthPathCapability = app.getAbsolutePath();
             capabilities.setCapability("app", appPAthPathCapability);
+            capabilities.setCapability("orientation", PORTRAIT_ORIENTATION);
             capabilities.setCapability("appWaitActivity", "com.app.rehlat.SplashActivity");
             capabilities.setCapability("noReset", true);
             capabilities.setCapability("newCommandTimeout", "8000");
@@ -136,6 +136,7 @@ public class Base {
             Logger.logWarning(" couldn't take screenshot");
         }
     }
+
     /**
      * Used to get current running test script.
      * @return void
@@ -144,6 +145,10 @@ public class Base {
         return Labels.testCaseName;
     }
 
+    /**
+     * Get the platform from labels
+     * @return
+     */
     public static String getPlatform() {
         return Labels.platform;
     }
@@ -199,25 +204,29 @@ public class Base {
      * Gets the os version on which the script is run for iOS
      * @return String version of the ios device
      */
-    public static String getOsVersionIosOnly() {
-        String commandArrayToListIosDevices[] = General.createArrayOfWordFromString(Labels.TERMINAL_COMMAND_LISTING_CONNECTED_IOS_DEVICES);
-        String terminalOutput = General.executeTerminalCommandArray(commandArrayToListIosDevices);
-        String[] stringArray;
-        stringArray = terminalOutput.split("\n");
-        for (String element : stringArray) {
-            if (element.contains((CharSequence) capabilities.getCapability("udid"))) {
-                String version = getIosVersion(element);
-                if (version != null)
-                {
-                    return version;
+    public static String getOsVersionIosOnly() throws Exception {
+        try{
+            String commandArrayToListIosDevices[] = General.createArrayOfWordFromString(Labels.TERMINAL_COMMAND_LISTING_CONNECTED_IOS_DEVICES);
+            String terminalOutput = General.executeTerminalCommandArray(commandArrayToListIosDevices);
+            String[] stringArray;
+            stringArray = terminalOutput.split("\n");
+            for (String element : stringArray) {
+                if (element.contains((CharSequence) capabilities.getCapability("udid"))) {
+                    String version = getIosVersion(element);
+                    if (version != null)
+                    {
+                        return version;
 
+                    }
                 }
             }
+            fail("The given device is not connected");
+            return null;
+        } catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the OS version of the connected device");
         }
-        fail("The given device is not connected");
         return null;
     }
-
 
     /**
      * Used to get iOS version using regular expression.
@@ -234,6 +243,7 @@ public class Base {
         }
         return version;
     }
+
     /**
      * Verify element is displayed in screen using element name for ios and text attribute for android.
      * @param elementName element name for ios and element text for android.
@@ -243,7 +253,7 @@ public class Base {
     public static boolean isElementDisplayedByName(String elementName) throws Exception {
         Logger.logAction("Checking - "+ elementName+" - element name is displayed");
         int counter = 0;
-        WebElement element = null;
+        WebElement element;
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
                 if (Labels.platform.equals(Labels.ANDROID)) {
@@ -265,6 +275,7 @@ public class Base {
         Logger.logWarning(elementName + " - element name is not displayed in the current active screen");
         return false;
     }
+
     /**
      * Verify element is displayed in screen using element id for ios and android.
      * @param elementId element name for ios and element text for android.
@@ -313,7 +324,7 @@ public class Base {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementId + "\")");
 ////                    return true;
 //                } else {
-                Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+//                Thread.sleep(Labels.WAIT_TIME_DEFAULT);
                 WebElement element = driver.findElementById(elementId);
 //                    return true;
 //                }
@@ -551,7 +562,6 @@ public class Base {
         return false;
     }
 
-
     /**
      * Verify element is displayed in screen using element xpath as parameter.
      * @param elementPath element name.
@@ -567,7 +577,7 @@ public class Base {
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + elementPath);
+                Logger.logComment(counter + " time trying to find " + elementPath);
             }
             Thread.sleep(Labels.WAIT_TIME_DEFAULT);
             counter++;
@@ -596,7 +606,6 @@ public class Base {
         return randomValue;
     }
 
-
     /**
      * Scrolls  by executing the script using  mobile scroll action.
      * @param elementName Name of the element to scroll to
@@ -614,14 +623,11 @@ public class Base {
         }
     }
 
-
-
     /**
      * Helper method to scroll up or down to an element.
      * @param id The id of the element.
      * @param up   True if movement of 'finger' is upwards.
      */
-
     public static void scrollToElementById(String id, boolean up) {
         // large and small steps are values of scrolling length
         double largeStep = 0.325;
@@ -645,8 +651,7 @@ public class Base {
      * @param stepSize Distance from top and bottom of screen where the gesture will begin/end (percentage of screen)
      * @return True if found.
      */
-    private static boolean loopScrollToElementById(String id, boolean up, double stepSize)
-    {
+    private static boolean loopScrollToElementById(String id, boolean up, double stepSize) {
         int counter = 0;
         double topY = stepSize;
         double bottomY = 1 - stepSize;
@@ -715,6 +720,7 @@ public class Base {
             fail("Unable to find element to swipe on: " + elementName);
         }
     }
+
     /**
      * Helper method to detect if an element is displayed.
      * @param id The id of the element.
@@ -763,8 +769,6 @@ public class Base {
 
         driver.swipe(startX.intValue(), startY.intValue(), endX.intValue(), endY.intValue(), duration.intValue());
     }
-
-
 
     /**
      * Method that actually does the swipe/scroll gesture in a given direction
@@ -873,6 +877,7 @@ public class Base {
             Assert.fail("Could not scroll down, error is :" +elementNotFound);
             }
     }
+
     /**
      * Scroll to an element by its name
      * @param elementName
@@ -1031,7 +1036,6 @@ public class Base {
         js.executeScript("mobile: scroll", scrollMap);
     }
 
-
     /**
      * Used to send text to the element
      * @param element element on to which the text field is sent to
@@ -1180,6 +1184,7 @@ public class Base {
         }
         return elementValue;
     }
+
     /**
      * Gets the element value
      * @param element whose value is to be returned
@@ -1194,6 +1199,7 @@ public class Base {
         }
         return elementValue;
     }
+
     /**
      * Tap on element using element xpath as parameter.
      * @param XPath element class name.
@@ -1217,7 +1223,6 @@ public class Base {
         return false;
     }
 
-
     /**
      * Verify tapping element using WebElement as parameter.
      * @param element element WebElement.
@@ -1240,6 +1245,7 @@ public class Base {
         }
         return false;
     }
+
     /**
      * Verify element is displayed in screen using Web element
      * @param element element WebElement.
@@ -1316,7 +1322,6 @@ public class Base {
         return false;
     }
 
-
     /**
      * Verify element is enabled in  screen using element xpath
      * @param xpath element xpath
@@ -1345,6 +1350,7 @@ public class Base {
         Logger.logWarning(xpath + " - XPath is not visible in the current active screen");
         return false;
     }
+
     /**
      * Verify element is displayed in screen using element name for ios and text attribute for android with out reattempting the check .
      * @param elementName element name for ios and element text for android.
@@ -1439,23 +1445,26 @@ public class Base {
     /**
      * * This method verifies that the key board is displayed or not
      */
-    public static boolean isKeyboardDisplayed() {
-        if(Labels.platform.equals(Labels.ANDROID)) {
-            String deviceId = getAndroidDeviceId();
-            String commandToEnableLocation = "adb -s " + deviceId + " shell dumpsys input_method | grep mInputShown";
-            String commandToCheckKeyBoardIsDisplayed[] = General.createArrayOfWordFromString(commandToEnableLocation);
-            String terminalOutput = General.executeTerminalCommandArray(commandToCheckKeyBoardIsDisplayed);
-            return terminalOutput.contains("mInputShown=true");
-        }
-        else if(Labels.platform.equals(Labels.IOS)) {
-            try {
-//                driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
-                boolean status = driver.findElementByClassName(Labels.UIA_KEYBOARD).isDisplayed();
-                return status;
-            } catch (Exception elementNotFound) {
-                Logger.logComment("elementNotFound - Exception happened in isKeyboardDisplayed method");
-                return false;
+    public static boolean isKeyboardDisplayed() throws Exception{
+        try {
+            if(Labels.platform.equals(Labels.ANDROID)) {
+                String deviceId = getAndroidDeviceId();
+                String commandToEnableLocation = "adb -s " + deviceId + " shell dumpsys input_method | grep mInputShown";
+                String commandToCheckKeyBoardIsDisplayed[] = General.createArrayOfWordFromString(commandToEnableLocation);
+                String terminalOutput = General.executeTerminalCommandArray(commandToCheckKeyBoardIsDisplayed);
+                return terminalOutput.contains("mInputShown=true");
             }
+            else if(Labels.platform.equals(Labels.IOS)) {
+                try {
+                    boolean status = driver.findElementByClassName(Labels.UIA_KEYBOARD).isDisplayed();
+                    return status;
+                } catch (Exception elementNotFound) {
+                    Logger.logComment("elementNotFound - Exception happened in isKeyboardDisplayed method");
+                    return false;
+                }
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to check the keyboard status");
         }
         return false;
     }
@@ -1515,7 +1524,7 @@ public class Base {
             try {
                 boolean status = driver.findElement(By.id(elementId)).isDisplayed();
                 if (status) {
-                    driver.findElement(By.id(elementId)).clear();
+                    driver.findElementById(elementId).clear();
                     Logger.logComment("Sending the keys:- "+message);
                     driver.findElement(By.id(elementId)).sendKeys(message);
                     return true;
@@ -1590,9 +1599,10 @@ public class Base {
      */
     public static boolean sendTextByXpath(String elementXpath, String message) throws Exception {
         int counter = 0;
+        WebElement element;
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
-                WebElement element=driver.findElement(By.xpath(elementXpath));
+                element = driver.findElement(By.xpath(elementXpath));
                 boolean status = element.isDisplayed();
                 if (status) {
                     element.clear();
@@ -1677,8 +1687,7 @@ public class Base {
      * @return void
      * @throws Exception
      */
-    public static boolean selectElementByName(String elementName)
-    {
+    public static boolean selectElementByName(String elementName) {
         try
         {
             if (isElementDisplayedByName(elementName)){
@@ -1700,8 +1709,7 @@ public class Base {
      * @return void
      * @throws Exception
      */
-    public static boolean selectElementByClassName(String elementName)
-    {
+    public static boolean selectElementByClassName(String elementName) {
         try
         {
             if (isElementDisplayedByClassName(elementName)){
@@ -1789,8 +1797,7 @@ public class Base {
      * @return HashMap<String, List> HashMap of Device Type and its UDID
      * @throws Exception
      */
-    public static HashMap<String, List> getConnectedIosDevice() throws Exception
-    {
+    public static HashMap<String, List> getConnectedIosDevice() throws Exception {
         String commandToListUSBConnectedDevices[] = General.createArrayOfWordFromString(Labels.TERMINAL_COMMAND_LIST_CONNECTED_USB_DEVICE);
         BufferedReader bufReader = new BufferedReader(new StringReader(General.executeTerminalCommandArray(commandToListUSBConnectedDevices)));
         String line = null;
@@ -1851,7 +1858,6 @@ public class Base {
         return deviceType;
     }
 
-
     /**
      * Re install the app as part of the execution
      */
@@ -1890,7 +1896,6 @@ public class Base {
         }
     }
 
-
     /**
      * Clearing the keys using keycode (Only for android platforms)
      * @param elementId
@@ -1900,7 +1905,8 @@ public class Base {
         Logger.logAction("Clearing the keys by using keycode");
         try {
             if (Labels.platform.equals(Labels.ANDROID)){
-                tapOnElementBasedOnLocation(driver.findElement(By.id(elementId)),"bottomRight");
+                WebElement element = driver.findElementById(elementId);
+                tapOnElementBasedOnLocation(element,"bottomRight");
                 for (int count=0; tapCounts>=count; count++){
                     ((AndroidDriver) driver).pressKeyCode(AndroidKeyCode.BACKSPACE);
                 }

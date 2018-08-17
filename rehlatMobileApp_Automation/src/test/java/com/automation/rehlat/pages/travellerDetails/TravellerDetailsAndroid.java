@@ -6,7 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TravellerDetailsAndroid extends TravellerDetailsBase {
     public static final String TRAVELLERS_FIRST_NAME="com.app.rehlat:id/travellerFirstNameEditText";
@@ -30,12 +32,13 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     public static final String TRAVELLERS_DETAILS_MODAL ="com.app.rehlat:id/travellers_details_viewpager";
     public static final String XPATH_OF_FIRST_FILTER_RESULT_IN_SELECT_COUNTRY_SCREEN ="/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[1]";
     public static final String XPATH_OF_SECOND_FILTER_RESULT_IN_SELECT_COUNTRY_SCREEN ="/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.TextView[1]";
+    public static final String[] monthsList = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     /**
      * Check the travellers details screen is displayed
      */
     @Override
-    public void checkTravellersDetailsScreenIsDisplayed() throws Exception {
+    public void checkTravellersDetailsScreenIsDisplayed() {
         Logger.logAction("Checking the travellers details screen is displayed or not ?");
         try {
             if (isElementDisplayedById(TRAVELLERS_DETAILS_SCREEN_TITLE_LAYOUT)){
@@ -58,7 +61,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Decline the auto fill populate modal if displayed
      */
     @Override
-    public void declineAutoFillPopulateModalIfDisplayed() throws Exception {
+    public void declineAutoFillPopulateModalIfDisplayed() {
         Logger.logAction("Declining the auto fill popup if displayed");
         try{
             if (isElementDisplayedById("com.app.rehlat:id/traveller_prepopulated_list_layout")){
@@ -80,7 +83,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Enter adult travellers details
      */
     @Override
-    public void enterAdultTravellersDetails(String travellersCountry) throws Exception{
+    public void enterAdultTravellersDetails(String travellersCountry) {
         Logger.logAction("Entering the adult travellers details");
         try{
             if (isElementDisplayedById(TRAVELLERS_DETAILS_MODAL)){
@@ -97,7 +100,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers details
      */
-    public static void enterTravellersDetails(String travellersCountry) throws Exception {
+    public static void enterTravellersDetails(String travellersCountry) {
         Logger.logAction("Entering travellers details");
         try{
             enterTravellersFirstName();
@@ -141,7 +144,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers first name
      */
-    public static void enterTravellersFirstName() throws Exception {
+    public static void enterTravellersFirstName() {
         Logger.logStep("Entering travellers first name");
         try{
             if (isElementDisplayedById(TRAVELLERS_FIRST_NAME)){
@@ -160,7 +163,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers middle name
      */
-    public static void enterTravellersMiddleName() throws Exception {
+    public static void enterTravellersMiddleName() {
         Logger.logStep("Entering travellers middle name");
         try{
             if (isElementDisplayedById(TRAVELLERS_MIDDLE_NAME)){
@@ -179,7 +182,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers last name
      */
-    public static void enterTravellersLastName() throws Exception {
+    public static void enterTravellersLastName() {
         Logger.logStep("Entering travellers last name");
         try{
             if (isElementDisplayedById(TRAVELLERS_LAST_NAME)){
@@ -198,7 +201,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers Date of Birth
      */
-    public static void enterTravellersDateOfBirth() throws Exception {
+    public static void enterTravellersDateOfBirth() {
         Logger.logStep("Entering travellers Date of Birth");
         try{
             if (isElementDisplayedById(TRAVELLERS_DATEOFBIRTH_NAME)){
@@ -228,7 +231,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Swipe the calender view to a particular date based on calendar type
      * @param parsingDate
      */
-    public static void swipeTheCalendarViewToDate(String dateType, String parsingDate) throws Exception {
+    public static void swipeTheCalendarViewToDate(String dateType, String parsingDate) {
         Logger.logAction("Swiping the calendar view to date:- "+parsingDate);
         try {
             if (dateType.equals(Labels.DATEOFBIRTH_CALENDAR)){
@@ -246,34 +249,49 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Swipe the date of birth calendar // For now only adult Date of birth logic is implemented, yet to implement for infant and child type also
      */
-    public static void swipeDateOfBirthCalendar(String parsingDate) throws Exception {
+    public static void swipeDateOfBirthCalendar(String parsingDate) {
+        int monthValueOfParsingYear = 0;
+        int currentMonthValueInThePreviousYearOfParsingYear = 0;
+        int totalTapsOnForwardButtonInPreviousYearOfParsingYear = 0;
         try {
             String time = new SimpleDateFormat("yyyy").format(new Date());
             Integer currentCalendarYear = Integer.valueOf(time);
             Integer displayedAdultCalendar = currentCalendarYear-12;
             Integer parsingCalenderYear = Integer.valueOf(Labels.YEAR_IN_TRAVELLERS_DATEOFBIRTH_ANDROID);
             if (displayedAdultCalendar >= parsingCalenderYear){
-                Integer numberOfTapsTobeDoneOnPreviousMonthButton = ((displayedAdultCalendar-parsingCalenderYear-1)*(12));
+                Integer numberOfTapsTobeDoneOnPastMonthButtonTillToOneYearBeforeToParsingYear = ((displayedAdultCalendar-parsingCalenderYear-1)*(12));
                 if (isElementDisplayedById(PREVIOUS_MONTH_BUTTON)){
-                    for (int tapCount = 0; tapCount <=numberOfTapsTobeDoneOnPreviousMonthButton;tapCount++){
+                    // Logic to go to one year before to parsing date year
+                    // No need to add "1" tap extra which we did it in future parsing calender because we are using the departure date to swipe to the parsing calendar
+                    for (int tapCount = 0; tapCount <numberOfTapsTobeDoneOnPastMonthButtonTillToOneYearBeforeToParsingYear;tapCount++) {
                         driver.findElementById(PREVIOUS_MONTH_BUTTON).click();
-//                        Thread.
                     }
-                    for (int tapMonthCount = 0; tapMonthCount <=25;tapMonthCount++){
-                        Thread.sleep(Labels.WAIT_TIME_MIN);
-                        if (isElementDisplayedByIdWithOneTimeChecking(parsingDate)){
-                            Logger.logComment("Swiped the calendar view to date:- "+parsingDate);
+                    // Logic to go to exact parsing month from one year before to the parsing date year
+                    for (int index =0; index<=monthsList.length-1;index++){
+                        String monthName = monthsList[index];
+                        if (parsingDate.contains(monthName)){
+                            index = 11-index;
+                            monthValueOfParsingYear = index;
                             break;
-                        }else {
-                            driver.findElementById(PREVIOUS_MONTH_BUTTON).click();
-                            Logger.logComment(tapMonthCount+"- trying to find the element id "+parsingDate);
                         }
                     }
-//                    if (isElementDisplayedById(parsingDate)){
-//                        Logger.logComment("Swiped the calendar view to date:- "+parsingDate);
-//                    }else {
-//                        Logger.logComment("unable to find the exact actual date, so tapping on nearest date to "+parsingDate);
-//                    }
+                    for (int index =0; index<=monthsList.length-1;index++){
+                        String monthName = monthsList[index];
+                        if (monthName.equals(Labels.MONTH_IN_TRAVELLERS_DEPARTURE_DATE_FOR_ANDROID)){
+                            currentMonthValueInThePreviousYearOfParsingYear = index;
+                            break;
+                        }
+                    }
+                    totalTapsOnForwardButtonInPreviousYearOfParsingYear = monthValueOfParsingYear+currentMonthValueInThePreviousYearOfParsingYear;
+                    for (int tapMonthCount = 0; tapMonthCount <=totalTapsOnForwardButtonInPreviousYearOfParsingYear;tapMonthCount++){
+                        driver.findElementById(PREVIOUS_MONTH_BUTTON).click();
+                    }
+                    // Checking the parsing date is displayed according to the logic
+                    if (isElementDisplayedByIdWithOneTimeChecking(parsingDate)){
+                        Logger.logComment("Swiped the calendar view to date:- "+parsingDate);
+                    }else {
+                        Logger.logError(parsingDate+" - element id is not displayed in the current active screen");
+                    }
                 }else {
                     Logger.logError("Previous Month button is not displayed in the current calender view");
                 }
@@ -282,6 +300,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                 Logger.logError("Adult date of birth should be less than 12 years to the current Year");
             }
         }catch (Exception exception){
+            exception.printStackTrace();
             Logger.logError("Encountered error: Unable to swipe the calendar view");
         }
     }
@@ -289,30 +308,51 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Swipe the date of birth calendar // For now only adult Date of birth logic is implemented, yet to implement for infant and child type also
      */
-    public static void swipePassportExpiryCalendar(String parsingDate) throws Exception {
+    public static void swipePassportExpiryCalendar(String parsingDate) {
+        int monthValueOfParsingYear = 0;
+        int currentMonthValueInThePreviousYearOfParsingYear = 0;
+        int totalTapsOnForwardButtonInPreviousYearOfParsingYear = 0;
         try {
             String time = new SimpleDateFormat("yyyy").format(new Date());
             Integer currentCalendarYear = Integer.valueOf(time);
             Integer displayedAdultCalendar = currentCalendarYear;
             Integer parsingCalenderYear = Integer.valueOf(Labels.YEAR_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID);
             if (displayedAdultCalendar <= parsingCalenderYear){
-                Integer numberOfTapsTobeDoneOnPreviousMonthButton = ((parsingCalenderYear-displayedAdultCalendar-1)*(12));
+                Integer numberOfTapsTobeDoneOnNextMonthButtonTillToOneYearBeforeToParsingYear = ((parsingCalenderYear-displayedAdultCalendar-1)*(12));
                 if (isElementDisplayedById(FUTURE_MONTH_BUTTON)){
-                    for (int tapCount = 0; tapCount <=numberOfTapsTobeDoneOnPreviousMonthButton;tapCount++){
+                    // Logic to go to one year before to parsing date year
+                    for (int tapCount = 0; tapCount <=numberOfTapsTobeDoneOnNextMonthButtonTillToOneYearBeforeToParsingYear;tapCount++){
                         driver.findElementById(FUTURE_MONTH_BUTTON).click();
                     }
-                    for (int tapMonthCount = 0; tapMonthCount <=25;tapMonthCount++){
-                        Thread.sleep(Labels.WAIT_TIME_MIN);
-                        if (isElementDisplayedByIdWithOneTimeChecking(parsingDate)){
-                            Logger.logComment("Swiped the calendar view to date:- "+parsingDate);
+                    // Logic to go to exact parsing month from one year before to the parsing date year
+                    for (int index =0; index<=monthsList.length-1;index++){
+                        String monthName = monthsList[index];
+                        if (parsingDate.contains(monthName)){
+                            monthValueOfParsingYear = index;
                             break;
-                        }else {
-                            driver.findElementById(FUTURE_MONTH_BUTTON).click();
-                            Logger.logComment(tapMonthCount+"- trying to find the element id "+parsingDate);
                         }
                     }
+                    String currentMonth = new SimpleDateFormat("MMMMM").format(new Date());
+                    for (int index =0; index<=monthsList.length-1;index++){
+                        String monthName = monthsList[index];
+                        if (monthName.equals(currentMonth)){
+                            index = 11 - index -1; // "1" tap is added extra because to see the future month we are using the current month name (Which we didn't use extra tap in past calendar swiping)
+                            currentMonthValueInThePreviousYearOfParsingYear = index;
+                            break;
+                        }
+                    }
+                    totalTapsOnForwardButtonInPreviousYearOfParsingYear = monthValueOfParsingYear+currentMonthValueInThePreviousYearOfParsingYear;
+                    for (int tapMonthCount = 0; tapMonthCount <=totalTapsOnForwardButtonInPreviousYearOfParsingYear;tapMonthCount++){
+                        driver.findElementById(FUTURE_MONTH_BUTTON).click();
+                    }
+                    // Checking the parsing date is displayed according to the logic
+                    if (isElementDisplayedByIdWithOneTimeChecking(parsingDate)){
+                        Logger.logComment("Swiped the calendar view to date:- "+parsingDate);
+                    }else {
+                        Logger.logError(parsingDate+" - element id is not displayed in the current active screen");
+                    }
                 }else {
-                    Logger.logError("Previous Month button is not displayed in the current calender view");
+                    Logger.logError("Future Month button is not displayed in the current calender view");
                 }
             }else {
                 Logger.logComment("Current Year & adult passport expiry year dates are :- "+currentCalendarYear+","+Labels.YEAR_IN_TRAVELLERS_DATEOFBIRTH_ANDROID);
@@ -326,7 +366,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Close the date picker for Android Platform
      */
-    public static void closeTheCalendarView() throws Exception {
+    public static void closeTheCalendarView() {
         try{
             if (isElementDisplayedById(CALENDAR_OK_BUTTON)){
                 driver.findElementById(CALENDAR_OK_BUTTON).click();
@@ -341,7 +381,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Close the auto tutorial dialog of calendar
      */
-    public static void closeAutoTutorialDialog()throws Exception {
+    public static void closeAutoTutorialDialog() {
         try{
             if (isElementDisplayedById("com.app.rehlat:id/tutorialDialog")){
                 Logger.logComment("Tutorial is displayed and going to close it by tapping on it");
@@ -357,7 +397,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers passport number
      */
-    public static void enterTravellersPassportNumber()throws Exception {
+    public static void enterTravellersPassportNumber() {
         Logger.logStep("Entering travellers passport number");
         try{
             if (isElementDisplayedById(TRAVELLERS_PASSPORT_TEXTFIELD)){
@@ -375,7 +415,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Enter the travellers passport expiry date
      */
-    public static void selectTravellersPassportExpiryDate() throws Exception {
+    public static void selectTravellersPassportExpiryDate() {
         Logger.logStep("Selecting travellers passport expiry date");
         try{
             if (isElementDisplayedById(TRAVELLERS_PASSPORT_EXPIRY_TEXTFIELD)){
@@ -404,7 +444,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Select passport issuing country name
      */
-    public static void selectPassportIssuingCountry(String passportIssuingCountryName) throws Exception {
+    public static void selectPassportIssuingCountry(String passportIssuingCountryName) {
         Logger.logAction("Selecting the passport issuing country");
         try{
             if (isElementDisplayedById(TRAVELLERS_PASSPORT_ISSUING_COUNTRY)){
@@ -429,7 +469,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     /**
      * Select traveller nationality
      */
-    public static void selectTravellersNationality(String travellersNationality) throws Exception {
+    public static void selectTravellersNationality(String travellersNationality) {
         Logger.logAction("Selecting the travellers nationality");
         try{
             if (isElementDisplayedById(TRAVELLERS_NATIONALITY)){
@@ -456,7 +496,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * @param countryName
      */
     // To do: Implement a method such that automatically select the country name (if country name is not on visible list scroll to that element and click on it)
-    public static void selectCountry(String countryName) throws Exception {
+    public static void selectCountry(String countryName) {
         Logger.logAction("Selecting the country :- "+countryName);
         try{
             if (isElementDisplayedById(SEARCH_TEXTFIELD_IN_SELECT_COUNTRY_MODAL)){
@@ -488,7 +528,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Tap on save button
      */
     @Override
-    public void tapOnSaveButton() throws Exception {
+    public void tapOnSaveButton() {
         Logger.logAction("Tapping on save travellers details button");
         try{
             if (isElementDisplayedById(SAVE_BUTTON)){

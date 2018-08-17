@@ -41,7 +41,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Check booking page screen is displayed
      */
     @Override
-    public void checkBookingPageScreenIsDisplayed() throws Exception{
+    public void checkBookingPageScreenIsDisplayed() {
         Logger.logAction("Checking the Booking page screen is displayed or not ?");
         try{
             if (isElementDisplayedById(CONTACT_DETAILS_VIEW)){
@@ -58,7 +58,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Check booking page screen is displayed
      */
     @Override
-    public boolean isUserIsSignedIn() throws Exception{
+    public boolean isUserIsSignedIn() {
         Logger.logAction("Checking the Booking page screen is displayed or not ?");
         try{
             if (isElementDisplayedById(SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON)){
@@ -77,7 +77,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Enter user booking information
      */
     @Override
-    public void enterUserBookingInfo() throws Exception {
+    public void enterUserBookingInfo() {
         Logger.logAction("Entering the user information");
         try {
             if (isUserIsSignedIn()){
@@ -95,7 +95,7 @@ public class BookingPageAndroid extends BookingPageBase {
     /**
      * Send keys to email text field
      */
-    public static void sendKeysToEmailTextField() throws Exception {
+    public static void sendKeysToEmailTextField() {
         Logger.logAction("Entering the email id "+Labels.EMAIL_ID_SIGN_IN+" in email id text field");
         try{
             if (isElementDisplayedById(EMAIL_FIELD)){
@@ -126,21 +126,21 @@ public class BookingPageAndroid extends BookingPageBase {
     /**
      * Send keys to phone number text field
      */
-    public static void sendKeysToPhoneNumberTextField() throws Exception {
+    public static void sendKeysToPhoneNumberTextField() {
         Logger.logAction("Entering the number "+Labels.phoneNumber+" in number text field");
         try{
             if (isElementDisplayedById(PHONENUMBER_FIELD)){
                 String phoneNumberField = driver.findElementById(PHONENUMBER_FIELD).getText();
                 if (phoneNumberField.equals(PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD)){
                     Logger.logComment("Entering the phone number:- "+Labels.phoneNumber);
-                    WebElement textField = driver.findElement(By.id(PHONENUMBER_FIELD));
+                    WebElement textField = driver.findElementById(PHONENUMBER_FIELD);
                     tapOnElementBasedOnLocation(textField,"bottomRight");
                     clearKeysByUsingKeycode(PHONENUMBER_FIELD,PHONENUMBER_FIELD.length());
                     sendTextById(PHONENUMBER_FIELD,Labels.phoneNumber);
                     driver.hideKeyboard();
                 }else {
                     Logger.logComment("Replacing current phone number text "+phoneNumberField+" with "+Labels.phoneNumber);
-                    WebElement textField = driver.findElement(By.id(PHONENUMBER_FIELD));
+                    WebElement textField = driver.findElementById(PHONENUMBER_FIELD);
                     tapOnElementBasedOnLocation(textField,"bottomRight");
                     clearKeysByUsingKeycode(PHONENUMBER_FIELD,PHONENUMBER_FIELD.length());
                     sendTextById(PHONENUMBER_FIELD,Labels.phoneNumber);
@@ -158,7 +158,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Tap on continue button
      */
     @Override
-    public void tapOnContinueButton() throws Exception {
+    public void tapOnContinueButton() {
         Logger.logAction("Tapping on continue button");
         try{
             if (isElementDisplayedById(BOOKING_PAGE_CONTINUE_BUTTON)){
@@ -175,7 +175,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Tap on add travellers details button
      */
     @Override
-    public void tapOnAdultAddTravellersDetailsButton() throws Exception {
+    public void tapOnAdultAddTravellersDetailsButton() {
         Logger.logAction("Tapping on adult add travellers details button");
         try{
             scrollTheScreenUpwards();
@@ -195,7 +195,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * @return
      */
     @Override
-    public boolean isTicketSoldOutPopUpIsDisplayed() throws Exception {
+    public boolean isTicketSoldOutPopUpIsDisplayed() {
         Logger.logAction("Checking the ticket sold out popup is displayed or not ?");
         try{
             if (isElementDisplayedById(TICKET_SOLD_OUT_POPUP)){
@@ -215,7 +215,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Tap on ok button in ticket sold out popup
      */
     @Override
-    public void tapOnOkButtonInTicketSoldOutPopup() throws Exception {
+    public void tapOnOkButtonInTicketSoldOutPopup() {
         Logger.logAction("Tapping on "+TICKET_SOLD_OUT_POPUP+ " button");
         try {
             if (isElementDisplayedById(TICKET_SOLD_OUT_POPUP)){
@@ -232,7 +232,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Tap on sign in for faster bookings button
      */
     @Override
-    public void tapOnSignInForFasterBookingsButton() throws Exception {
+    public void tapOnSignInForFasterBookingsButton() {
         try {
             if (isElementDisplayedById(SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON)){
                 driver.findElement(By.id(SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON)).click();
@@ -248,7 +248,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Check the final fare calculations are correct
      */
     @Override
-    public void checkFinalFareCalculationIsCorrect() throws Exception {
+    public void checkFinalFareCalculationIsCorrect() {
         Logger.logAction("Checking the final fare calculation is correct or not ?");
         try {
             driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
@@ -262,14 +262,25 @@ public class BookingPageAndroid extends BookingPageBase {
             Logger.logComment("Applied Coupon amount of booking flight :- "+couponAmount);
             Logger.logComment("Applied Karam points cost of booking flight :- "+karamPoints);
             Logger.logComment("Final Fare cost of booking flight :- "+finalDisplayedFare);
+            if (finalDisplayedFare.equals(0.00)){
+                finalDisplayedFare = displayedActualFare;
+            }
             if (displayedActualFare.equals(bookingSeatCostInReviewBookingScreen)) {
                 Double finalFareMathCalculation = displayedActualFare-couponAmount-karamPoints;
-                Logger.logComment("final fare math calculation value is :- "+finalFareMathCalculation);
+                Logger.logComment("Final fare math calculation value is :- "+finalFareMathCalculation);
                 if (finalFareMathCalculation.equals(finalDisplayedFare)) {
                     Logger.logStep("Final fare calculation is correct");
-                }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This method is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
+                }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This logic is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
                     Logger.logStep("Final fare calculation is correct");
-                }else {
+                } else if (finalFareMathCalculation.toString().contains(".0") && finalDisplayedFare.toString().contains("0.00")){ //This logic is because of showing final fare value as with two decimal values even though they are zeros eg: 16.00 but internal math calculation will shows only one decimal point (if is zero) eg: 16.0
+                    finalFareMathCalculation = Double.valueOf(finalFareMathCalculation.toString().replace(".0",".00"));
+                    if (finalFareMathCalculation.equals(finalDisplayedFare)) {
+                        Logger.logStep("Final fare calculation is correct");
+                    }else {
+                        Logger.logError("Final calculation is incorrect in decimal values");
+                    }
+                }
+                else {
                     Logger.logError("Final fare calculation is in correct");
                 }
             }else {
@@ -284,13 +295,13 @@ public class BookingPageAndroid extends BookingPageBase {
      * Get the actual displaying fare
      * @return
      */
-    public static Double getDisplayedActualFare() throws Exception {
+    public static Double getDisplayedActualFare() {
         Logger.logAction("Getting the displayed actual fare");
         Double actualDisplayingFare = 0.00;
         try
         {
             if (isElementDisplayedById(ACTUAL_DISPLAYING_FARE)){
-                String amount = driver.findElement(By.id(ACTUAL_DISPLAYING_FARE)).getText();
+                String amount = driver.findElementById(ACTUAL_DISPLAYING_FARE).getText();
                 actualDisplayingFare = Double.valueOf(amount);
                 return actualDisplayingFare;
             }else {
@@ -306,15 +317,16 @@ public class BookingPageAndroid extends BookingPageBase {
      * Get the coupon applied amount
      * @return
      */
-    public Double getCouponAmount() throws Exception {
+    public Double getCouponAmount() {
         Logger.logAction("Getting the coupon amount");
         Double couponAmount = 0.00;
         try
         {
             if (isCouponCodeAppliedSuccessfully()){
                 if (isElementDisplayedById(COUPON_AMOUNT)){
-                    String amount = driver.findElement(By.id(COUPON_AMOUNT)).getText();
+                    String amount = driver.findElementById(COUPON_AMOUNT).getText();
                     couponAmount = Double.valueOf(amount);
+                    Logger.logComment("Applied coupon amount is :- "+couponAmount);
                     return couponAmount;
                 }else {
                     Logger.logError(COUPON_AMOUNT+" - element name is not displayed in the current active screen");
@@ -333,7 +345,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Get the applied karam points
      * @return
      */
-    public Double getKaramPoints() throws Exception {
+    public Double getKaramPoints() {
         Logger.logAction("Getting the karam points");
         Double karamPoints = 0.00;
         try
@@ -341,7 +353,7 @@ public class BookingPageAndroid extends BookingPageBase {
             if (isUserIsSignedIn()) {
                 if (isKaramPointsToggleSwitchEnabled()){
                     if (isElementDisplayedById(KARAM_POINTS)){
-                        String amount = driver.findElement(By.id(KARAM_POINTS)).getText();
+                        String amount = driver.findElementById(KARAM_POINTS).getText();
                         karamPoints = Double.valueOf(amount);
                         return karamPoints;
                     }else {
@@ -365,13 +377,13 @@ public class BookingPageAndroid extends BookingPageBase {
      * Get the final displaying fare
      * @return
      */
-    public Double getFinalDisplayedFare() throws Exception{
+    public Double getFinalDisplayedFare() {
         Logger.logAction("Getting the displayed final fare");
         Double finalDisplayedFare = 0.00;
         try {
             if (isUserIsSignedIn() && isCouponCodeAppliedSuccessfully()){
                 if (isElementDisplayedById(FINAL_FARE)) {
-                    String amount = driver.findElement(By.id(FINAL_FARE)).getText();
+                    String amount = driver.findElementById(FINAL_FARE).getText();
                     finalDisplayedFare = Double.valueOf(amount);
                     return finalDisplayedFare;
                 } else {
@@ -380,7 +392,17 @@ public class BookingPageAndroid extends BookingPageBase {
                 }
             }else if (isUserIsSignedIn() && !isCouponCodeAppliedSuccessfully()){
                 if (isElementDisplayedById(FINAL_FARE)) {
-                    String amount = driver.findElement(By.id(FINAL_FARE)).getText();
+                    String amount = driver.findElementById(FINAL_FARE).getText();
+                    finalDisplayedFare = Double.valueOf(amount);
+                    return finalDisplayedFare;
+                } else {
+                    Logger.logComment(FINAL_FARE + " - element name is not displayed in the current active screen");
+                    return finalDisplayedFare;
+                }
+            }
+            else if (!isUserIsSignedIn() && isCouponCodeAppliedSuccessfully()){
+                if (isElementDisplayedById(FINAL_FARE)) {
+                    String amount = driver.findElementById(FINAL_FARE).getText();
                     finalDisplayedFare = Double.valueOf(amount);
                     return finalDisplayedFare;
                 } else {
@@ -403,12 +425,12 @@ public class BookingPageAndroid extends BookingPageBase {
      * Check karam points toggle is enabled
      * @return
      */
-    public static boolean isKaramPointsToggleSwitchEnabled() throws Exception {
+    public static boolean isKaramPointsToggleSwitchEnabled() {
         Logger.logAction("Checking the karam points toggle is enabled");
         try
         {
             if (isElementDisplayedById(KARAM_POINTS_TOGGLE_BUTTON)){
-                String karamPointsToggleStatus = driver.findElement(By.id(KARAM_POINTS_TOGGLE_BUTTON)).getAttribute(Labels.CHECKED_ATTRIBUTE);
+                String karamPointsToggleStatus = driver.findElementById(KARAM_POINTS_TOGGLE_BUTTON).getAttribute(Labels.CHECKED_ATTRIBUTE);
                 return karamPointsToggleStatus.equals(Labels.STATUS_TRUE);
             }else {
                 Logger.logError(KARAM_POINTS_TOGGLE_BUTTON+" - element id is not displayed in the current active screen");
@@ -423,14 +445,14 @@ public class BookingPageAndroid extends BookingPageBase {
      * Enable the karam points toggle
      * @return
      */
-    public static void enableKaramPointsToggleSwitch() throws Exception {
+    public static void enableKaramPointsToggleSwitch() {
         Logger.logAction("Enabling the karam points toggle");
         try
         {
             if (isKaramPointsToggleSwitchEnabled()){
                 Logger.logComment("karam points toggle button is already enabled");
             }else {
-                WebElement karamPointsToggleSwitch = driver.findElement(By.id(KARAM_POINTS_TOGGLE_BUTTON));
+                WebElement karamPointsToggleSwitch = driver.findElementById(KARAM_POINTS_TOGGLE_BUTTON);
                 karamPointsToggleSwitch.click();
                 Logger.logComment("Karam points toggle button is enabled");
             }
@@ -443,7 +465,7 @@ public class BookingPageAndroid extends BookingPageBase {
      * Apply coupon code
      */
     @Override
-    public void applyTheCouponCode() throws Exception {
+    public void applyTheCouponCode() {
         Logger.logAction("Applying the coupon code");
         try {
             sendKeysToCouponCodeTextField();
@@ -461,11 +483,11 @@ public class BookingPageAndroid extends BookingPageBase {
     /**
      * Send keys to coupon code text field
      */
-    public void sendKeysToCouponCodeTextField() throws Exception {
+    public void sendKeysToCouponCodeTextField() {
         Logger.logAction("Sending the keys to coupon code text field");
         try {
             if (isElementDisplayedById(COUPON_CODE_TEXT_VIEW)){
-                driver.findElement(By.id(COUPON_CODE_TEXT_VIEW)).sendKeys(Labels.COUPON_CODE);
+                driver.findElementById(COUPON_CODE_TEXT_VIEW).sendKeys(Labels.COUPON_CODE);
                 driver.hideKeyboard();
             }else {
                 Logger.logError(COUPON_CODE_TEXT_VIEW+" - element name is not displayed in the current active screen");
@@ -478,11 +500,11 @@ public class BookingPageAndroid extends BookingPageBase {
     /**
      * Tap on apply coupon code button
      */
-    public void tapOnApplyCouponCodeButton() throws Exception {
+    public void tapOnApplyCouponCodeButton() {
         Logger.logAction("Tapping on apply coupon code button");
         try {
             if (isElementDisplayedById(APPLY_COUPON_CODE_BUTTON)){
-                driver.findElement(By.id(APPLY_COUPON_CODE_BUTTON)).click();
+                driver.findElementById(APPLY_COUPON_CODE_BUTTON).click();
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(Labels.ANDROID_ACTIVITY_INDICATOR))); // Before running check this activity indicator label is correct or not?
             }else {
                 Logger.logError(APPLY_COUPON_CODE_BUTTON+" - element name is not displayed in the current active screen");
@@ -495,12 +517,12 @@ public class BookingPageAndroid extends BookingPageBase {
     /**
      * Check the coupon code is applied successfully
      */
-    public boolean isCouponCodeAppliedSuccessfully() throws Exception {
+    public boolean isCouponCodeAppliedSuccessfully() {
         Logger.logAction("Checking coupon code is applied or not ?");
         try {
             if (isElementDisplayedById(COUPON_CODE_TEXT_VIEW)){
                 if (isElementDisplayedById(COUPON_CODE_VALIDATION_MESSAGE)){
-                    String couponValidationMessage = driver.findElement(By.id(COUPON_CODE_VALIDATION_MESSAGE)).getText();
+                    String couponValidationMessage = driver.findElementById(COUPON_CODE_VALIDATION_MESSAGE).getText();
                     if (couponValidationMessage.equals(COUPON_INVALID_MESSAGE)){
                         Logger.logComment("Coupon code is not applied because of incorrect coupon code");
                         return false;

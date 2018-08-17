@@ -63,7 +63,7 @@ public class SignUpIos extends SignUpBase {
         try {
             if (isElementDisplayedByName(FIRST_NAME_TEXT_FIELD)){
                 driver.findElement(By.name(FIRST_NAME_TEXT_FIELD)).sendKeys(Labels.FIRST_NAME);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError(FIRST_NAME_TEXT_FIELD+" - element name is not displayed in the current active screen");
             }
@@ -81,7 +81,7 @@ public class SignUpIos extends SignUpBase {
         try {
             if (isElementDisplayedByName(LAST_NAME_TEXT_FIELD)){
                 driver.findElement(By.name(LAST_NAME_TEXT_FIELD)).sendKeys(Labels.LAST_NAME);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError(LAST_NAME_TEXT_FIELD+" - element name is not displayed in the current active screen");
             }
@@ -99,7 +99,7 @@ public class SignUpIos extends SignUpBase {
         try {
             if (isElementDisplayedByName(EMAIL_TEXT_FIELD)){
                 driver.findElement(By.name(EMAIL_TEXT_FIELD)).sendKeys(Labels.EMAIL_ID_SIGN_UP);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError(EMAIL_TEXT_FIELD+" - element name is not displayed in the current active screen");
             }
@@ -117,7 +117,7 @@ public class SignUpIos extends SignUpBase {
         try {
             if (isElementDisplayedByName(PASSWORD_TEXT_FIELD)){
                 driver.findElement(By.name(PASSWORD_TEXT_FIELD)).sendKeys(Labels.PASSWORD);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError(PASSWORD_TEXT_FIELD+" - element name is not displayed in the current active screen");
             }
@@ -135,7 +135,7 @@ public class SignUpIos extends SignUpBase {
         try {
             if (isElementDisplayedByName(REPEAT_PASSWORD_TEXT_FIELD)){
                 driver.findElement(By.name(REPEAT_PASSWORD_TEXT_FIELD)).sendKeys(Labels.REPEAT_PASSWORD);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError(REPEAT_PASSWORD_TEXT_FIELD+" - element name is not displayed in the current active screen");
             }
@@ -188,7 +188,7 @@ public class SignUpIos extends SignUpBase {
         try {
             if (isElementDisplayedByName(REFERRAL_CODE_TEXT_FIELD)){
                 driver.findElement(By.name(REFERRAL_CODE_TEXT_FIELD)).sendKeys(Labels.REFERRAL_CODE);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError(REFERRAL_CODE_TEXT_FIELD +" - element name is not displayed in the current active screen");
             }
@@ -217,7 +217,7 @@ public class SignUpIos extends SignUpBase {
     /**
      * Checking all the fields are filled with information is valid or not
      */
-    public static void checkAllTheFieldsAreFilledWithValidInformation() throws Exception{
+    public static void checkAllTheFieldsAreFilledWithValidInformation() {
         Logger.logAction("Checking the entered information is valid or not");
         try {
 

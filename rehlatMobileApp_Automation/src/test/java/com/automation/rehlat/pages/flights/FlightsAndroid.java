@@ -2,8 +2,6 @@ package com.automation.rehlat.pages.flights;
 
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
-import io.appium.java_client.PerformsTouchActions;
-import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -13,7 +11,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.automation.rehlat.Labels.*;
-import static com.automation.rehlat.Labels.SwipeDirection.DIRECTION_UP;
 import static com.automation.rehlat.tests.BaseTest.SELECT_LANGUAGE;
 
 
@@ -43,7 +40,8 @@ public class FlightsAndroid extends FlightsBase{
     @Override
     public void checkSelectLanguageModalIsDisplayed() {
         Logger.logAction("checking the select language modal is displayed or not");
-        try{ if (isElementDisplayedByName(SELECT_LANGUAGE)){
+        try{
+            if (isElementDisplayedByName(SELECT_LANGUAGE)){
                 Logger.logStep("Select Language modal is displayed");
             }else {
                 Logger.logWarning("Select Language modal is not displayed");
@@ -94,24 +92,39 @@ public class FlightsAndroid extends FlightsBase{
     public void selectCountryOfUser(String userCountryName) {
         Logger.logAction("selecting the country of user");
         try{
-            if (isElementDisplayedById(DOMAIN_LIST_VIEW))
-            {
+            if (isElementDisplayedById(DOMAIN_LIST_VIEW)) {
                 WebElement displayedCountriesListView = driver.findElement(By.id(DOMAIN_LIST_VIEW));
-                List<WebElement> displayedCountriesList = displayedCountriesListView.findElements(By.className(TEXT_VIEW));
-                for (int index=0; index <= displayedCountriesList.size(); index++){
-                    WebElement countryNameTextView = displayedCountriesList.get(index);
-                    String countryNameLabel = countryNameTextView.getText();
-                    if (countryNameLabel.equals(userCountryName)){
-                        Logger.logComment("Tapping on element - " +userCountryName);
-                        index  = index + 1;
-                        driver.findElement(By.xpath(XPATH_OF_COUNTRY_NAME+index+"]")).click();
-                        break;
-                    }else {
-                        Logger.logComment(userCountryName + " and " +countryNameLabel + " is not matching");
+                if (userCountryName.equals("India")) {
+                    List<WebElement> displayedCountriesList = displayedCountriesListView.findElements(By.className(TEXT_VIEW));
+                    for (int index = 0; index <= displayedCountriesList.size(); index++) {
+                        WebElement countryNameTextView = displayedCountriesList.get(index);
+                        String countryNameLabel = countryNameTextView.getText();
+                        if (countryNameLabel.equals(userCountryName) || countryNameLabel.equals("Other")) {
+                            Logger.logComment("Tapping on element - " + userCountryName);
+                            index = index + 1;
+                            driver.findElement(By.xpath(XPATH_OF_COUNTRY_NAME + index + "]")).click();
+                            break;
+                        } else {
+                            Logger.logComment(userCountryName + " and " + countryNameLabel + " is not matching");
+                        }
                     }
+                } else if (isElementDisplayedById(userCountryName)) {
+                    List<WebElement> displayedCountriesList = displayedCountriesListView.findElements(By.className(TEXT_VIEW));
+                    for (int index = 0; index <= displayedCountriesList.size(); index++) {
+                        WebElement countryNameTextView = displayedCountriesList.get(index);
+                        String countryNameLabel = countryNameTextView.getText();
+                        if (countryNameLabel.equals(userCountryName)) {
+                            Logger.logComment("Tapping on element - " + userCountryName);
+                            index = index + 1;
+                            driver.findElement(By.xpath(XPATH_OF_COUNTRY_NAME + index + "]")).click();
+                            break;
+                        } else {
+                            Logger.logComment(userCountryName + " and " + countryNameLabel + " is not matching");
+                        }
+                    }
+                } else {
+                    Logger.logError(DOMAIN_LIST_VIEW + " - element name is not displayed in the current active screen");
                 }
-            }else {
-                Logger.logError(DOMAIN_LIST_VIEW + " - element name is not displayed in the current active screen");
             }
         }catch (Exception exception){
             Logger.logError("Error in selecting the user country from select country modal");
@@ -122,6 +135,7 @@ public class FlightsAndroid extends FlightsBase{
      * Tap on Continue button
      */
     public void tapOnContinueButton() {
+        Logger.logAction("Tapping on continue button");
         try{
             if (isElementDisplayedById(CONTINUE_BUTTON)){
                 driver.findElementById(CONTINUE_BUTTON).click();
@@ -139,6 +153,7 @@ public class FlightsAndroid extends FlightsBase{
      */
     @Override
     public void selectCountryNameAndMoveToFlightsTab(String countryName) throws Exception{
+        Logger.logAction("Selecting the country name and move to the flights tab");
         if (isElementDisplayedByName(SELECT_LANGUAGE)){
             selectCountryOfUser(countryName);
             tapOnContinueButton();
@@ -152,7 +167,7 @@ public class FlightsAndroid extends FlightsBase{
      */
     @Override
     public void tapOnFromTextField() {
-        Logger.logAction("Tapping on From text field in flights tab");
+        Logger.logAction("Tapping on FROM text field in flights tab");
         try {
             if (isElementDisplayedById(FROM_TEXTFIELD)){
                 Logger.logComment("Tapping on element - " +FROM_TEXTFIELD);
@@ -236,6 +251,7 @@ public class FlightsAndroid extends FlightsBase{
      */
     @Override
     public void selectAirportCodeFromSearchResults(String airportCode) {
+        Logger.logAction("Selecting the airport code -"+airportCode+"- from search results");
         try {
             if (isElementDisplayedById(SEARCH_FLIGHT_LISTVIEW_ID)){
                 WebElement searchFlightListView = driver.findElement(By.id("com.app.rehlat:id/searchFlightListView"));
@@ -264,7 +280,8 @@ public class FlightsAndroid extends FlightsBase{
      * Tap on Departure button in flights tab
      */
     @Override
-    public void tapOnDepartureButton() throws Exception{
+    public void tapOnDepartureButton() {
+        Logger.logAction("Tapping on departure button");
         try{
             if (isElementDisplayedById(DEPARTURE_BUTTON)){
                 driver.findElementById(DEPARTURE_BUTTON).click();
@@ -278,7 +295,8 @@ public class FlightsAndroid extends FlightsBase{
      * Tap on return booking button in flights tab
      */
     @Override
-    public void tapOnReturnDateBookingButton() throws Exception {
+    public void tapOnReturnDateBookingButton() {
+        Logger.logAction("Tapping on return button");
         try{
             if (isElementDisplayedById(RETURN_BUTTON)){
                 driver.findElementById(RETURN_BUTTON).click();
@@ -375,7 +393,7 @@ public class FlightsAndroid extends FlightsBase{
                                     Point table = locationOfDay.getLocation();
                                     int elementYAxisValue = table.getY();
                                     if (Labels.SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT <= elementYAxisValue){
-                                        scrollTheCalenderPageUpByDaysGap();
+                                        scrollTheCalenderPageUpByDaysGap_Android();
                                         tapOnDayInTheCalender(parsingMonthAndYear,parsingDay);
                                     }else {
                                         driver.findElementByXPath(xpathOfDay).click();
@@ -392,7 +410,7 @@ public class FlightsAndroid extends FlightsBase{
                     Thread.sleep(WAIT_TIME_MIN);
                 }
             }catch (Exception exception){
-                scrollTheCalenderPageUpByDaysGap();
+                scrollTheCalenderPageUpByDaysGap_Android();
                 tapOnDayInTheCalender(parsingMonthAndYear,parsingDay);
             }
         }catch (Exception exception){
@@ -427,7 +445,7 @@ public class FlightsAndroid extends FlightsBase{
                     }
                 }
             }catch (Exception exception){
-                scrollTheCalenderPageUpByDaysGap();
+                scrollTheCalenderPageUpByDaysGap_Android();
                 isParsingCalenderMonthIsDisplayed(flightBookingMonthAndYear);
             }
         }catch (Exception exception){
@@ -449,7 +467,7 @@ public class FlightsAndroid extends FlightsBase{
                 if (down) {
                     while (!isParsingCalenderMonthIsDisplayed(flightBookingMonthAndYear)) {
                         Logger.logComment(counter + "  time trying to find the calender month and year - " + flightBookingMonthAndYear +" - by scrolling down ");
-                        scrollTheCalenderPageUpByAMonthGap();
+                        scrollTheCalenderPageUpByAMonthGap_Android();
                         counter++;
                         if (counter > 6) {
                             break;
@@ -458,7 +476,7 @@ public class FlightsAndroid extends FlightsBase{
                     if (!isParsingCalenderMonthIsDisplayed(flightBookingMonthAndYear)) {
                         while (!isParsingCalenderMonthIsDisplayed(flightBookingMonthAndYear)) {
                             Logger.logComment(counter + "  time trying to find the calender month and year - " + flightBookingMonthAndYear +" - by scrolling up ");
-                            scrollTheCalenderPageDownAMonthGap();
+                            scrollTheCalenderPageDownAMonthGap_Android();
                             counter++;
                             if (counter > 12) {
                                 break;
@@ -468,7 +486,7 @@ public class FlightsAndroid extends FlightsBase{
                 } else {
                     while (!isParsingCalenderMonthIsDisplayed(flightBookingMonthAndYear)) {
                         Logger.logComment(counter + "  time trying to find the calender month and year - " + flightBookingMonthAndYear +" - by scrolling up ");
-                        scrollTheCalenderPageDownAMonthGap();
+                        scrollTheCalenderPageDownAMonthGap_Android();
                         counter++;
                         if (counter > 6) {
                             break;
@@ -477,7 +495,7 @@ public class FlightsAndroid extends FlightsBase{
                     if (!isParsingCalenderMonthIsDisplayed(flightBookingMonthAndYear)) {
                         Logger.logComment(counter + "  time trying to find the calender month and year - " + flightBookingMonthAndYear +" - by scrolling down ");
                         while (!isParsingCalenderMonthIsDisplayed(flightBookingMonthAndYear)) {
-                            scrollTheCalenderPageUpByAMonthGap();
+                            scrollTheCalenderPageUpByAMonthGap_Android();
                             counter++;
                             if (counter > 12) {
                                 break;

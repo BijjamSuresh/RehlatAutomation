@@ -31,7 +31,6 @@ public class TicketBooking_WithoutCouponCode_And_WithSignIn_FromMenu extends Bas
         FlightsScreen.tapOnMenuButton();
         MenuScreen.checkUserIsSignedUpSignedInWithCorrectParsingCredentials(Labels.EMAIL_ID_SIGN_IN);
         MenuScreen.navigateToFlightsTab();
-        MenuScreen.navigateToFlightsTab();
         FlightsScreen.tapOnFromTextField();
         driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
         FlightsScreen.checkSearchViewScreenIsDisplayed();

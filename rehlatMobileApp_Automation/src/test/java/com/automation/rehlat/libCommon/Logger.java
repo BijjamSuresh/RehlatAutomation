@@ -80,9 +80,8 @@ public class Logger extends Base {
 
     /**
      * Total time taken for script to finish
-     * @throws Exception
      */
-    public static void totalTimeTakenForScriptToFinish() throws Exception{
+    public static void totalTimeTakenForScriptToFinish() {
         Integer minutesTime = null;
         Integer secondsTime = null;
         try{
@@ -91,16 +90,18 @@ public class Logger extends Base {
             Integer minutesTimeWhileTestScriptEnded = Integer.valueOf(new SimpleDateFormat("mm").format(theTimeTheTestEnded));
             Integer secondsTimeWhileTestScriptEnded = Integer.valueOf(new SimpleDateFormat("ss").format(theTimeTheTestEnded));
             if (minutesTimeWhileTestScriptBegan > minutesTimeWhileTestScriptEnded){
-                minutesTime = minutesTimeWhileTestScriptBegan - minutesTimeWhileTestScriptEnded;
+                Integer finalMinutesTime  = 60-minutesTimeWhileTestScriptBegan;
+                minutesTime = finalMinutesTime + minutesTimeWhileTestScriptEnded;
             }else if (minutesTimeWhileTestScriptEnded > minutesTimeWhileTestScriptBegan){
                 minutesTime = minutesTimeWhileTestScriptEnded - minutesTimeWhileTestScriptBegan;
             }
             if (secondsTimeWhileTestScriptBegan > secondsTimeWhileTestScriptEnded){
-                secondsTime = secondsTimeWhileTestScriptBegan - secondsTimeWhileTestScriptEnded;
+                Integer finalSecondsTime  = 60-secondsTimeWhileTestScriptBegan;
+                secondsTime = finalSecondsTime + secondsTimeWhileTestScriptEnded;
             }else if (secondsTimeWhileTestScriptEnded > secondsTimeWhileTestScriptBegan){
                 secondsTime = secondsTimeWhileTestScriptEnded - secondsTimeWhileTestScriptBegan;
             }
-            Logger.logComment("Time taken to complete to complete the test script is :-" +minutesTime+ ":" +secondsTime);
+            Logger.logComment("Time taken to complete to complete the test script is :- " +minutesTime+ "minutes & " +secondsTime+" seconds");
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to get the total time for the script to finish");
         }

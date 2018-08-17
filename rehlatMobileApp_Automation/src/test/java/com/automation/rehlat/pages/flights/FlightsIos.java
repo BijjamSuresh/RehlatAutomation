@@ -4,6 +4,8 @@ import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -65,6 +67,7 @@ public class FlightsIos extends FlightsBase {
             Logger.logError("Encountered error: Unable to verify the flights screen name");
         }
     }
+
     /**
      * Check the flights tab is displayed
      */
@@ -95,8 +98,8 @@ public class FlightsIos extends FlightsBase {
     public void selectCountryOfUser(String userCountryName) {
         Logger.logAction("selecting the country of user");
         try{
-            if (!userCountryName.equals("India")){
-                if (isElementDisplayedByName("Other")){
+            if (userCountryName.equals("INDIA")){
+                if (isElementDisplayedByName("INDIA")|| isElementDisplayedByName("OTHER")){
                     Logger.logComment("Tapping on element - " +userCountryName);
                     driver.findElementByName(userCountryName).click();
                 }else {
@@ -183,7 +186,8 @@ public class FlightsIos extends FlightsBase {
             // Commented code is used to handle the loading indicator displayed on first time navigating to search flight screen after fresh installation
 //            if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
 //                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
-////            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(IN_PROGRESS_LOADING_INDIACATOR)));
+//            }else {
+//                Logger.logAction("Activity indicator is not displayed in the current active screen");
 //            }
             if (isKeyboardDisplayed()){
                 Logger.logComment("Keyboard is triggered");
@@ -200,8 +204,15 @@ public class FlightsIos extends FlightsBase {
      */
     @Override
     public void checkSearchViewScreenIsDisplayed() {
+        Logger.logAction("Checking search view screen is displayed or not?");
         try{
-            isElementDisplayedByName(SEARCH_VIEW);
+            if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
+                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
+                isElementDisplayedByName(SEARCH_VIEW);
+            }
+            else {
+                isElementDisplayedByName(SEARCH_VIEW);
+            }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check the screen name");
         }
@@ -212,6 +223,7 @@ public class FlightsIos extends FlightsBase {
      */
     @Override
     public void enterAirportName(String fromPlace) {
+        Logger.logAction("Entering the airport name :-"+fromPlace);
         try{
             sendTextByXpath(SEARCH_TEXTFIELD_XPATH,fromPlace);
         }catch (Exception nullPointerException){
@@ -225,8 +237,9 @@ public class FlightsIos extends FlightsBase {
      */
     @Override
     public void selectAirportCodeFromSearchResults(String airPortCodeOfPlaceName) {
+        Logger.logAction("Selecting the airport code :-"+airPortCodeOfPlaceName);
         try {
-            closeTheKeyboard();
+            closeTheKeyboard_iOS();
             if (isElementDisplayedByName(airPortCodeOfPlaceName)){
                 driver.findElementByName(airPortCodeOfPlaceName).click();
             }else{
@@ -243,9 +256,10 @@ public class FlightsIos extends FlightsBase {
      */
     @Override
     public void tapOnDepartureButton() {
+        Logger.logAction("Tapping on departure button");
         try{
-            if (isElementDisplayedByName(DEPARTURE_BUTTON)){
-                driver.findElementByName(DEPARTURE_BUTTON).click();
+            if (isElementEnabledByName(DEPARTURE_BUTTON)){
+                driver.findElement(By.name(DEPARTURE_BUTTON)).click();
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on Departure button");
@@ -256,9 +270,10 @@ public class FlightsIos extends FlightsBase {
      * Tap on Return date booking button in flights tab
      */
     @Override
-    public void tapOnReturnDateBookingButton() throws Exception {
+    public void tapOnReturnDateBookingButton() {
+        Logger.logAction("Tapping on return button");
         try{
-            if (isElementDisplayedByName(RETURN_BUTTON)){
+            if (isElementEnabledByName(RETURN_BUTTON)){
                 driver.findElementByName(RETURN_BUTTON).click();
             }
         }catch (Exception exception){
@@ -381,74 +396,74 @@ public class FlightsIos extends FlightsBase {
 
     /**
      * Select the return date
-     * @param departureMonthAndYear
-     * @param departureDay
+     * @param returnMonthAndYear
+     * @param returnDay
      */
     @Override
-    public void selectReturnDate(String departureMonthAndYear, String departureDay) {
-        Logger.logAction("Selecting the departure date : Month & Year -" + departureMonthAndYear + ", Day - "+departureDay);
+    public void selectReturnDate(String returnMonthAndYear, String returnDay) {
+        Logger.logAction("Selecting the return date : Month & Year -" + returnMonthAndYear + ", Day - "+returnDay);
         try {
             if (isElementDisplayedByXPath(CALENDER_MODAL_VIEW_XPATH)){
-                scrollToAnElementByName(departureMonthAndYear,true);
+                scrollToAnElementByName(returnMonthAndYear,true);
                 // yet to implement an proper method to select the accurate departure date when multiple days with same name are displaying
                 //                scrollToElementById("Dec 2018", true);
                 //                scrollDown();
                 //                scrollUp();
-                if (isElementDisplayedByName(departureMonthAndYear)){
-                    if (isElementDisplayedByName(departureDay)) {
+                if (isElementDisplayedByName(returnMonthAndYear)){
+                    if (isElementDisplayedByName(returnDay)) {
                         WebElement  calenderView = driver.findElementByClassName("XCUIElementTypeCollectionView");
-                        List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
+                        List<WebElement> departureDays = calenderView.findElements(By.name(returnDay));
                         int departureDaysSize = departureDays.size();
                         if (departureDaysSize >= 2){
-                            Logger.logComment("Two departure days are displayed in the calender view with same return day: "+departureDay+"");
+                            Logger.logComment("Two departure days are displayed in the calender view with same return day: "+returnDay+"");
                             // Implement a logic that exactly taps on accurate day when there are multiple days with same name
 //                            scr
 //                            swipeOnElement(calenderView,DIRECTION_UP);
 //                            swipeOnElement(calenderView,DIRECTION_DOWN);
                             if (departureDaysSize >= 2){
                                 Logger.logWarning("Two accurate dates are displayed in the return calender, so tapping on nearest possible date");
-                                driver.findElementByName(departureDay).click();
+                                driver.findElementByName(returnDay).click();
                             }else {
-                                driver.findElementByName(departureDay).click();
+                                driver.findElementByName(returnDay).click();
                             }
                         }else {
-                            Logger.logComment("One return day is displayed in the return calender: "+departureDay+"");
-                            driver.findElementByName(departureDay).click();
+                            Logger.logComment("One return day is displayed in the return calender: "+returnDay+"");
+                            driver.findElementByName(returnDay).click();
                         }
                     }else {
                         Logger.logError("Accurate Date is not displayed in the departure");
                     }
                 }else{
-                    scrollToAnElementByName(departureMonthAndYear,false);
-                    if (isElementDisplayedByName(departureMonthAndYear)){
-                        if (isElementDisplayedByName(departureDay)) {
+                    scrollToAnElementByName(returnMonthAndYear,false);
+                    if (isElementDisplayedByName(returnMonthAndYear)){
+                        if (isElementDisplayedByName(returnDay)) {
                             WebElement  calenderView = driver.findElementByClassName("XCUIElementTypeCollectionView");
-                            List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
+                            List<WebElement> departureDays = calenderView.findElements(By.name(returnDay));
                             int departureDaysSize = departureDays.size();
                             if (departureDaysSize >= 2){
-                                Logger.logComment("Two return days are displayed in the calender view with same return day: "+departureDay+"");
+                                Logger.logComment("Two return days are displayed in the calender view with same return day: "+returnDay+"");
                                 // Implement a logic that exactly taps on accurate day when there are multiple days with same name
 //                            scr
 //                            swipeOnElement(calenderView,DIRECTION_UP);
 //                            swipeOnElement(calenderView,DIRECTION_DOWN);
                                 if (departureDaysSize >= 2){
                                     Logger.logWarning("Two accurate dates are displayed in the return calender, so tapping on nearest possible date");
-                                    driver.findElementByName(departureDay).click();
+                                    driver.findElementByName(returnDay).click();
                                 }else {
-                                    driver.findElementByName(departureDay).click();
+                                    driver.findElementByName(returnDay).click();
                                 }
                             }else {
-                                Logger.logComment("One return day is displayed in the calender: "+departureDay+"");
-                                driver.findElementByName(departureDay).click();
+                                Logger.logComment("One return day is displayed in the calender: "+returnDay+"");
+                                driver.findElementByName(returnDay).click();
                             }
                         }else {
                             Logger.logError("Accurate Date is not displayed in the return calender");
                         }
                     }else{
                         Logger.logWarning("Two accurate dates are displayed in the return calender, so tapping on nearest possible date");
-                        scrollToAnElementByName(departureMonthAndYear,true);
-                        if (isElementDisplayedByName(departureDay)) {
-                            driver.findElementByName(departureDay).click();
+                        scrollToAnElementByName(returnMonthAndYear,true);
+                        if (isElementDisplayedByName(returnDay)) {
+                            driver.findElementByName(returnDay).click();
                         }else {
                             Logger.logError("Accurate Date is not displayed in the return");
                         }

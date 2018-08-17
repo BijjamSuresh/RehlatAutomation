@@ -29,7 +29,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Check the travellers details screen is displayed
      */
     @Override
-    public void checkTravellersDetailsScreenIsDisplayed() throws Exception {
+    public void checkTravellersDetailsScreenIsDisplayed() {
         Logger.logAction("Checking the travellers details screen is displayed or not ?");
         try {
             if (isElementDisplayedByName(TRAVELLERS_DETAILS_SCREEN_TITLE)){
@@ -46,7 +46,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Decline the auto fill populate modal if displayed
      */
     @Override
-    public void declineAutoFillPopulateModalIfDisplayed() throws Exception {
+    public void declineAutoFillPopulateModalIfDisplayed() {
         Logger.logAction("Declining the auto fill popup if displayed");
         try{
             if (isElementDisplayedByClassName("XCUIElementTypeSheet")){
@@ -74,7 +74,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter adult travellers details
      */
     @Override
-    public void enterAdultTravellersDetails(String travellersCountry) throws Exception {
+    public void enterAdultTravellersDetails(String travellersCountry) {
         Logger.logAction("Entering the adult travellers details");
         try{
             if (isElementDisplayedByXPath(XPATH_OF_TRAVELLERS_DETAILS_MODAL)){
@@ -91,7 +91,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers details
      */
-    public static void enterTravellersDetails(String travellersCountry) throws Exception {
+    public static void enterTravellersDetails(String travellersCountry) {
         Logger.logAction("Entering travellers details");
         try{
             enterTravellersFirstName();
@@ -133,12 +133,12 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers first name
      */
-    public static void enterTravellersFirstName() throws Exception {
+    public static void enterTravellersFirstName() {
         Logger.logStep("Entering travellers first name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_FIRST_NAME)){
                 driver.findElementByName(TRAVELLERS_FIRST_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError("Travellers first name field is not displayed in the current active screen");
             }
@@ -151,12 +151,12 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers middle name
      */
-    public static void enterTravellersMiddleName() throws Exception {
+    public static void enterTravellersMiddleName() {
         Logger.logStep("Entering travellers middle name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_MIDDLE_NAME)){
                 driver.findElementByName(TRAVELLERS_MIDDLE_NAME).sendKeys(Labels.TRAVELLERS_MIDDLE_NAME);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError("Travellers middle name field is not displayed in the current active screen");
             }
@@ -169,7 +169,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers last name
      */
-    public static void enterTravellersLastName() throws Exception {
+    public static void enterTravellersLastName() {
         Logger.logStep("Entering travellers last name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_LAST_NAME)){
@@ -186,7 +186,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers Date of Birth
      */
-    public static void enterTravellersDateOfBirth() throws Exception {
+    public static void enterTravellersDateOfBirth() {
         Logger.logStep("Entering travellers Date of Birth");
         try{
             if (isElementDisplayedByName(TRAVELLERS_DATEOFBIRTH_NAME)){
@@ -199,7 +199,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
                     wheels.get(1).sendKeys(Labels.MONTH_IN_TRAVELLERS_DATEOFBIRTH_IOS);
                     Logger.logStep("selecting the year in travellers date of birth");
                     wheels.get(2).sendKeys(Labels.YEAR_IN_TRAVELLERS_DATEOFBIRTH_IOS);
-                    closeTheDatePicker();
+                    closeTheDatePicker_iOS();
                 }else {
                     Logger.logError("Date picker is not displayed");
                 }
@@ -215,7 +215,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers passport number
      */
-    public static void enterTravellersPassportNumber() throws Exception {
+    public static void enterTravellersPassportNumber() {
         Logger.logStep("Entering travellers passport number");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_NUMBER)){
@@ -231,7 +231,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Enter the travellers passport expiry date
      */
-    public static void enterTravellersPassportExpiryDate() throws Exception {
+    public static void enterTravellersPassportExpiryDate() {
         Logger.logStep("Entering travellers passport expiry date");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_EXPIRY_NUMBER)){
@@ -244,7 +244,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
                     wheels.get(1).sendKeys(Labels.MONTH_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS);
                     Logger.logStep("selecting the year in travellers passport expiry year");
                     wheels.get(2).sendKeys(Labels.YEAR_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS);
-                    closeTheDatePicker();
+                    closeTheDatePicker_iOS();
                 }else {
                     Logger.logError("Date picker is not displayed");
                 }
@@ -260,7 +260,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Select passport issuing country name
      */
-    public static void selectPassportIssuingCountry(String passportIssuingCountryName) throws Exception {
+    public static void selectPassportIssuingCountry(String passportIssuingCountryName) {
         Logger.logAction("Selecting the passport issuing country");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_ISSUING_COUNTRY)){
@@ -282,7 +282,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     /**
      * Select traveller nationality
      */
-    public static void selectTravellersNationality(String travellersNationality) throws Exception {
+    public static void selectTravellersNationality(String travellersNationality) {
         Logger.logAction("Selecting the travellers nationality");
         try{
             if (isElementDisplayedByName(TRAVELLERS_NATIONALITY)){
@@ -306,7 +306,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * @param countryName
      */
     // To do: Implement a method such that automatically select the country name (if country name is not on visible list scroll to that element and click on it)
-    public static void chooseCountry(String countryName) throws Exception {
+    public static void chooseCountry(String countryName) {
         try{
             if (isElementDisplayedByName(countryName)){
                 driver.findElementByName(countryName).click();
@@ -322,7 +322,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Tap on save button
      */
     @Override
-    public void tapOnSaveButton() throws Exception {
+    public void tapOnSaveButton() {
         Logger.logAction("Tapping on save button");
         try{
             if (isElementDisplayedByName(SAVE_BUTTON)){

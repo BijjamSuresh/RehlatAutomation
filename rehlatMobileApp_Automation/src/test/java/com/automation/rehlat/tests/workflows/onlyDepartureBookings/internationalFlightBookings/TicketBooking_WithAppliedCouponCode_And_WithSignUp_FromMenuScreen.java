@@ -34,7 +34,7 @@ public class TicketBooking_WithAppliedCouponCode_And_WithSignUp_FromMenuScreen e
         SignUpScreen.tapOnSignUpButton();
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
-        MenuScreen.checkUserIsSignedUpSignedInWithCorrectParsingCredentials(Labels.EMAIL_ID_SIGN_IN);
+        MenuScreen.checkUserIsSignedUpSignedInWithCorrectParsingCredentials(Labels.EMAIL_ID_SIGN_UP);
         MenuScreen.navigateToFlightsTab();
         FlightsScreen.tapOnFromTextField();
 //        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);

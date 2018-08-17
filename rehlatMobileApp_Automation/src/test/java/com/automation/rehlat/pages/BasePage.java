@@ -50,7 +50,7 @@ public class BasePage extends Base {
     /**
      * Scroll the calender page upwards //Below values are hardcoded values of calender view because of having not showing the full calender months names [Displays only two months names]
      */
-    public static void scrollTheCalenderPageUpByAMonthGap() {
+    public static void scrollTheCalenderPageUpByAMonthGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             action.press(459, 658).moveTo(454, 620).release().perform();
@@ -62,7 +62,7 @@ public class BasePage extends Base {
     /**
      * Scroll the calender page downwards //Below values are hardcoded values of calender view because of having not showing the full calender months names [Displays only two months names]
      */
-    public static void scrollTheCalenderPageDownAMonthGap() {
+    public static void scrollTheCalenderPageDownAMonthGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             action.press(459, 620).moveTo(454, 658).release().perform();
@@ -74,7 +74,7 @@ public class BasePage extends Base {
     /**
      * Scroll the calender page upwards by days gap //Below values are hardcoded values of calender view because of having not showing the full calender months names [Displays only two months names]
      */
-    public static void scrollTheCalenderPageUpByDaysGap() {
+    public static void scrollTheCalenderPageUpByDaysGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             action.press(512, 967).moveTo(512, 932).release().perform();
@@ -85,7 +85,7 @@ public class BasePage extends Base {
     /**
      * Scroll the calender page downwards by days gap //Below values are hardcoded values of calender view because of having not showing the full calender months names [Displays only two months names]
      */
-    public static void scrollTheCalenderPageDownByDaysGap() {
+    public static void scrollTheCalenderPageDownByDaysGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             action.press(459, 932).moveTo(454, 967).release().perform();
@@ -97,7 +97,7 @@ public class BasePage extends Base {
     /**
      * Scroll the flights search results screen up by a card gap //Below values are hardcoded values of flight search results view because of having not showing the full flights search results names [Displays only three flight search cards at a time]
      */
-    public static void scrollTheFlightSearchResultsScreenUpByACardGap() {
+    public static void scrollTheFlightSearchResultsScreenUpByACardGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             action.press(512, 967).moveTo(512, 932).release().perform();
@@ -109,7 +109,7 @@ public class BasePage extends Base {
     /**
      * Scroll the flights search results screen down by a card gap //Below values are hardcoded values of flight search results view because of having not showing the full flights search results names [Displays only three flight search cards at a time]
      */
-    public static void scrollTheFlightSearchResultsScreenDownByACardGap() {
+    public static void scrollTheFlightSearchResultsScreenDownByACardGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             action.press(459, 932).moveTo(454, 967).release().perform();
@@ -121,7 +121,7 @@ public class BasePage extends Base {
     /**
      * Scroll the flights search results screen down by three cards gap //Below values are hardcoded values of flight search results view because of having not showing the full flights search results names [Displays only three flight search cards at a time]
      */
-    public static void scrollTheFlightSearchResultsScreenDownByThreeCardsGap() {
+    public static void scrollTheFlightSearchResultsScreenDownByThreeCardsGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             action.press(507, 663).moveTo(507, 709).release().perform();
@@ -133,7 +133,7 @@ public class BasePage extends Base {
     /**
      * Scroll the flights search results screen up by three cards gap //Below values are hardcoded values of flight search results view because of having not showing the full flights search results names [Displays only three flight search cards at a time]
      */
-    public static void scrollTheFlightSearchResultsScreenUpByThreeCardsGap() {
+    public static void scrollTheFlightSearchResultsScreenUpByThreeCardsGap_Android() {
         try {
             TouchAction action = new TouchAction(driver);
             Thread.sleep(Labels.WAIT_TIME_MIN);
@@ -144,23 +144,9 @@ public class BasePage extends Base {
     }
 
     /**
-     * Scroll the screen upwards
-     */
-    public static void scrollTheScreenUpwards() {
-        try {
-            TouchAction action = new TouchAction(driver);
-            Thread.sleep(Labels.WAIT_TIME_MIN);
-            action.press(459, 658).moveTo(454, 600).release().perform();
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to scroll the screen");
-        }
-    }
-
-    /**
      * Decline the sync previous travellers data modal view
-     * @throws Exception
      */
-    public static void declineTheSyncPreviousTravellersDataModalView() throws Exception{
+    public static void declineTheSyncPreviousTravellersDataModalView_Android() {
         Logger.logAction("Declining the sync previous travellers data modal view ");
         try{
             if (isElementDisplayedById(MODAL_VIEW)){
@@ -192,7 +178,7 @@ public class BasePage extends Base {
     /**
      * Disable toggle switch in iOS platform
      */
-    public void disableToggleSwitch() {
+    public void disableToggleSwitch_iOS() {
         Logger.logAction("Disabling the toggle button");
         try {
             if (isElementEnabledByClassName(TOGGLE_SWITCH)){
@@ -216,7 +202,7 @@ public class BasePage extends Base {
     /**
      * Enable the toggle switch in iOS platform
      */
-    public void enableToggleSwitch() {
+    public void enableToggleSwitch_iOS() {
         Logger.logAction("Enabling the toggle button");
         try {
             if (isElementEnabledByClassName(TOGGLE_SWITCH)){
@@ -240,7 +226,7 @@ public class BasePage extends Base {
     /**
      * Close the keyboard for iOS Platform
      */
-    public static void closeTheKeyboard() {
+    public static void closeTheKeyboard_iOS() {
         try{
             if (isElementDisplayedByName(IOS_DONE_BUTTON)){
                 driver.findElementByName(IOS_DONE_BUTTON).click();
@@ -255,7 +241,7 @@ public class BasePage extends Base {
     /**
      * Close the date picker for iOS Platform
      */
-    public static void closeTheDatePicker() {
+    public static void closeTheDatePicker_iOS() {
         try{
             if (isElementDisplayedByClassName(IOS_DATE_PICKER)){
                 driver.findElementByName(IOS_DONE_BUTTON).click();
@@ -267,5 +253,22 @@ public class BasePage extends Base {
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+                                                                                            //Common Methods //
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Scroll the screen upwards
+     */
+    public static void scrollTheScreenUpwards() {
+        try {
+            TouchAction action = new TouchAction(driver);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
+            action.press(459, 658).moveTo(454, 600).release().perform();
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to scroll the screen");
+        }
+    }
 }

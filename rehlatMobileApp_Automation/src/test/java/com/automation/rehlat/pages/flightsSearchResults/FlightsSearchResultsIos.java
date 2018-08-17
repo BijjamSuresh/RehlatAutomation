@@ -91,6 +91,7 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
                 Logger.logComment("Selecting flights cell is displayed in the current search results and moving forward to get the booking seat cost of selected flight");
                 WebElement bookingFlightCell = driver.findElementByXPath(xPathOfBookingFlightCellType);
                 List<WebElement> flightCellDetails = bookingFlightCell.findElements(By.className("XCUIElementTypeStaticText"));
+                // This condition is to get the flight cost when the price value is double
                 for (int cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++){
                     WebElement flightCellType = flightCellDetails.get(cellIndex);
                     String flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
@@ -102,12 +103,31 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
                         Logger.logComment("Flight cell number - "+selectedFlightCellTypeNumber+" and with index : " + cellIndex + " is not having any booking flight cost");
                     }
                 }
-                } else {
+                // This condition is to get the flight cost when the price value is integer
+                if (Labels.SELECTED_SEAT_BOOKING_COST == null) {
+                    Logger.logAction("Checking the flight cost is an integer or not? ");
+                    for (int cellIndex = 0; cellIndex < flightCellDetails.size(); cellIndex++) {
+                        WebElement flightCellType = flightCellDetails.get(cellIndex);
+                        String flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
+                        if (flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE)) {
+                            cellIndex = cellIndex + 1;
+                            WebElement newFlightCellType = flightCellDetails.get(cellIndex);
+                            String newFlightCellTypeText = newFlightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
+                            Labels.SELECTED_SEAT_BOOKING_COST = newFlightCellTypeText;
+                            Logger.logComment("Booking cost of the flight cell type number - " + selectedFlightCellTypeNumber + " is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
+                            return Labels.SELECTED_SEAT_BOOKING_COST;
+                        } else {
+                            Logger.logComment("Flight cell number - " + selectedFlightCellTypeNumber + " and with index : " + cellIndex + " is not having any booking flight cost");
+                        }
+                    }
+                }
+            } else {
                 Logger.logComment("Selecting flights cell is not displayed in the current search results, so scrolling the results for to find the needed cell");
                 scrollToAnElementByXPath(xPathOfBookingFlightCellType,true);
                 // Implement if condition so that will check the status of the needed cell is displayed on the screen after scrolling the screen(scrolling is done by previous step)
                 WebElement bookingFlightCell = driver.findElementByXPath(xPathOfBookingFlightCellType);
                 List<WebElement> flightCellDetails = bookingFlightCell.findElements(By.className("XCUIElementTypeStaticText"));
+                // This condition is to get the flight cost when the price value is double
                 for (int cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++){
                     WebElement flightCellType = flightCellDetails.get(cellIndex);
                     String flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
@@ -115,8 +135,28 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
                         Labels.SELECTED_SEAT_BOOKING_COST = flightCellTypeText;
                         Logger.logComment("Booking cost of the flight cell type number - " +selectedFlightCellTypeNumber + " is :- " + flightCellTypeText);
                         return Labels.SELECTED_SEAT_BOOKING_COST;
-                    }else{
+                    }
+                    else{
                         Logger.logComment("Flight cell number - "+selectedFlightCellTypeNumber+" and with index : " + cellIndex + " is not having any booking flight cost");
+                    }
+                }
+                // This condition is to get the flight cost when the price value is integer
+                if (Labels.SELECTED_SEAT_BOOKING_COST == null){
+                    Logger.logAction("Checking the flight cost is an integer or not? ");
+                    for (int cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++){
+                        WebElement flightCellType = flightCellDetails.get(cellIndex);
+                        String flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
+                        if(flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
+                            cellIndex = cellIndex+1;
+                            WebElement newFlightCellType = flightCellDetails.get(cellIndex);
+                            String newFlightCellTypeText = newFlightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
+                            Labels.SELECTED_SEAT_BOOKING_COST = newFlightCellTypeText;
+                            Logger.logComment("Booking cost of the flight cell type number - " +selectedFlightCellTypeNumber + " is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
+                            return Labels.SELECTED_SEAT_BOOKING_COST;
+                        }
+                        else{
+                            Logger.logComment("Flight cell number - "+selectedFlightCellTypeNumber+" and with index : " + cellIndex + " is not having any booking flight cost");
+                        }
                     }
                 }
             }
@@ -136,6 +176,11 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
 //            if (isElementDisplayedByXPath(XPATH_OF_BOOKING_COST_IN_FIRST_CELL_WITH_SIMILAR_OPTIONS_IN_SEARCH_RESULTS))
             Logger.logError("Encountered error: Unable to get the booking cost of first flight in search results");
         }
+//        if (Labels.SELECTED_SEAT_BOOKING_COST.equals(null)){
+//            Logger.logComment("Selecting the ");
+//            String rechangedSelectingFlightCellTypeNumber = String.valueOf(Integer.valueOf(selectedFlightCellTypeNumber)-1);
+//            getTheBookingCostOfSelectingFlightInSearchResults(rechangedSelectingFlightCellTypeNumber);
+//        }
         return Labels.SELECTED_SEAT_BOOKING_COST;
     }
 

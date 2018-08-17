@@ -77,7 +77,7 @@ public class ReviewBookingIos extends ReviewBookingBase {
     public void enableSecurityCheckInToggle() {
         Logger.logAction("Enabling the security check in toggle");
         try {
-            enableToggleSwitch();
+            enableToggleSwitch_iOS();
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to enable the toggle switch");
         }
@@ -90,7 +90,8 @@ public class ReviewBookingIos extends ReviewBookingBase {
     public void disableSecurityCheckInToggle() {
         Logger.logAction("Disabling the security check in toggle");
         try {
-            disableToggleSwitch();
+            scrollDown();
+            disableToggleSwitch_iOS();
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to disable the security toggle switch");
         }

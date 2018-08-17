@@ -41,15 +41,12 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
     public void tapOnContinueButton() {
         Logger.logAction("Tapping on continue button");
         try{
-            if (waitTillInProgressIndicatorIsInvisible()){
-                Logger.logAction("Tapping on continue button");
-                if (isElementDisplayedById(CONTINUE_BUTTON)){
-                    driver.findElementById(CONTINUE_BUTTON).click();
-                }else {
-                    Logger.logError("Continue button is not displayed in the current screen");
-                }
+            waitTillInProgressIndicatorIsInvisible();
+            Logger.logAction("Tapping on continue button");
+            if (isElementDisplayedById(CONTINUE_BUTTON)){
+                driver.findElementById(CONTINUE_BUTTON).click();
             }else {
-                Logger.logError("In progress indicator is still visible");
+                Logger.logError("Continue button is not displayed in the current screen");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: unable to tap on continue button");
@@ -60,16 +57,17 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
      * Wait till the loading in-progress indicator is in visible
      * @return
      */
-    public static boolean waitTillInProgressIndicatorIsInvisible() {
+    public static void waitTillInProgressIndicatorIsInvisible() {
         Logger.logAction("Waiting till In progress indicator is invisible");
         try{
-            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(IN_PROGRESS_INDICATOR)));
-            Logger.logStep("In progress indicator is not visible");
-            return true;
+            if (isElementDisplayedById(IN_PROGRESS_INDICATOR)){
+                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(IN_PROGRESS_INDICATOR)));
+            }else {
+                Logger.logStep("In progress indicator is not displayed");
+            }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to find the visibility of an element");
         }
-        return false;
     }
 
     /**
@@ -128,7 +126,7 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 scrollToToggleButton();
                 Thread.sleep(Labels.WAIT_TIME_MIN);
                 if (isElementDisplayedByIdWithOneTimeChecking(TOGGLE_SWITCH)){
-                    WebElement toggleSwitch = driver.findElement(By.id(TOGGLE_SWITCH));
+                    WebElement toggleSwitch = driver.findElementById(TOGGLE_SWITCH);
                     String toggleSwitchValue = toggleSwitch.getText();
                     if (toggleSwitchValue.equals(Labels.ANDROID_TOGGLE_TEXT_ON)){
                         Logger.logStep("Toggle switch is enabled and making it to disable by tapping on it");
@@ -159,17 +157,17 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
     }
 
     /**
-     * Scroll to the toggle button
+     * Scroll to the toggle button for Android
      */
     public static void scrollToToggleButton() throws Exception {
         Logger.logAction("Scrolling to toggle button");
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter < Labels.DEFAULT_SCROLL_ATTEMPTS) {
             try {
+                Thread.sleep(3000);
                 element = driver.findElementById(TOGGLE_SWITCH);
                 if (element.isDisplayed()) {
-                    Logger.logComment(TOGGLE_SWITCH + " - element id is displayed and moving forward to next step");
                     break;
                 }
             } catch (Exception e) {
@@ -179,7 +177,11 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
             Thread.sleep(Labels.WAIT_TIME_DEFAULT);
             counter++;
         }
-        Logger.logWarning(TOGGLE_SWITCH + " - element id is not displayed in the current active screen");
+        if (element.isDisplayed()) {
+            Logger.logComment(TOGGLE_SWITCH + " - element id is displayed and moving forward to next step");
+        }else {
+            Logger.logWarning(TOGGLE_SWITCH + " - element id is not displayed in the current active screen");
+        }
     }
 //        try {
 //            if (isElementDisplayedById(TOGGLE_SWITCH)){
@@ -214,7 +216,7 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 Logger.logComment("Booking flight cost are mismatches checking again by disabling the security check in toggle button");
                 disableSecurityCheckInToggle();
                 bookingSeatCostDisplayedInReviewBookingScreen = getTheDisplayedTicketBookingValue();
-                if (bookingSeatCostDisplayedInReviewBookingScreen.equals(Labels.SELECTED_SEAT_BOOKING_COST)){
+                if (bookingSeatCostDisplayedInReviewBookingScreen.contains(Labels.SELECTED_SEAT_BOOKING_COST)){
                     Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN = Labels.SELECTED_SEAT_BOOKING_COST;
                     Logger.logStep("Selected seat booking cost is matches in review booking screen and in search results screen");
                 }else{
@@ -236,19 +238,23 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
         Logger.logAction("Getting the displayed ticket booking value");
         String flightCellTypeText = null;
         try {
-            WebElement footerView = driver.findElementById("com.app.rehlat:id/footer_view");
+//            WebElement footerView = driver.findElementById("com.app.rehlat:id/footer_view");
             if (isElementDisplayedById(IN_PROGRESS_INDICATOR)){
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(IN_PROGRESS_INDICATOR)));
             }else {
-                Thread.sleep(Labels.WAIT_TIME_MIN);
-                WebElement reviewBookingPriceLabel = footerView.findElement(By.id("com.app.rehlat:id/reviewbooking_price"));
-                String reviewBookingPrice = reviewBookingPriceLabel.getText();
-                if (reviewBookingPrice.contains(".")){
-                    Logger.logComment("Displayed booking cost is: " +reviewBookingPrice);
+//                Thread.sleep(Labels.WAIT_TIME_MIN);
+                if (isElementDisplayedById("com.app.rehlat:id/reviewbooking_price")){
+                    WebElement reviewBookingPriceLabel = driver.findElementById("com.app.rehlat:id/reviewbooking_price");
+                    String reviewBookingPrice = reviewBookingPriceLabel.getText();
+//                if (reviewBookingPrice.contains(".")){
+//                    Logger.logComment("Displayed booking cost is: " +reviewBookingPrice);
                     flightCellTypeText = reviewBookingPrice;
                     return flightCellTypeText;
-                }else{
-                    Logger.logStep("Booking flight cost is not displayed in the current active screen");
+//                }else{
+//                    Logger.logStep("Booking flight cost is not displayed in the current active screen");
+//                }
+                }else {
+                    Logger.logError("Review booking price element name is not displayed");
                 }
             }
         }catch (Exception exception){

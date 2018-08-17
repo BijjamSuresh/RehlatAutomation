@@ -9,15 +9,16 @@ import java.util.List;
 
 public class MenuAndroid extends MenuBase {
 
-    public static final String NAVIGATION_MENU_VIEW = "com.app.rehlat:id/design_navigation_view";
+    public static final String NAVIGATION_MENU_VIEW = "com.app.rehlat:id/nav_view";
     public static final String SIGNED_IN_EMAIL_ID_IN_MENU_SCREEN = "com.app.rehlat:id/userEmailAddress";
     public static final String SETTINGS_OPTION = "Settings";
     public static final String LANGUAGE_ICON = "language_icon";
     public static final String TRIPS_OPTION = "Trips";
     public static final String SIGN_IN_OR_SIGN_UP_BUTTON = "com.app.rehlat:id/menu_signup";
     public static final String FULL_SCREEN_LAYOUT = "com.app.rehlat:id/drawer_layout";
-    public static final String LOGOUT_BUTTON = "Logout";
-    public static final String CHECKED_TEXT_VIEW = "android.widget.CheckedTextView";
+    public static final String LOGOUT_BUTTON = "com.app.rehlat:id/sidemenu_logoutllyt";
+    public static final String SCROLL_VIEW_IN_MENU_SCREEN = "android.widget.ScrollView";
+    public static final String TWENTY_FOUR_BAR_SEVEN_SUPPORT_LABEL = "com.app.rehlat:id/sidemenu_supportllyt";
     public static final String XPATH_OF_LOGOUT_BUTTON_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.support.v4.widget.DrawerLayout/android.widget.FrameLayout/android.support.v7.widget.RecyclerView/android.support.v7.widget.LinearLayoutCompat[";
 
 
@@ -106,19 +107,19 @@ public class MenuAndroid extends MenuBase {
     public boolean isUserSignedIn() {
         Logger.logAction("Checking user is signed in or not ?");
         try {
-            if (isElementDisplayedByClassName(CHECKED_TEXT_VIEW)){
-                List<WebElement> checkedTextViews = driver.findElementsByClassName(CHECKED_TEXT_VIEW);
-                for (int index=0; index<=checkedTextViews.size()-1;index++){
-                    String checkedTextViewName = checkedTextViews.get(index).getText();
-                    if (checkedTextViewName.equals(LOGOUT_BUTTON)){
-                        Logger.logComment("User is signed in");
+            if (isElementDisplayedById(SIGNED_IN_EMAIL_ID_IN_MENU_SCREEN) && !isElementDisplayedById(SIGN_IN_OR_SIGN_UP_BUTTON)){
+//                List<WebElement> checkedTextViews = driver.findElementsByClassName(CHECKED_TEXT_VIEW);
+//                for (int index=0; index<=checkedTextViews.size()-1;index++){
+//                    String checkedTextViewName = checkedTextViews.get(index).getText();
+//                    if (checkedTextViewName.equals(LOGOUT_BUTTON)){
+                        Logger.logStep("User is signed in");
                         return true;
-                    }else {
-                        continue;
-                    }
-                }
+//                    }else {
+//                        continue;
+//                    }
+//                }
             }else {
-                Logger.logComment("User is not signed in");
+                Logger.logStep("User is not signed in");
                 return false;
             }
         }catch (Exception exception){
@@ -134,24 +135,51 @@ public class MenuAndroid extends MenuBase {
     public void tapOnLogoutButton() {
         Logger.logAction("Tapping on logout button");
         try {
-            if (isElementDisplayedByClassName(CHECKED_TEXT_VIEW)){
-                List<WebElement> checkedTextViews = driver.findElementsByClassName(CHECKED_TEXT_VIEW);
-                for (int index=0; index<=checkedTextViews.size()-1;index++){
-                    String checkedTextViewName = checkedTextViews.get(index).getText();
-                    if (checkedTextViewName.matches(LOGOUT_BUTTON)){
-                        index = index+1;
-                        Logger.logStep("User is signed in and moving to tap on logout button");
-                        driver.findElement(By.xpath(XPATH_OF_LOGOUT_BUTTON_WITHOUT_INDEX+index+"]")).click();
-                        break;
+            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){
+                if (isElementDisplayedById(LOGOUT_BUTTON)){
+                    driver.findElementById(LOGOUT_BUTTON).click();
+                }else {
+                    scrollTheMenuViewUp(SCROLL_VIEW_IN_MENU_SCREEN);
+                    if (isElementDisplayedById(LOGOUT_BUTTON)) {
+                        driver.findElementById(LOGOUT_BUTTON).click();
                     }else {
-                        continue;
+                        Logger.logError(LOGOUT_BUTTON+" :- element name is not displayed in the current active screen");
                     }
                 }
+//                WebElement checkedTextViews = driver.findElementById(SCROLL_VIEW_IN_MENU_SCREEN);
+//                for (int index=0; index<=checkedTextViews.size()-1;index++){
+//                    String checkedTextViewName = checkedTextViews.get(index).getText();
+//                    if (checkedTextViewName.matches(LOGOUT_BUTTON)){
+//                        index = index+1;
+//                        Logger.logStep("User is signed in and moving to tap on logout button");
+//                        driver.findElement(By.xpath(XPATH_OF_LOGOUT_BUTTON_WITHOUT_INDEX+index+"]")).click();
+//                        break;
+//                    }else {
+//                        continue;
+//                    }
+//                }
             }else {
-                Logger.logError("Logout button is not displayed in the current active screen");
+                Logger.logError(SCROLL_VIEW_IN_MENU_SCREEN+" :- element id is not displayed in the current active screen");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: unable to tap on the logout button");
+        }
+    }
+
+    /**
+     * Scroll the menu screen to upwards
+     * @throws Exception
+     */
+    public static void scrollTheMenuViewUp(String viewType) throws Exception{
+        Logger.logAction("Scrolling the menu view upwards");
+        try{
+            if (isElementDisplayedByClassName(viewType)){
+                scrollTheScreenUpwards();
+            }else {
+                Logger.logError(viewType+" :- element id is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to scroll to the menu view to upwards");
         }
     }
 }

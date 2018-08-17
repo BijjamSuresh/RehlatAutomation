@@ -2,7 +2,6 @@ package com.automation.rehlat.pages.signUp;
 
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
-import com.automation.rehlat.pages.flights.FlightsIos;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -222,7 +221,7 @@ public class SignUpAndroid extends SignUpBase {
             if (isElementDisplayedById(SIGN_UP_BUTTON)){
                 driver.findElement(By.id(SIGN_UP_BUTTON)).click();
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(SIGN_IN_PROGRESS_INDICATOR)));
-                declineTheSyncPreviousTravellersDataModalView();
+                declineTheSyncPreviousTravellersDataModalView_Android();
             }else {
                 Logger.logComment(SIGN_UP_BUTTON+" - element name is not displayed in the current active screen");
             }
@@ -234,7 +233,7 @@ public class SignUpAndroid extends SignUpBase {
     /**
      * Checking all the fields are filled with information is valid or not
      */
-    public static void checkAllTheFieldsAreFilledWithValidInformation() throws Exception{
+    public static void checkAllTheFieldsAreFilledWithValidInformation() {
         Logger.logAction("Checking the entered information is valid or not");
         try {
 

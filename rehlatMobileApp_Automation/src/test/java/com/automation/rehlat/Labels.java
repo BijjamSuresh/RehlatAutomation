@@ -127,11 +127,10 @@ public class Labels extends Base{
     public static final String TRAVELLERS_FIRST_NAME="Suresh";
     public static final String TRAVELLERS_MIDDLE_NAME="Reddy";
     public static final String TRAVELLERS_LAST_NAME="Bijjam";
-    public static final String TRAVELLERS_DATEOFBIRTH_ANDROID="02 December 2005";
-    public static final String TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID="02 January 2020";
+    public static final String TRAVELLERS_DATEOFBIRTH_ANDROID="02 June 2005";
+    public static final String TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID="02 February 2020";
     public static final String YEAR_IN_TRAVELLERS_DATEOFBIRTH_ANDROID ="2005";
     public static final String DAY_IN_TRAVELLERS_DATEOFBIRTH_ANDROID ="02";
-    public static final String MONTH_IN_TRAVELLERS_DATEOFBIRTH_ANDROID ="July";
     public static final String DAY_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID ="27";
     public static final String MONTH_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID ="January";
     public static final String YEAR_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID ="2020";
@@ -143,6 +142,16 @@ public class Labels extends Base{
     public static final String YEAR_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS ="2020";
     public static final String PASSPORT_EXPIRY_CALENDAR ="passportExpiryDate";
     public static final String DATEOFBIRTH_CALENDAR ="dateOfBirth";
+    public static final String DEPARTURE_DATE_FOR_IOS = "Jan 2019";
+    public static final String DEPARTURE_DATE_FOR_ANDROID = "DEC 2018";
+    public static final String MONTH_IN_TRAVELLERS_DEPARTURE_DATE_FOR_ANDROID ="December";
+    public static final String RETURN_MONTH_FOR_IOS = "Jan 2019";
+    public static final String RETURN_MONTH_FOR_ANDROID = "DEC 2018";
+    public static final String TRAVELLERS_PASSPORT_NUMBER="ASDFGHJKLZXCV";
+    public static final String KNET_PAYMENT_CARD_NUMBER="0000000001";
+    public static final String KNET_PAYMENT_CARD_PIN_NUMBER="1234";
+    public static final int SCREEN_X_AXIS_SIZE_OF_RANGE_OF_20_PERCENT =481;
+    public static final int SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT=1443;
     public static String SELECTED_SEAT_BOOKING_COST;
     public static String BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN;
 
@@ -169,16 +178,8 @@ public class Labels extends Base{
     public static final String CAIRO_AIRPORT_NAME_FOR_IOS = "Cairo - Cairo Intl Arpt - Egypt";
     public static final String CAIRO_AIRPORT_CODE = "CAI";
     public static final String KUWAIT_AIRPORT_CODE = "KWI";
-    public static final String DEPARTURE_MONTH_FOR_IOS = "Jan 2019";
-    public static final String DEPARTURE_MONTH_FOR_ANDROID = "DEC 2018";
-    public static final String RETURN_MONTH_FOR_IOS = "Jan 2019";
-    public static final String RETURN_MONTH_FOR_ANDROID = "DEC 2018";
-    public static final String TRAVELLERS_PASSPORT_NUMBER="ASDFGHJKLZXCV";
-    public static final String KNET_PAYMENT_CARD_NUMBER="0000000001";
-    public static final String KNET_PAYMENT_CARD_PIN_NUMBER="1234";
-    public static final int SCREEN_X_AXIS_SIZE_OF_RANGE_OF_20_PERCENT =481;
-    public static final int SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT=1443;
-    public static final String INTERNATIONAL_FLIGHT_BOOKING = "international";
+    public static final String INTERNATIONAL_FLIGHT_BOOKING = "International";
+    public static final String CURRENT_USER_CURRENCY_TYPE = "KWD";
 
                                                                                              ///////////////// India Country Labels /////////////////
 
@@ -199,7 +200,7 @@ public class Labels extends Base{
     public static String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String FIRST_NAME = "Suresh";
     public static final String LAST_NAME = "Reddy";
-    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestEmail103@gmail.com";
+    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestEmail109@gmail.com";
     public static final String EMAIL_ID_SIGN_IN = "rehlatAutomationTestEmail1@gmail.com";  // Always add the two digit email number so that on every test script a new email id is generated for to test sign up
     public static final String PASSWORD = "testPasswordFromLabels";
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";
@@ -211,7 +212,7 @@ public class Labels extends Base{
 
 //    public static String appVersion="3.9.7";
 //    public static String buildNumber="100";
-//public static String resetPasswordEmailId;
+//    public static String resetPasswordEmailId;
 //    public static String invalidEmailId;
 //    public static String firstName;
 //    public static String lastName;
@@ -253,7 +254,7 @@ public class Labels extends Base{
             Labels.INDIA_LANGUAGE_COUNTRY_LABEL = INDIA_LANGUAGE_COUNTRY_LABEL_FOR_IOS;
 
             ////////////////////////// DEPARTURE & RETURN MONTHS FOR BOTH INTERNATIONAL AND DOMESTIC AIRPORTS ///////////////////////
-            Labels.DEPARTURE_MONTH = DEPARTURE_MONTH_FOR_IOS;
+            Labels.DEPARTURE_MONTH = DEPARTURE_DATE_FOR_IOS;
             Labels.RETURN_DATE_BOOKING_MONTH = RETURN_MONTH_FOR_IOS;
 
 
@@ -273,7 +274,7 @@ public class Labels extends Base{
             Labels.INDIA_LANGUAGE_COUNTRY_LABEL = INDIA_LANGUAGE_COUNTRY_LABEL_FOR_ANDROID;
 
             ////////////////////////// DEPARTURE & RETURN MONTH FOR BOTH INTERNATIONAL AND DOMESTIC AIRPORTS ///////////////////////
-            Labels.DEPARTURE_MONTH = DEPARTURE_MONTH_FOR_ANDROID;
+            Labels.DEPARTURE_MONTH = DEPARTURE_DATE_FOR_ANDROID;
             Labels.RETURN_DATE_BOOKING_MONTH = RETURN_MONTH_FOR_ANDROID;
 
 

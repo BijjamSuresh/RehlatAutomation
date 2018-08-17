@@ -42,7 +42,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
      * Check the payment options screen is displayed
      */
     @Override
-    public void checkPaymentOptionsScreenIsDisplayed() throws Exception{
+    public void checkPaymentOptionsScreenIsDisplayed() {
         Logger.logAction("Checking payment option screen is displayed or not ?");
         try{
 //            driver.manage().timeouts().implicitlyWait(15,TimeUnit.SECONDS);
@@ -65,7 +65,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
     /**
      * Check the auto fare differ information popup is displayed
      */
-    public void acceptTheFareDifferAlert() throws Exception{
+    public void acceptTheFareDifferAlert() {
         Logger.logAction("Accepting the fare differ alert if displayed");
         try {
             if (isElementDisplayedByName(FARE_DIFFER_ALERT)){
@@ -155,7 +155,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
             if(isElementDisplayedByClassName(SELECT_YOUR_BANK_PICKER_WHEEL)){
                 IOSElement banksPickerView = (IOSElement) driver.findElement(By.className(SELECT_YOUR_BANK_PICKER_WHEEL));
                 banksPickerView.sendKeys(bankName);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError("Picker view is not displayed to select the bank name");
             }
@@ -179,7 +179,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 Logger.logStep("Entering the card number");
                 xPathOfCardNumberTextField =  XPATH_OF_CARD_NUMBER_VIEW+"/XCUIElementTypeTextField["+(listOfTextFields.size())+"]";
                 driver.findElement(By.xpath(xPathOfCardNumberTextField)).sendKeys(Labels.KNET_PAYMENT_CARD_NUMBER);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError("Card number field is not displayed" + xPathOfCardNumberTextField);
             }
@@ -201,7 +201,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
 //                driver.getKeyboard().pressKey(IOSKeyCode.); // Implement keycode method to parse the values in to the card text field
                 Logger.logStep("Entering the pin number");
                 pinNumberTextField.sendKeys(Labels.KNET_PAYMENT_CARD_PIN_NUMBER);
-                closeTheKeyboard();
+                closeTheKeyboard_iOS();
             }else {
                 Logger.logError("Card number field is not displayed");
             }
@@ -280,15 +280,16 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////");
                         }else {
                             Logger.logError("Booking process is failed");
                         }
                     }else {
+                        driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////");
                         }else {
                             Logger.logError("Booking process is unsuccessful");
                         }
@@ -299,15 +300,16 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////");
                         }else {
                             Logger.logError("Booking process is failed");
                         }
                     }else {
+                        driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////");
                         }else {
                             Logger.logError("Booking process is unsuccessful");
                         }
@@ -320,36 +322,41 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////");
                         }else {
                             Logger.logError("Booking process is failed");
                         }
                     }else {
+                        driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////");
                         }else {
                             Logger.logError("Booking process is unsuccessful");
                         }
                     }
-                }else if (isElementDisplayedByName(PAYMENT_SUCCESS)){
-                        Logger.logComment(PAYMENT_SUCCESS);
-                        if (isElementDisplayedByName(BOOKING_SUCCESS)){
+                }else if (isElementDisplayedByName(PAYMENT_SUCCESS))
+                {
+                    Logger.logComment(PAYMENT_SUCCESS);
+                    if (isElementDisplayedByName(BOOKING_SUCCESS)){
+                        System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
+                                "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
+                                "        ////////////////////////////////////////////////////////////////////////////////////");
+                    }
+                    else {
+                        Logger.logError("Booking process is failed");
+                    }
+                }
+                else {
+                driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+                if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                        "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
-                        }else {
-                            Logger.logError("Booking process is failed");
-                        }
-                    }else {
-                        if (isElementDisplayedByName(BOOKING_SUCCESS)){
-                            System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
-                                    "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
-                        }else {
-                            Logger.logError("Booking process is unsuccessful");
-                        }
+                                    "        ////////////////////////////////////////////////////////////////////////////////////");
+                }else {
+                    Logger.logError("Booking process is unsuccessful");
+                }
             }
 //            if (isElementDisplayedByClassName(IOS_ACTIVITY_INDICATOR)){
 //                Logger.logComment("Booking process is started");
@@ -533,7 +540,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////\n");
                         }else {
                             Logger.logError("Booking process is failed");
                         }
@@ -541,7 +548,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////\n");
                         }else {
                             Logger.logError("Booking process is unsuccessful");
                         }
@@ -552,7 +559,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////\n");
                         }else {
                             Logger.logError("Booking process is failed");
                         }
@@ -560,7 +567,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                     "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                    "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                    "        ////////////////////////////////////////////////////////////////////////////////////\n");
                         }else {
                             Logger.logError("Booking process is unsuccessful");
                         }
@@ -573,7 +580,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                     if (isElementDisplayedByName(BOOKING_SUCCESS)){
                         System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                 "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                "        ////////////////////////////////////////////////////////////////////////////////////\n");
                     }else {
                         Logger.logError("Booking process is failed");
                     }
@@ -581,7 +588,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                     if (isElementDisplayedByName(BOOKING_SUCCESS)){
                         System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                                 "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                                "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                                "        ////////////////////////////////////////////////////////////////////////////////////\n");
                     }else {
                         Logger.logError("Booking process is unsuccessful");
                     }
@@ -591,7 +598,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 if (isElementDisplayedByName(BOOKING_SUCCESS)){
                     System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                             "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                            "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                            "        ////////////////////////////////////////////////////////////////////////////////////\n");
                 }else {
                     Logger.logError("Booking process is failed");
                 }
@@ -599,7 +606,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 if (isElementDisplayedByName(BOOKING_SUCCESS)){
                     System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
                             "//////////////////////////////////////////  "+BOOKING_SUCCESS+"////////////////////////////////////////////////////\n"+
-                            "        ///////////////////////////////////////////////////////////////////////////////////////////////////////");
+                            "        ////////////////////////////////////////////////////////////////////////////////////\n");
                 }else {
                     Logger.logError("Booking process is unsuccessful");
                 }

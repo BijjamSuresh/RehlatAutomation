@@ -36,13 +36,13 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public static final String PAYMENT_SUCCESS = "Payment Success Please wait for a while and do not refresh the page..........";
     public static final String BOOKING_SUCCESS = "BOOKING SUCCESS";
     public static final String POST_TRANSACTIONS_SCREEN = "form1";
-    public static final String XPATH_OF_KNET_PAYMENT_OPTION = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TextView";
+    public static final String XPATH_OF_KNET_PAYMENT_OPTION = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout";
     public static final String XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[";
     /**
      * Check the payment options screen is displayed
      */
     @Override
-    public void checkPaymentOptionsScreenIsDisplayed() throws Exception {
+    public void checkPaymentOptionsScreenIsDisplayed() {
         Logger.logAction("Checking payment option screen is displayed or not ?");
         try{
             driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
@@ -62,7 +62,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Check the auto fare differ information popup is displayed
      */
-    public static void acceptTheFareDifferAlert() throws Exception{
+    public static void acceptTheFareDifferAlert() {
         Logger.logAction("Accepting the fare differ alert if displayed");
         try {
             if (isElementDisplayedById(FARE_DIFFER_ALERT)){
@@ -84,7 +84,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Tap on KNET payment gateway
      */
     @Override
-    public void tapOnKnetPaymentGateWay() throws Exception{
+    public void tapOnKnetPaymentGateWay() {
         Logger.logAction("Tapping on KNET payment gateway");
         try{
             if (isElementDisplayedByXPath(XPATH_OF_KNET_PAYMENT_OPTION)){
@@ -107,7 +107,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Check KNET payment gateway screen is displayed
      */
     @Override
-    public void checkKnetPaymentOptionsScreenIsDisplayed() throws Exception {
+    public void checkKnetPaymentOptionsScreenIsDisplayed() {
         Logger.logAction("Checking KNET payment gateway screen is displayed or not ?");
         try{
             driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
@@ -126,7 +126,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Selecting bank name
      */
     @Override
-    public void selectingBankName(String bankName) throws Exception {
+    public void selectingBankName(String bankName) {
         Logger.logAction("Selecting bank name - " + bankName );
         try{
             if (isElementDisplayedByXPath(XPATH_OF_SELECT_YOUR_BANK_BUTTON)){
@@ -144,7 +144,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Selecting the bank name from the picker wheel
      */
-    public static void selectBankNameFromBankPicker(String bankName) throws Exception{
+    public static void selectBankNameFromBankPicker(String bankName) {
         WebElement nameOfTheCell;
         Logger.logAction("Selecting the bank :- "+bankName);
         try {
@@ -174,7 +174,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Scroll to the bank name
      * @param bankName
      */
-    public static int scrollToTheBankName(String bankName) throws Exception{
+    public static int scrollToTheBankName(String bankName) {
         Logger.logAction("Scrolling to the bank name :- "+bankName);
         Integer bankCellNumber=8;
         List<WebElement> listOfBanksDisplayed = null;
@@ -215,7 +215,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Enter the card number
      */
     @Override
-    public void enterCardNumber() throws Exception {
+    public void enterCardNumber() {
         Logger.logAction("Tapping on card number text field");
         try{
             Thread.sleep(Labels.WAIT_TIME_MIN);
@@ -291,7 +291,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Enter the Pin number
      */
     @Override
-    public void enterPinNumber() throws Exception {
+    public void enterPinNumber() {
         Logger.logAction("Tapping on pin number text field");
         try{
             if (isElementDisplayedById(PIN_TEXTFIELD)){
@@ -313,7 +313,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Tap on Submit button
      */
     @Override
-    public void tapOnSubmitButton() throws Exception {
+    public void tapOnSubmitButton() {
         Logger.logAction("Tapping on submit button");
         try{
             if (isElementDisplayedById(SUBMIT_BUTTON)){
@@ -330,7 +330,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Check post transactions screen is displayed
      */
     @Override
-    public void checkPostTransactionScreenIsDisplayed() throws Exception {
+    public void checkPostTransactionScreenIsDisplayed() {
         Logger.logAction("Checking post transactions screen is displayed or not ?");
         try{
 //            driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
@@ -350,7 +350,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Tap on Confirm button
      */
     @Override
-    public void tapOnConfirmButton() throws Exception {
+    public void tapOnConfirmButton() {
         Logger.logAction("Tapping on Confirm button");
         try{
             if (isElementDisplayedById(CONFIRM_BUTTON)){
@@ -367,7 +367,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Check the booking is success
      */
     @Override
-    public void checkTheKnetBookingProcessIsSuccess() throws Exception{
+    public void checkTheKnetBookingProcessIsSuccess() {
         Logger.logAction("Checking Booking is success or not ?");
         try {
             if (isElementDisplayedByName(ACTIVITY_INDICATOR)){
@@ -407,7 +407,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Enter credit or debit card details
      */
     @Override
-    public void enterCreditOrDebitCardDetails() throws Exception {
+    public void enterCreditOrDebitCardDetails() {
         Logger.logAction("Entering the credit or debit card details");
         try {
             enterCreditOrDebitCardNumber();
@@ -424,7 +424,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Enter the credit or debit card number
      */
-    public static void enterCreditOrDebitCardNumber() throws Exception {
+    public static void enterCreditOrDebitCardNumber() {
         Logger.logAction("Entering the credit or debit card number");
         try {
             if (isElementDisplayedById("com.app.rehlat:id/numberTextInputLayout")){
@@ -440,7 +440,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Enter credit or debit expiry month and year
      */
-    public static void enterCreditOrDebitCardExpiryMonth() throws Exception {
+    public static void enterCreditOrDebitCardExpiryMonth() {
         Logger.logAction("Entering the credit or debit card Expiry month");
         try {
             if (isElementDisplayedById("com.app.rehlat:id/mmEditText")){
@@ -456,7 +456,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Enter credit or debit expiry year
      */
-    public static void enterCreditOrDebitCardExpiryYear() throws Exception {
+    public static void enterCreditOrDebitCardExpiryYear() {
         Logger.logAction("Entering the credit or debit card Expiry year");
         try {
             if (isElementDisplayedById("com.app.rehlat:id/yearEditText")){
@@ -472,7 +472,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Enter credit or debit card cvv number
      */
-    public static void enterCreditOrDebitCardCvvNumber() throws Exception {
+    public static void enterCreditOrDebitCardCvvNumber() {
         Logger.logAction("Entering the credit or debit card CVV number");
         try {
             if (isElementDisplayedById("com.app.rehlat:id/cvv")){
@@ -488,7 +488,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Enter credit or debit card place holder name
      */
-    public static void enterCreditOrDebitCardPlaceHolderName() throws Exception{
+    public static void enterCreditOrDebitCardPlaceHolderName() {
         Logger.logAction("Entering the credit or debit card holder name");
         try {
                 if (isElementDisplayedById("com.app.rehlat:id/nameTextInputLayout")){
@@ -504,7 +504,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**
      * Tap on credit or debit checkout payment button
      */
-    public static void tapOnCreditOrDebitCardCheckOutPaymentButton() throws Exception {
+    public static void tapOnCreditOrDebitCardCheckOutPaymentButton() {
         Logger.logAction("Tapping on pay securely check out button");
         try {
             if (isElementDisplayedById("com.app.rehlat:id/checkoutPayButton")){
@@ -522,11 +522,11 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Enter keys in the password field of 3D secure credit or debit checkout payment
      */
     @Override
-    public void enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment() throws Exception {
+    public void enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment() {
         Logger.logAction("Tapping on pay securely check out button");
         try {
-            if (isElementDisplayedByXPath("//XCUIElementTypeOther[@name=\"Checkout 3D Simulator\"]/XCUIElementTypeOther[5]/XCUIElementTypeSecureTextField")){
-                driver.findElement(By.xpath("//XCUIElementTypeOther[@name=\"Checkout 3D Simulator\"]/XCUIElementTypeOther[5]/XCUIElementTypeSecureTextField")).sendKeys("Checkout1!");
+            if (isElementDisplayedById("txtPassword")){
+                driver.findElement(By.id("txtPassword")).sendKeys("Checkout1!");
             }else {
                 driver.findElement(By.xpath("//XCUIElementTypeOther[@name=\"Checkout 3D Simulator\"]/XCUIElementTypeOther[5]/XCUIElementTypeSecureTextField")).sendKeys("Checkout1!");
 //                Logger.logError("Element name is not displayed in the current active screen:- ");
@@ -539,13 +539,13 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     /**Tap on continue button in 3D secure credit or debit checkout payment screen
      */
     @Override
-    public  void tapOnContinueButtonIn3DSecurePaymentScreenOfCreditOrDebitCardCheckOutPayment() throws Exception {
+    public  void tapOnContinueButtonIn3DSecurePaymentScreenOfCreditOrDebitCardCheckOutPayment() {
         Logger.logAction("Tapping on pay securely check out button");
         try {
-            if (isElementDisplayedById("PAY SECURELY")){
-                driver.findElement(By.id("PAY SECURELY")).click();
+            if (isElementDisplayedById("txtButton")){
+                driver.findElement(By.id("txtButton")).click();
             }else {
-                driver.findElement(By.id("PAY SECURELY")).click();
+                driver.findElement(By.id("txtButton")).click();
 //                Logger.logError("Element name is not displayed in the current active screen:- ");
             }
         } catch (Exception exception) {
@@ -557,7 +557,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * Check the booking is success
      */
     @Override
-    public void checkTheCreditOrDebitCardBookingProcessIsSuccess() throws Exception {
+    public void checkTheCreditOrDebitCardBookingProcessIsSuccess() {
         Logger.logAction("Checking Booking is success or not ?");
         try {
             if (isElementDisplayedByClassName(ACTIVITY_INDICATOR)){
