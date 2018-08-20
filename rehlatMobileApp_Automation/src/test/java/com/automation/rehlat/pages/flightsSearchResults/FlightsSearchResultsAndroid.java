@@ -93,6 +93,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
                     }
                 }
             }else {
+                Logger.logComment("One way trip details are displayed "); // This logger needs to be an error but to make the flow continue making this logger as comment
                 if (isElementDisplayedByXPath(XPATH_OF_CARD_VIEW_WITHOUT_INDEX+flightSearchResultCellNumber+"]")){
                     Logger.logStep(flightSearchResultCellNumber+" - cell number is displayed and tapping on it");
                     getTheBookingCostOfSelectingOnlyDepartureFlightInSearchResults(flightSearchResultCellNumber);

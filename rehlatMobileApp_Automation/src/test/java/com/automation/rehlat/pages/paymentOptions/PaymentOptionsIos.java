@@ -79,6 +79,36 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
         }
     }
 
+    /**
+     * Compare the final payment displayed in payment checkout screen with the amount displayed in review booking screen
+     * @throws Exception
+     */
+    @Override
+    public void compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen() throws Exception{
+        Logger.logAction("Comparing the final payment displayed in payment checkout screen with the amount displayed in review booking screen");
+        try {
+            if (isElementDisplayedById("com.app.rehlat:id/totalAmoutPayableLinearLayout")){
+                Logger.logAction("Total amount payable price linear layout is displayed");
+                if (isElementEnabledById("com.app.rehlat:id/totalAmountPayablePrice")){
+                    String finalAmountPayablePriceInPaymentCheckOutScreen = driver.findElementById("com.app.rehlat:id/totalAmountPayablePrice").getText();
+                    Logger.logComment("Final Amount displayed in the payment check out screen is :- "+finalAmountPayablePriceInPaymentCheckOutScreen);
+                    Logger.logComment("Booking cost displayed in review booking screen is :- "+Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN);
+                    if (Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN == finalAmountPayablePriceInPaymentCheckOutScreen){
+                        Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+                    }else {
+                        Logger.logError("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+                    }
+                }else {
+                    Logger.logError("Total amount payable price is not displaying in payment checkout screen");
+                }
+            }else {
+                Logger.logError("Total amount payable cell is not displaying in payment checkout screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to compare the final payment price in payment list screen with the price dispalyed in review booking screen");
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                                                                                         //** KNET PAYMENT METHODS **\\

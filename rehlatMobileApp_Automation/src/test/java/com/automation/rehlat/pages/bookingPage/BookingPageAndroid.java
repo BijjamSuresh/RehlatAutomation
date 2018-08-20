@@ -59,7 +59,7 @@ public class BookingPageAndroid extends BookingPageBase {
      */
     @Override
     public boolean isUserIsSignedIn() {
-        Logger.logAction("Checking the Booking page screen is displayed or not ?");
+        Logger.logAction("Checking the user is signed in or not ?");
         try{
             if (isElementDisplayedById(SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON)){
                 Logger.logStep("User is not signed in");
@@ -99,16 +99,18 @@ public class BookingPageAndroid extends BookingPageBase {
         Logger.logAction("Entering the email id "+Labels.EMAIL_ID_SIGN_IN+" in email id text field");
         try{
             if (isElementDisplayedById(EMAIL_FIELD)){
-                String phoneNumberField = driver.findElementById(EMAIL_FIELD).getText();
-                if (phoneNumberField.equals(PLACEHOLDER_TEXT_OF_EMAILID_TEXTFIELD)){
+                String emailField = driver.findElementById(EMAIL_FIELD).getText();
+                if (emailField.equals(PLACEHOLDER_TEXT_OF_EMAILID_TEXTFIELD)){
                     Logger.logComment("Entering the email id:- "+Labels.EMAIL_ID_SIGN_IN);
                     WebElement textField = driver.findElement(By.id(EMAIL_FIELD));
                     tapOnElementBasedOnLocation(textField,"bottomRight");
                     clearKeysByUsingKeycode(EMAIL_FIELD,EMAIL_FIELD.length());
                     sendTextById(EMAIL_FIELD,Labels.EMAIL_ID_SIGN_IN);
                     driver.hideKeyboard();
+                }else if (emailField.equals(Labels.EMAIL_ID_SIGN_IN)){
+                    Logger.logComment(Labels.EMAIL_ID_SIGN_IN+" :- Email id is already entered in the text field");
                 }else {
-                    Logger.logComment("Replacing current email id "+phoneNumberField+" with "+Labels.EMAIL_ID_SIGN_IN);
+                    Logger.logComment("Replacing current email id "+emailField+" with "+Labels.EMAIL_ID_SIGN_IN);
                     WebElement textField = driver.findElement(By.id(EMAIL_FIELD));
                     tapOnElementBasedOnLocation(textField,"bottomRight");
                     clearKeysByUsingKeycode(EMAIL_FIELD,EMAIL_FIELD.length());
@@ -138,6 +140,8 @@ public class BookingPageAndroid extends BookingPageBase {
                     clearKeysByUsingKeycode(PHONENUMBER_FIELD,PHONENUMBER_FIELD.length());
                     sendTextById(PHONENUMBER_FIELD,Labels.phoneNumber);
                     driver.hideKeyboard();
+                }else if (phoneNumberField.equals(Labels.phoneNumber)){
+                    Logger.logComment(Labels.EMAIL_ID_SIGN_IN+" :- Email id is already entered in the text field");
                 }else {
                     Logger.logComment("Replacing current phone number text "+phoneNumberField+" with "+Labels.phoneNumber);
                     WebElement textField = driver.findElementById(PHONENUMBER_FIELD);
@@ -270,12 +274,15 @@ public class BookingPageAndroid extends BookingPageBase {
                 Logger.logComment("Final fare math calculation value is :- "+finalFareMathCalculation);
                 if (finalFareMathCalculation.equals(finalDisplayedFare)) {
                     Logger.logStep("Final fare calculation is correct");
+                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
                 }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This logic is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
                     Logger.logStep("Final fare calculation is correct");
+                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
                 } else if (finalFareMathCalculation.toString().contains(".0") && finalDisplayedFare.toString().contains("0.00")){ //This logic is because of showing final fare value as with two decimal values even though they are zeros eg: 16.00 but internal math calculation will shows only one decimal point (if is zero) eg: 16.0
                     finalFareMathCalculation = Double.valueOf(finalFareMathCalculation.toString().replace(".0",".00"));
                     if (finalFareMathCalculation.equals(finalDisplayedFare)) {
                         Logger.logStep("Final fare calculation is correct");
+                        Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
                     }else {
                         Logger.logError("Final calculation is incorrect in decimal values");
                     }
@@ -488,7 +495,7 @@ public class BookingPageAndroid extends BookingPageBase {
         try {
             if (isElementDisplayedById(COUPON_CODE_TEXT_VIEW)){
                 driver.findElementById(COUPON_CODE_TEXT_VIEW).sendKeys(Labels.COUPON_CODE);
-                driver.hideKeyboard();
+//                driver.hideKeyboard();
             }else {
                 Logger.logError(COUPON_CODE_TEXT_VIEW+" - element name is not displayed in the current active screen");
             }
@@ -520,7 +527,10 @@ public class BookingPageAndroid extends BookingPageBase {
     public boolean isCouponCodeAppliedSuccessfully() {
         Logger.logAction("Checking coupon code is applied or not ?");
         try {
-            if (isElementDisplayedById(COUPON_CODE_TEXT_VIEW)){
+            if(isElementDisplayedById(COUPON_AMOUNT)){
+                Logger.logComment("Coupon code is applied successfully");
+                return true;
+            }else if(isElementDisplayedById(COUPON_CODE_TEXT_VIEW)){
                 if (isElementDisplayedById(COUPON_CODE_VALIDATION_MESSAGE)){
                     String couponValidationMessage = driver.findElementById(COUPON_CODE_VALIDATION_MESSAGE).getText();
                     if (couponValidationMessage.equals(COUPON_INVALID_MESSAGE)){
@@ -530,13 +540,14 @@ public class BookingPageAndroid extends BookingPageBase {
                         Logger.logComment("Coupon code is not applied due to the reason :- "+couponValidationMessage);
                         return false;
                     }
-                }else {
+                }else if (isElementDisplayedById(COUPON_AMOUNT)) {
+                    Logger.logComment("Coupon code is applied successfully");
+                    return true;
+                }
+                else {
                     Logger.logComment("Coupon code is not yet applied");
                     return false;
                 }
-            }else if (isElementDisplayedById(COUPON_AMOUNT)){
-                Logger.logComment("Coupon code is applied successfully");
-                return true;
             }else {
                 Logger.logError(COUPON_CODE_TEXT_VIEW+" Or "+COUPON_AMOUNT+" element names are not displayed in the current active screen");
             }

@@ -240,8 +240,10 @@ public class BookingPageIos extends BookingPageBase {
                 Double finalFareMathCalculation = (displayedActualFare)-(couponAmount)-(karamPoints); // Internal math calculation logic
                 Logger.logComment("Final fare math calculation value is :- "+finalFareMathCalculation);
                 if (finalFareMathCalculation.equals(finalDisplayedFare)){
+                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
                     Logger.logStep("Final fare calculation is correct");
                 }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This method is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
+                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
                     Logger.logStep("Final fare calculation is correct");
                 }else {
                     Logger.logError("Final fare calculation is in-correct");

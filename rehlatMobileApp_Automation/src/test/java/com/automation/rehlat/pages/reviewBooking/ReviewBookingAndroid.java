@@ -116,9 +116,9 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
             if (isElementDisplayedByIdWithOneTimeChecking(TOGGLE_SWITCH)){
                 WebElement toggleSwitch = driver.findElement(By.id(TOGGLE_SWITCH));
                 String toggleSwitchValue = toggleSwitch.getText();
-                if (toggleSwitchValue.equals(Labels.ANDROID_TOGGLE_TEXT_ON)){
+                if (toggleSwitchValue.equalsIgnoreCase(Labels.ANDROID_TOGGLE_TEXT_ON)){
                     Logger.logStep("Toggle switch is enabled and making it to disable by tapping on it");
-                    driver.findElementById(TOGGLE_SWITCH).click();
+                    driver.findElement(By.id(TOGGLE_SWITCH)).click();
                 }else if (toggleSwitchValue.equals(Labels.ANDROID_TOGGLE_TEXT_OFF)){
                     Logger.logStep("Toggle switch is already disabled");
                 }
@@ -128,9 +128,9 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 if (isElementDisplayedByIdWithOneTimeChecking(TOGGLE_SWITCH)){
                     WebElement toggleSwitch = driver.findElementById(TOGGLE_SWITCH);
                     String toggleSwitchValue = toggleSwitch.getText();
-                    if (toggleSwitchValue.equals(Labels.ANDROID_TOGGLE_TEXT_ON)){
+                    if (toggleSwitchValue.equalsIgnoreCase(Labels.ANDROID_TOGGLE_TEXT_ON)){
                         Logger.logStep("Toggle switch is enabled and making it to disable by tapping on it");
-                        driver.findElementById(TOGGLE_SWITCH).click();
+                        driver.findElement(By.id(TOGGLE_SWITCH)).click();
                     }else if (toggleSwitchValue.equals(Labels.ANDROID_TOGGLE_TEXT_OFF)){
                         Logger.logStep("Toggle switch is already disabled");
                     }
@@ -140,9 +140,9 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                     if (isElementDisplayedByIdWithOneTimeChecking(TOGGLE_SWITCH)){
                         WebElement toggleSwitch = driver.findElement(By.id(TOGGLE_SWITCH));
                         String toggleSwitchValue = toggleSwitch.getText();
-                        if (toggleSwitchValue.equals(Labels.ANDROID_TOGGLE_TEXT_ON)){
+                        if (toggleSwitchValue.equalsIgnoreCase(Labels.ANDROID_TOGGLE_TEXT_ON)){
                             Logger.logStep("Toggle switch is enabled and making it to disable by tapping on it");
-                            driver.findElementById(TOGGLE_SWITCH).click();
+                            driver.findElement(By.id(TOGGLE_SWITCH)).click();
                         }else if (toggleSwitchValue.equals(Labels.ANDROID_TOGGLE_TEXT_OFF)){
                             Logger.logStep("Toggle switch is already disabled");
                         }
@@ -213,7 +213,7 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN = Labels.SELECTED_SEAT_BOOKING_COST;
                 Logger.logStep("Selected seat booking cost is matches in review booking screen and in search results screen");
             } else if(selectedSeatBookingCostInFlightSearchResultsScreen <= selectedSeatCostDisplayedInReviewBookingScreen) {
-                Logger.logComment("Booking flight cost are mismatches checking again by disabling the security check in toggle button");
+                Logger.logComment("Selected flight booking cost in flight search results is lesser than the booking flight cost displayed in review booking screen.., So rechecking the flight cost by disabling the security check in toggle button");
                 disableSecurityCheckInToggle();
                 bookingSeatCostDisplayedInReviewBookingScreen = getTheDisplayedTicketBookingValue();
                 if (bookingSeatCostDisplayedInReviewBookingScreen.contains(Labels.SELECTED_SEAT_BOOKING_COST)){

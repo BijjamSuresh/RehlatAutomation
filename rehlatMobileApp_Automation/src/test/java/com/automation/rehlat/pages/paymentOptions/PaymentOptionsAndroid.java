@@ -36,7 +36,11 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public static final String PAYMENT_SUCCESS = "Payment Success Please wait for a while and do not refresh the page..........";
     public static final String BOOKING_SUCCESS = "BOOKING SUCCESS";
     public static final String POST_TRANSACTIONS_SCREEN = "form1";
-    public static final String XPATH_OF_KNET_PAYMENT_OPTION = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout";
+    public static final String FINAL_AMOUNT_PAYABLE_LINEAR_LAYOUT = "com.app.rehlat:id/totalAmoutPayableLinearLayout";
+    public static final String FINAL_AMOUNT_PAYABLE_PRICE = "com.app.rehlat:id/totalAmountPayablePrice";
+
+    public static final String XPATH_OF_KNET_PAYMENT_CELL = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout";
+    public static final String XPATH_OF_KNET_PAYMENT_CELL_NAME = XPATH_OF_KNET_PAYMENT_CELL+"/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TextView";
     public static final String XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[";
     /**
      * Check the payment options screen is displayed
@@ -75,6 +79,36 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
             Logger.logError("Encountered error: Unable to verify the fare differ alert is displayed or not");
         }
     }
+
+    /**
+     * Compare the final payment displayed in payment checkout screen with the amount displayed in review booking screen
+     * @throws Exception
+     */
+    @Override
+    public void compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen() throws Exception{
+        Logger.logAction("Comparing the final payment displayed in payment checkout screen with the amount displayed in review booking screen");
+        try {
+            if (isElementDisplayedById(FINAL_AMOUNT_PAYABLE_LINEAR_LAYOUT)){
+                Logger.logAction("Total amount payable price linear layout is displayed");
+                if (isElementDisplayedById(FINAL_AMOUNT_PAYABLE_PRICE)){
+                    String finalAmountPayablePriceInPaymentCheckOutScreen = driver.findElementById(FINAL_AMOUNT_PAYABLE_PRICE).getText();
+                    Logger.logComment("Final Amount displayed in the payment check out screen is :- "+finalAmountPayablePriceInPaymentCheckOutScreen);
+                    Logger.logComment("Booking cost displayed in review booking screen is :- "+Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN);
+                    if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN == finalAmountPayablePriceInPaymentCheckOutScreen){
+                        Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+                    }else {
+                        Logger.logError("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+                    }
+                }else {
+                    Logger.logError(FINAL_AMOUNT_PAYABLE_PRICE+" :- Element id is not displaying in payment checkout screen");
+                }
+            }else {
+                Logger.logError(FINAL_AMOUNT_PAYABLE_LINEAR_LAYOUT+" :- Linear layout is not displaying in payment checkout screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to compare the final payment price in payment list screen with the price dispalyed in review booking screen");
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                                                                                         //** KNET PAYMENT METHODS **\\
@@ -87,19 +121,19 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public void tapOnKnetPaymentGateWay() {
         Logger.logAction("Tapping on KNET payment gateway");
         try{
-            if (isElementDisplayedByXPath(XPATH_OF_KNET_PAYMENT_OPTION)){
-                WebElement paymentGateWay = driver.findElementByXPath(XPATH_OF_KNET_PAYMENT_OPTION);
-                if (paymentGateWay.getText().equals("Knet")){
-                    paymentGateWay.click();
-                    driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+            if (isElementDisplayedByXPath(XPATH_OF_KNET_PAYMENT_CELL)){ // Checking the knet payment cell is displayed
+                WebElement paymentGateWayName = driver.findElementByXPath(XPATH_OF_KNET_PAYMENT_CELL_NAME); // Getting the value of KNET payment cell name
+                if (paymentGateWayName.getText().equals("Knet")){
+                    paymentGateWayName.click();
+                    driver.manage().timeouts().implicitlyWait(8,TimeUnit.SECONDS);
                 }else {
-                    Logger.logError("Knet Payment gateway xpath is not changed, please do re check the KNET xpath and re-run again");
+                    Logger.logError("Knet Payment gateway xpath is changed, please do re check the KNET xpath and re-run again");
                 }
             }else {
                 Logger.logError("KNET Payment gateway option is not displayed");
             }
         }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to check the element name - " + XPATH_OF_KNET_PAYMENT_OPTION);
+            Logger.logError("Encountered error: Unable to check the element name - " + XPATH_OF_KNET_PAYMENT_CELL_NAME);
         }
     }
 
@@ -111,7 +145,6 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         Logger.logAction("Checking KNET payment gateway screen is displayed or not ?");
         try{
             driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
-            driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
             if (isElementDisplayedById(PAYMENT_GATEWAY_SCREEN_TITLE) && (isElementDisplayedById(SUBMIT_BUTTON))){
                 Logger.logStep("KNET Payment gateway screen is displayed and moving to next step");
             }else {
@@ -159,7 +192,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                     if (nameOfTheCell.getText().equals(bankName)){
                         driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]").click();
                     }else {
-                        Logger.logError("Tried scrolling the modal view thrice, but didn't find the bank name:-"+bankName);
+                        Logger.logError("Tried scrolling the modal view twice, but didn't find the bank name:-"+bankName);
                     }
                 }
             }else {
@@ -175,40 +208,49 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
      * @param bankName
      */
     public static int scrollToTheBankName(String bankName) {
-        Logger.logAction("Scrolling to the bank name :- "+bankName);
-        Integer bankCellNumber=8;
+        Logger.logAction("Scrolling to the bank name:-" + bankName);
+        Integer bankCellNumber = 8;
         List<WebElement> listOfBanksDisplayed = null;
-        Logger.logAction("Scrolling to the bank name:-" +bankName);
+        int count = 0;
         try {
-            Thread.sleep(Labels.WAIT_TIME_MIN);
-            listOfBanksDisplayed = driver.findElements(By.className("android.widget.CheckedTextView"));
-            for (int index=0; index<=listOfBanksDisplayed.size()-1;index++) {
-                String eachCellName = listOfBanksDisplayed.get(index).getText();
-                if (eachCellName.equals(bankName)) {
-                    Logger.logComment(bankName + " is displayed and tapping on it");
-                    bankCellNumber = index;
-                    return bankCellNumber;
-                } else {
-                    Logger.logComment(index+" - times trying to find the element name:-" +bankName);
+            while (count < 3) {
+                try {
+                    Thread.sleep(Labels.WAIT_TIME_MIN);
+                    listOfBanksDisplayed = driver.findElements(By.className("android.widget.CheckedTextView"));
+                    for (int index = 0; index <= listOfBanksDisplayed.size() - 1; index++) {
+                        String eachCellName = listOfBanksDisplayed.get(index).getText();
+                        if (eachCellName.equals(bankName)) {
+                            Logger.logComment(bankName + " is displayed and tapping on it");
+                            bankCellNumber = index;
+                            return bankCellNumber;
+                        } else {
+                            Logger.logComment(index + " - times trying to find the element name:-" + bankName);
+                        }
+                        scrollTheScreenUpwards(); // Check this method tomorrow
+                    }
+//                scrollToTheBankName(bankName);
+//            scrollTheScreenUpwards(); // Implement a separate method such that it should scroll to the exact payment method
+//                Logger.logComment("Unable to find the element -"+bankName+" - so scrolling the screen upwards");
+//                listOfBanksDisplayed = driver.findElements(By.className("android.widget.CheckedTextView"));
+//                for (int indexCount = 0; indexCount <= listOfBanksDisplayed.size()-1; indexCount++) {
+//                    String eachCellCountName = listOfBanksDisplayed.get(indexCount).getText();
+//                    if (eachCellCountName.equals(bankName)) {
+//                        Logger.logComment(bankName + " is displayed and tapping on it");
+//                        bankCellNumber = indexCount;
+//                        return bankCellNumber;
+//                    } else {
+//                        Logger.logComment(indexCount+" - times trying to find the element name:-" +bankName);
+//                    }
+//                }
+                } catch (Exception exception) {
+                    Logger.logComment(count + " - times trying to scroll the screen upwards");
+                    scrollTheScreenUpwards();
                 }
             }
-            scrollTheScreenUpwards();
-            Logger.logComment("Unable to find the element -"+bankName+" - so scrolling the screen upwards");
-            listOfBanksDisplayed = driver.findElements(By.className("android.widget.CheckedTextView"));
-            for (int indexCount = 0; indexCount <= listOfBanksDisplayed.size()-1; indexCount++) {
-                String eachCellCountName = listOfBanksDisplayed.get(indexCount).getText();
-                if (eachCellCountName.equals(bankName)) {
-                    Logger.logComment(bankName + " is displayed and tapping on it");
-                    bankCellNumber = indexCount;
-                    return bankCellNumber;
-                } else {
-                    Logger.logComment(indexCount+" - times trying to find the element name:-" +bankName);
-                }
-        }
-        }catch (Exception exception){
+        } catch (Exception exception) {
             Logger.logError("Encountered error: Unable to scroll the screen");
         }
-        return  bankCellNumber;
+        return bankCellNumber;
     }
 
     /**
@@ -642,5 +684,4 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
             Logger.logError("Encountered error: Unable to check the booking status");
         }
     }
-
-    }
+}

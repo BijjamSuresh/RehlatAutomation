@@ -101,7 +101,7 @@ public class Logger extends Base {
             }else if (secondsTimeWhileTestScriptEnded > secondsTimeWhileTestScriptBegan){
                 secondsTime = secondsTimeWhileTestScriptEnded - secondsTimeWhileTestScriptBegan;
             }
-            Logger.logComment("Time taken to complete to complete the test script is :- " +minutesTime+ "minutes & " +secondsTime+" seconds");
+            Logger.logComment("Time taken to complete to complete the test script is :- " +minutesTime+ " minutes & " +secondsTime+" seconds");
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to get the total time for the script to finish");
         }

@@ -85,4 +85,10 @@ public interface PaymentOptions {
      */
     void checkTheCreditOrDebitCardBookingProcessIsSuccess() throws Exception;
 
+    /**
+     * Compare the final payment displayed in payment checkout screen with the amount displayed in review booking screen
+     * @throws Exception
+     */
+    void compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen() throws Exception;
+
 }

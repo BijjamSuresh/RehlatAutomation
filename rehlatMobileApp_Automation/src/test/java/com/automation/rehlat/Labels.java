@@ -23,6 +23,7 @@ public class Labels extends Base{
 
                                                                             /////////  APPIUM  android app capabilities /////////
     public static final String ANDROID_PLATFORM = "Android";
+    public static final String SAMSUNG_DEVICE_ID = "84254a373730374d"; // This id needs to be changed when ever the testing device is an Samsung device
     public static final String ANDROID_CAPABILITIES_DEVICE_NAME = "A001";
     public static final String ANDROID_CAPABILITIES_PLATFORM_VERSION = "5.0";
     public static final String ANDROID_CAPABILITIES_APPIUM_VERSION = "1.8.1";
@@ -154,8 +155,10 @@ public class Labels extends Base{
     public static final int SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT=1443;
     public static String SELECTED_SEAT_BOOKING_COST;
     public static String BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN;
+    public static String BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN;
 
-                                                                                    ///////////////// Parsing strings in the classes of tests folder//////////////
+
+    ///////////////// Parsing strings in the classes of tests folder//////////////
     public static String TO_INTERNATIONAL_AIRPORT_NAME;
     public static String TO_INTERNATIONAL_AIRPORT_CODE;
     public static String FROM_INTERNATIONAL_AIRPORT_NAME;
@@ -200,7 +203,7 @@ public class Labels extends Base{
     public static String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String FIRST_NAME = "Suresh";
     public static final String LAST_NAME = "Reddy";
-    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestEmail109@gmail.com";
+    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestEmail203@gmail.com";
     public static final String EMAIL_ID_SIGN_IN = "rehlatAutomationTestEmail1@gmail.com";  // Always add the two digit email number so that on every test script a new email id is generated for to test sign up
     public static final String PASSWORD = "testPasswordFromLabels";
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";

@@ -103,7 +103,7 @@ public class Base {
      */
     @AfterClass
     public static void tearDown() {
-        Logger.logComment("Sign Up email id used till yet :-"+Labels.EMAIL_ID_SIGN_UP);
+        Logger.logComment("Sign Up email id used till yet :- "+Labels.EMAIL_ID_SIGN_UP);
         driver.quit();
     }
 
@@ -292,7 +292,7 @@ public class Base {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementId + "\")");
 ////                    return true;
 //                } else {
-                    element = driver.findElementById(elementId);
+                    element = driver.findElement(By.id(elementId));
 //                    return true;
 //                }
                 if (element.isDisplayed()) {
@@ -1908,6 +1908,7 @@ public class Base {
                 WebElement element = driver.findElementById(elementId);
                 tapOnElementBasedOnLocation(element,"bottomRight");
                 for (int count=0; tapCounts>=count; count++){
+                    Thread.sleep(60);
                     ((AndroidDriver) driver).pressKeyCode(AndroidKeyCode.BACKSPACE);
                 }
                 driver.hideKeyboard();

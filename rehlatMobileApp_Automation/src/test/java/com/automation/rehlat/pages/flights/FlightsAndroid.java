@@ -21,6 +21,7 @@ public class FlightsAndroid extends FlightsBase{
     public static final String DEPARTURE_BUTTON = "com.app.rehlat:id/departureLayout";
     public static final String RETURN_BUTTON = "com.app.rehlat:id/returnDayTextView";
     public static final String MENU_BUTTON = "com.app.rehlat:id/menuclick";
+    public static final String TRIP_RADIO_BUTTON = "com.app.rehlat:id/tripradioGroup";
     public static final String DOMAIN_LIST_VIEW = "com.app.rehlat:id/domainListView";
     public static final String TEXT_VIEW = "android.widget.TextView";
     public static final String SEARCH_VIEW = "com.app.rehlat:id/dialog_search_layout";
@@ -267,6 +268,12 @@ public class FlightsAndroid extends FlightsBase{
                         Logger.logComment(" Searched Airport code - "+airportCode+ "- is not matching with the filtered result - "+airportCodeFromSearchResults+" -");
                     }
                 }
+                // This logic is an work around for android app in Samsung devices...Issue is mentioned inside the logger.logStep messages, please read them for more information..,
+                // Todo:- Discuss this issue with developers and implement final solution if there is no way to fix this issue
+                Logger.logStep("Current test running device is a Samsung device.., After navigating from FROM search list screen (or from departure calendar view) flights tab elements visibility is showing as invisible in samsung devices.., To make flights tab elements visible we are pushing the app for a second and getting it back to foreground");
+                Logger.logStep("This is just an work around yet to discuss with the developers for better solution");
+                runAppInBackGroundIfTheCurrentRunningDeviceIsSamsungDevice();
+                // The workaround logic ends here
             }else{
                 Logger.logError("Unable to tap on the airport code - " +airportCode);
             }
@@ -520,6 +527,14 @@ public class FlightsAndroid extends FlightsBase{
         try {
             if (isElementDisplayedById("com.app.rehlat:id/closeCalImageView")){
                 driver.findElementById("com.app.rehlat:id/closeCalImageView").click();
+
+                // This logic is an work around for android app in Samsung devices...Issue is mentioned inside the logger.logStep messages, please read them for more information..,
+                // Todo:- Discuss this issue with developers and implement final solution if there is no way to fix this issue
+                Logger.logStep("Current test running device is a Samsung device.., After navigating from FROM search list screen (or from departure calendar view) flights tab elements visibility is showing as invisible in samsung devices.., To make flights tab elements visible we are pushing the app for a second and getting it back to foreground");
+                Logger.logStep("This is just an work around yet to discuss with the developers for better solution");
+                runAppInBackGroundIfTheCurrentRunningDeviceIsSamsungDevice();
+                // The workaround logic ends here
+
             }else {
                 Logger.logError("Done button is not displayed in the calendar view");
             }

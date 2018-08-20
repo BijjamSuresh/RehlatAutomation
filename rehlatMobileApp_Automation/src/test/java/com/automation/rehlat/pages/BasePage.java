@@ -169,6 +169,27 @@ public class BasePage extends Base {
     }
 
 
+    /**
+     * Check the test running device is an samsung device and if it is pushing it to background for a second
+     * @throws Exception
+     */
+    public static void runAppInBackGroundIfTheCurrentRunningDeviceIsSamsungDevice() throws Exception{
+        Logger.logAction(" Checking the test running device is a samsung device");
+        try{
+        String deviceName = getAndroidDeviceId();
+        if (deviceName.equals(Labels.SAMSUNG_DEVICE_ID)){
+            Logger.logComment("Pushing the app to background");
+            driver.runAppInBackground(1);
+            Logger.logComment("Getting the app to foreground");
+        }else {
+            Logger.logStep("Current device is not an Samsung device with ID :- "+Labels.SAMSUNG_DEVICE_ID);
+        }
+    }catch (Exception exception){
+            Logger.logError("Unable to run the app in background for a second");
+        }
+    }
+
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                                                                             //iOS Methods //

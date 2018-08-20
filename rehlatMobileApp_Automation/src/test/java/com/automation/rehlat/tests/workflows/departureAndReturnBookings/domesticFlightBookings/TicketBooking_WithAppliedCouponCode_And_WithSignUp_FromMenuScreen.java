@@ -11,7 +11,7 @@ public class TicketBooking_WithAppliedCouponCode_And_WithSignUp_FromMenuScreen e
 //    public static final String  newEmailForSignUp = Labels.EMAIL_ID_SIGN_UP.replace("10","91");
 
     @Test
-    public void testTicketBookingWithAppliedCouponCodeAndWithSignUpFromMenuScreen() throws Exception{
+    public void   testTicketBookingWithAppliedCouponCodeAndWithSignUpFromMenuScreen() throws Exception{
         Logger.beginTest(" - Ticket booking with applied coupon code and with sign Up from menu screen");
 //        Labels.EMAIL_ID_SIGN_UP = newEmailForSignUp;
         createNewSignUpEmailId();
