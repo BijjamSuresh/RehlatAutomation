@@ -47,11 +47,12 @@ public class BaseTest extends Base {
     public static final String DOMESTIC_TRAVELLERS_COUNTRY_NAME = "India";
 
     public static final String KUWAIT_AIRPORT_NAME_XPATH_IN_SEARCH_RESULTS = "//XCUIElementTypeStaticText[@name=\"Kuwait - Kuwait Intl - Kuwait\"]";
-    public static final String DEPARTURE_DAY = "1";
+    public static final String DEPARTURE_DAY = "5";
     public static final String RETURN_DAY = "5";
     public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS = "2"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
     public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS_WHEN_SOLDOUT_POPUP_INTERRUPTRED = "1"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
     public static final String TESTING_BANK_CARD = "Knet Test Card [KNET1]";
+
 
 
     ////////////////////////////// Initialising The Screen Names W.R.T. The Screen Base Names //////////////////////////////////////
@@ -85,11 +86,29 @@ public class BaseTest extends Base {
         initializePageObject("paymentOptionsScreen", Labels.platform);
 
 
-//        waitTillTheSplashScreenIsInvisible();
+        waitTillTheSplashScreenIsInvisible();
         setCountryLanguageAndAirportFromAndToLabels();
+//        runTheLiveApp();
 //        acceptAutoAlertsIfDisplayed();
     }
 
+//    /**
+//     *Run the live app by pushing the testing build to background
+//     */
+//    public static void runTheLiveApp() throws Exception{
+//        try {
+////            driver.runAppInBackground(800);
+//            if (Labels.platform.equals(Labels.ANDROID)){
+//
+//            }else if (Labels.platform.equals(Labels.IOS)){
+//            {
+//
+//                }
+//            }
+//        }catch (Exception exception){
+//            Logger.logError("Unable to run the live app");
+//        }
+//    }
     /**
      * Auto accepting the alerts
      */
@@ -119,16 +138,24 @@ public class BaseTest extends Base {
      */
     public static void createNewSignUpEmailId() {
         Logger.logStep("Creating new sign up email id for the current test run");
-        try
-        {
+        Integer newEmailNumber ;
+        try {
+            String BASE_EMAIL_ID_FOR_SIGN_UP = "rehlatAutomationTestingEmail";
+            String MAIL_OPERATOR = "@gmail.com";
             String currentEmailIdForSignUp = Labels.EMAIL_ID_SIGN_UP;
-            Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(26,28));
-            String latestEmailIdNumber = String.valueOf(currentEmailIdNumber+10);
-            String latestEmailIdForSignUp = currentEmailIdForSignUp.replace(currentEmailIdForSignUp.substring(26,28),latestEmailIdNumber);
-            Labels.EMAIL_ID_SIGN_UP = latestEmailIdForSignUp;
-            Logger.logComment("Newly created email id for to the current test run is :-  "+latestEmailIdForSignUp);
+            Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(28, 30));
+            for (int index = 0; index <= 99; index++) {
+                Integer settingEmailValue = index;
+                if (settingEmailValue == currentEmailIdNumber) {
+                    newEmailNumber = settingEmailValue + 1;
+                    String newEmailId = BASE_EMAIL_ID_FOR_SIGN_UP + newEmailNumber + MAIL_OPERATOR;
+                    Labels.EMAIL_ID_SIGN_UP = newEmailId;
+                    break;
+                }
+            }
+            Logger.logComment("Newly created email id for to the current test run is :-  " + Labels.EMAIL_ID_SIGN_UP);
         }catch (Exception elementNotFound){
-            Logger.logError("Alerts are causing problems and not able to execute the test script");
+            Logger.logError("Encountered error: Unable to create new email id");
         }
     }
 

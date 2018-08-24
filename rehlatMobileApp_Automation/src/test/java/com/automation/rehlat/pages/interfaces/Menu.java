@@ -34,6 +34,11 @@ public interface Menu {
     boolean isUserSignedIn() throws Exception;
 
     /**
+     * Tap on Settings button
+     */
+    void tapOnSettingsButton() throws Exception;
+
+    /**
      * Tap on logout button
      * @throws Exception
      */

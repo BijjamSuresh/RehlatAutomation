@@ -124,7 +124,6 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 }
             }else {
                 scrollToToggleButton();
-                Thread.sleep(Labels.WAIT_TIME_MIN);
                 if (isElementDisplayedByIdWithOneTimeChecking(TOGGLE_SWITCH)){
                     WebElement toggleSwitch = driver.findElementById(TOGGLE_SWITCH);
                     String toggleSwitchValue = toggleSwitch.getText();
@@ -138,7 +137,7 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 else {
                     scrollTheScreenUpwards();
                     if (isElementDisplayedByIdWithOneTimeChecking(TOGGLE_SWITCH)){
-                        WebElement toggleSwitch = driver.findElement(By.id(TOGGLE_SWITCH));
+                        WebElement toggleSwitch = driver.findElementById(TOGGLE_SWITCH);
                         String toggleSwitchValue = toggleSwitch.getText();
                         if (toggleSwitchValue.equalsIgnoreCase(Labels.ANDROID_TOGGLE_TEXT_ON)){
                             Logger.logStep("Toggle switch is enabled and making it to disable by tapping on it");
@@ -165,7 +164,6 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
         WebElement element = null;
         while (counter < Labels.DEFAULT_SCROLL_ATTEMPTS) {
             try {
-                Thread.sleep(3000);
                 element = driver.findElementById(TOGGLE_SWITCH);
                 if (element.isDisplayed()) {
                     break;
@@ -174,7 +172,8 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 driver.swipe(507,850,507,450,Labels.SWIPE_DURATION_MIN);
                 Logger.logComment(counter + " time trying to find the element id of - " + TOGGLE_SWITCH);
             }
-            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+//            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            Thread.sleep(1000);
             counter++;
         }
         if (element.isDisplayed()) {
@@ -241,7 +240,8 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
 //            WebElement footerView = driver.findElementById("com.app.rehlat:id/footer_view");
             if (isElementDisplayedById(IN_PROGRESS_INDICATOR)){
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(IN_PROGRESS_INDICATOR)));
-            }else {
+            }
+//            else {
 //                Thread.sleep(Labels.WAIT_TIME_MIN);
                 if (isElementDisplayedById("com.app.rehlat:id/reviewbooking_price")){
                     WebElement reviewBookingPriceLabel = driver.findElementById("com.app.rehlat:id/reviewbooking_price");
@@ -256,7 +256,7 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
                 }else {
                     Logger.logError("Review booking price element name is not displayed");
                 }
-            }
+//            }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to get the displayed ticket booking value");
         }

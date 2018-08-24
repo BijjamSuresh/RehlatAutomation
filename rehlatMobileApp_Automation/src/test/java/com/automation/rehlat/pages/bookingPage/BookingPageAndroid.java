@@ -3,6 +3,7 @@ package com.automation.rehlat.pages.bookingPage;
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,8 @@ public class BookingPageAndroid extends BookingPageBase {
     public static final String APPLY_COUPON_CODE_BUTTON = "com.app.rehlat:id/coupon_apply";
     public static final String COUPON_CODE_VALIDATION_MESSAGE = "com.app.rehlat:id/coupon_validation_message";
     public static final String COUPON_INVALID_MESSAGE = "Coupon is invalid or expired";
+    public static final String ONLINE_CHECKIN_TOGGLE_BUTTON = "com.app.rehlat:id/onlinecheckin_checkbox";
+    public static final String REVIEW_BOOKING_PRICE_IN_FOOTER_VIEW_CELL = "com.app.rehlat:id/reviewbooking_price";
     public static Double displayedActualFare;
     public static Double couponAmount ;
     public static Double karamPoints;
@@ -104,7 +107,7 @@ public class BookingPageAndroid extends BookingPageBase {
                     Logger.logComment("Entering the email id:- "+Labels.EMAIL_ID_SIGN_IN);
                     WebElement textField = driver.findElement(By.id(EMAIL_FIELD));
                     tapOnElementBasedOnLocation(textField,"bottomRight");
-                    clearKeysByUsingKeycode(EMAIL_FIELD,EMAIL_FIELD.length());
+//                    clearKeysByUsingKeycode(EMAIL_FIELD,EMAIL_FIELD.length());
                     sendTextById(EMAIL_FIELD,Labels.EMAIL_ID_SIGN_IN);
                     driver.hideKeyboard();
                 }else if (emailField.equals(Labels.EMAIL_ID_SIGN_IN)){
@@ -137,7 +140,6 @@ public class BookingPageAndroid extends BookingPageBase {
                     Logger.logComment("Entering the phone number:- "+Labels.phoneNumber);
                     WebElement textField = driver.findElementById(PHONENUMBER_FIELD);
                     tapOnElementBasedOnLocation(textField,"bottomRight");
-                    clearKeysByUsingKeycode(PHONENUMBER_FIELD,PHONENUMBER_FIELD.length());
                     sendTextById(PHONENUMBER_FIELD,Labels.phoneNumber);
                     driver.hideKeyboard();
                 }else if (phoneNumberField.equals(Labels.phoneNumber)){
@@ -165,6 +167,7 @@ public class BookingPageAndroid extends BookingPageBase {
     public void tapOnContinueButton() {
         Logger.logAction("Tapping on continue button");
         try{
+            compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout(); // After iOS is implemented by "Online Check In toggle button", this method needs to be removed from here and call it as a step of TC from workflows directly
             if (isElementDisplayedById(BOOKING_PAGE_CONTINUE_BUTTON)){
                 driver.findElementById(BOOKING_PAGE_CONTINUE_BUTTON).click();
             }else{
@@ -182,13 +185,39 @@ public class BookingPageAndroid extends BookingPageBase {
     public void tapOnAdultAddTravellersDetailsButton() {
         Logger.logAction("Tapping on adult add travellers details button");
         try{
-            scrollTheScreenUpwards();
             if (isElementDisplayedById(ADULT_BUTTON)){
+                WebElement locationOfDay = driver.findElementById(ADULT_BUTTON);
+                Point table = locationOfDay.getLocation();
+                int elementYAxisValue = table.getY();
+                if (Labels.SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT <= elementYAxisValue){
+                    scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
+                }
                 driver.findElementById(ADULT_BUTTON).click();
             }else{
-                Logger.logError("Unable to tap on add travellers details button");
+                scrollToAnElementById_ANDROID(ADULT_BUTTON,true);
+                if (isElementDisplayedById(ADULT_BUTTON)){
+                    WebElement locationOfDay = driver.findElementById(ADULT_BUTTON);
+                    Point table = locationOfDay.getLocation();
+                    int elementYAxisValue = table.getY();
+                    if (Labels.SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT <= elementYAxisValue){
+                        scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
+                    }
+                    driver.findElementById(ADULT_BUTTON).click();
+                }else{
+                    scrollTheScreenDownwards();
+                    if (isElementDisplayedById(ADULT_BUTTON)){
+                        WebElement locationOfDay = driver.findElementById(ADULT_BUTTON);
+                        Point table = locationOfDay.getLocation();
+                        int elementYAxisValue = table.getY();
+                        if (Labels.SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT <= elementYAxisValue){
+                            scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
+                        }
+                        driver.findElementById(ADULT_BUTTON).click();
+                    }else{
+                        Logger.logError("Unable to tap on add travellers details button");
+                    }
+                }
             }
-
         }catch (Exception exception){
             Logger.logError("Encountered error: Add travellers details button is not displayed in the current active screen");
         }
@@ -555,5 +584,101 @@ public class BookingPageAndroid extends BookingPageBase {
             Logger.logError("Encountered error: Unable to check whether the coupon is applied or not ?");
         }
         return false;
+    }
+
+    /**
+     * Disable the online check in toggle button
+     */
+    public static void disableOnlineCheckInToggleButton(){
+        Logger.logAction("Disabling the online check in toggle button");
+        try{
+            scrollToAnElementById_ANDROID(ONLINE_CHECKIN_TOGGLE_BUTTON,true);
+            if(isElementDisplayedByIdWithOneTimeChecking(ONLINE_CHECKIN_TOGGLE_BUTTON)){
+                WebElement locationOfDay = driver.findElementById(ONLINE_CHECKIN_TOGGLE_BUTTON);
+                Point table = locationOfDay.getLocation();
+                int elementYAxisValue = table.getY();
+                if (Labels.SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT <= elementYAxisValue){
+                    scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
+                }
+                WebElement onlineCheckInToggleButton = driver.findElementById(ONLINE_CHECKIN_TOGGLE_BUTTON);
+                String checkedAttribute = onlineCheckInToggleButton.getAttribute(Labels.CHECKED_ATTRIBUTE);
+                if (checkedAttribute.equals(Labels.STATUS_TRUE)){
+                    Logger.logComment("Online check in toggle button is enabled.., Going to disable by tapping on it");
+                    onlineCheckInToggleButton.click();
+                }else {
+                    Logger.logComment("Online check in toggle button is already disabled");
+                }
+            }else {
+                scrollTheScreenUpwards();
+                if(isElementDisplayedById(ONLINE_CHECKIN_TOGGLE_BUTTON)){
+                    WebElement locationOfDay = driver.findElementById(ONLINE_CHECKIN_TOGGLE_BUTTON);
+                    Point table = locationOfDay.getLocation();
+                    int elementYAxisValue = table.getY();
+                    if (Labels.SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT <= elementYAxisValue){
+                        scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
+                    }
+                    WebElement onlineCheckInToggleButton = driver.findElementById(ONLINE_CHECKIN_TOGGLE_BUTTON);
+                    String checkedAttribute = onlineCheckInToggleButton.getAttribute(Labels.CHECKED_ATTRIBUTE);
+                    if (checkedAttribute.equals(Labels.STATUS_TRUE)){
+                        Logger.logComment("Online check in toggle button is enabled.., Going to disable by tapping on it");
+                        onlineCheckInToggleButton.click();
+                    }else {
+                        Logger.logComment("Online check in toggle button is already disabled");
+                    }
+                }else {
+                    Logger.logWarning("Online check in button is not visible in the current active screen");
+                }
+            }
+        }catch(Exception exception){
+            Logger.logError("Encountered error: Unable to disable the online check in toggle button");
+        }
+    }
+
+    /**
+     * Compare the final price displayed in footer view with the final fare displayed in offers and discounts layout
+     */
+    public static void compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout() {
+        Logger.logAction("Comparing the final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+        try{
+            disableOnlineCheckInToggleButton();
+            Double reviewBookingPriceInFooterView = getTheBookingPriceDisplayedInFooterView();
+            Logger.logComment("Review Booking price in footer view :- "+reviewBookingPriceInFooterView);
+            String finalLetterInFinalFareAmountInBookingPage = Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.substring(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.length()-1,Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.length());
+            if (finalLetterInFinalFareAmountInBookingPage.equals("0")){
+                String finalFarePayablePriceInBookingPage = Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.replace("0","");
+                Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = finalFarePayablePriceInBookingPage;
+            }
+            Logger.logComment("Final Fare displayed in the offers and discounts layout :- "+Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN);
+            if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.equals(String.valueOf(reviewBookingPriceInFooterView))){
+                Logger.logStep("Final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+            }else if(reviewBookingPriceInFooterView == Double.valueOf(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN)){
+                Logger.logStep("Final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+            }else if(reviewBookingPriceInFooterView.toString().contains(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN)){
+                Logger.logStep("Final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+            }else {
+                Logger.logError("Final price displayed in footer view is not matches with the final fare displayed in offers and discounts layout");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to compare the final price displayed in footer view with the final fare displayed in the offers and discounts layout");
+        }
+    }
+
+    /**
+     * Get the booking price displayed in the footer view layout
+     * @return
+     */
+    public static Double getTheBookingPriceDisplayedInFooterView(){
+        Logger.logAction("Getting the booking price displayed in footer view");
+        try{
+            if (isElementDisplayedById(REVIEW_BOOKING_PRICE_IN_FOOTER_VIEW_CELL)){
+                Double reviewBookingPriceInFooterView = Double.valueOf(driver.findElementById(REVIEW_BOOKING_PRICE_IN_FOOTER_VIEW_CELL).getText());
+                return reviewBookingPriceInFooterView;
+            }else {
+                Logger.logError(REVIEW_BOOKING_PRICE_IN_FOOTER_VIEW_CELL+" :- element is not displayed in the current screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the booking price displayed in footer view");
+        }
+        return null;
     }
 }

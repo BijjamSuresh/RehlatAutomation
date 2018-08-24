@@ -75,7 +75,7 @@ public class Labels extends Base{
     public static final int DIRECTION_RIGHT = 4;
 
                                                                                     ////////////////////  Number of attempts to iterate  ////////////////////
-    public static final int MIN_ATTEMPTS = 3;
+    public static final int MIN_ATTEMPTS = 2;
     public static final int DEFAULT_ATTEMPTS = 5;
     public static final int MAX_ATTEMPTS = 8;
     public static final int DEFAULT_SCROLL_ATTEMPTS = 5;
@@ -104,6 +104,7 @@ public class Labels extends Base{
     public static final String CHECKED_ATTRIBUTE = "checked";
     public static final String VISIBLE_ATTRIBUTE="visible";
     public static final String STATUS_TRUE="true";
+    public static final String STRING_NULL = "";
 
 
 
@@ -151,6 +152,7 @@ public class Labels extends Base{
     public static final String TRAVELLERS_PASSPORT_NUMBER="ASDFGHJKLZXCV";
     public static final String KNET_PAYMENT_CARD_NUMBER="0000000001";
     public static final String KNET_PAYMENT_CARD_PIN_NUMBER="1234";
+    public static final String ONE_CHARACTER_SPACE = " ";
     public static final int SCREEN_X_AXIS_SIZE_OF_RANGE_OF_20_PERCENT =481;
     public static final int SCREEN_Y_AXIS_SIZE_OF_RANGE_OF_20_PERCENT=1443;
     public static String SELECTED_SEAT_BOOKING_COST;
@@ -203,13 +205,13 @@ public class Labels extends Base{
     public static String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String FIRST_NAME = "Suresh";
     public static final String LAST_NAME = "Reddy";
-    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestEmail203@gmail.com";
+    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestingEmail40@gmail.com";
     public static final String EMAIL_ID_SIGN_IN = "rehlatAutomationTestEmail1@gmail.com";  // Always add the two digit email number so that on every test script a new email id is generated for to test sign up
     public static final String PASSWORD = "testPasswordFromLabels";
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";
     public static final String REFERRAL_CODE = "chaitu";
     public static String phoneNumber = "8050510545";
-    public static final String COUPON_CODE = "gorehlat"; // Both for international and national flights searching should be the same
+    public static final String COUPON_CODE = "MARHABA"; // Both for international and national flights searching should be the same
     public static final String IOS_APPLIED_KARAM_POINTS = "1";
 
 

@@ -15,8 +15,8 @@ public class TicketBooking_WithAppliedCouponCode_And_WithSignUp_FromMenuScreen e
     public void testTicketBookingWithAppliedCouponCodeAndWithSignUpFromMenuScreen() throws Exception{
         Logger.beginTest(" - Ticket booking with applied coupon code and with sign Up from menu screen");
         Labels.EMAIL_ID_SIGN_UP = newEmailForSignUp;
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-        FlightsScreen.selectCountryNameAndMoveToFlightsTab(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+        FlightsScreen.selectCountryNameInSelectLanguageModal(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         MenuScreen.checkMenuScreenIsDisplayed();

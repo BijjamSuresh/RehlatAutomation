@@ -74,7 +74,7 @@ public class MenuIos extends MenuBase {
     public void navigateToFlightsTab() {
         Logger.logAction("Navigating to flights tab");
         try {
-            Thread.sleep(Labels.WAIT_TIME_MIN);
+//            Thread.sleep(Labels.WAIT_TIME_MIN);
             if (isElementDisplayedByXPath(XPATH_OF_MENU_SCREEN)){
                 WebElement xpathOfMenuScreen = driver.findElementByXPath(XPATH_OF_MENU_SCREEN);
                 tapOnElementBasedOnLocation(xpathOfMenuScreen,"bottomRight");
@@ -94,7 +94,7 @@ public class MenuIos extends MenuBase {
     public boolean isUserSignedIn() {
         Logger.logAction("Checking user is signed in or not ?");
         try {
-            if (isElementDisplayedById(LOGOUT_BUTTON)){
+            if (! (isElementDisplayedByName(SIGN_IN_OR_SIGN_UP_BUTTON))){
                 Logger.logComment("User is signed in");
                 return true;
             }else {
@@ -105,6 +105,32 @@ public class MenuIos extends MenuBase {
             Logger.logError("encountered error: Unable to check the user signed in status");
         }
         return false;
+    }
+
+    /**
+     * Tap on Settings button
+     */
+    @Override
+    public void tapOnSettingsButton() throws Exception{
+        Logger.logAction("Tapping on settings button");
+        try {
+//            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){
+//                if (isElementDisplayedById(SETTINGS_OPTION)){
+//                    driver.findElementById(SETTINGS_OPTION).click();
+//                }else {
+//                    scrollTheMenuViewUp(SCROLL_VIEW_IN_MENU_SCREEN);
+//                    if (isElementDisplayedById(SETTINGS_OPTION)) {
+//                        driver.findElementById(SETTINGS_OPTION).click();
+//                    }else {
+//                        Logger.logError(SETTINGS_OPTION+" :- element name is not displayed in the current active screen");
+//                    }
+//                }
+//            }else {
+//                Logger.logError(SCROLL_VIEW_IN_MENU_SCREEN+" :- element id is not displayed in the current active screen");
+//            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: unable to tap on the logout button");
+        }
     }
 
     /**

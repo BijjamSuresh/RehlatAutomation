@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.List;
+
 import static com.automation.rehlat.pages.reviewBooking.ReviewBookingIos.CONTINUE_BUTTON;
 
 public class BookingPageIos extends BookingPageBase {
@@ -18,7 +20,6 @@ public class BookingPageIos extends BookingPageBase {
     public static final String OK_BUTTON = "OK";
     public static final String CONTACT_DETAILS_VIEW ="Contact Details";
     public static final String SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON = "Sign in for faster bookings";
-
     public static final String ACTUAL_DISPLAYING_FARE = "com.app.rehlat:id/traveller_detail_onward_price_strikedoff";
     public static final String APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT = "(-) KWD ";
     public static final String KARAM_POINTS = "com.app.rehlat:id/walletPointsTextView";
@@ -26,9 +27,10 @@ public class BookingPageIos extends BookingPageBase {
     public static final String XPATH_OF_COUPON_CODE_TEXT_VIEW = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTable/XCUIElementTypeCell[2]/XCUIElementTypeTextField";
     public static final String APPLY_COUPON_CODE_BUTTON = "Apply";
     public static final String COUPON_CODE_FAILED_LABEL = "Coupon is invalid or expired";
-//    public static final String COUPON_CODE_SUCCESS_LABEL = "Apply";
+    public static final String XPATH_OF_FOOTER_VIEW_LAYOUT = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[3]";
     public static final String XPATH_OF_OFFERS_AND_DISCOUNTS_VIEW = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTable/XCUIElementTypeCell[2]";
     public static final String KARAM_POINTS_TOGGLE_BUTTON = "XCUIElementTypeSwitch";
+    public static final String XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[3]";
 
 
     // These are used in multiple methods, be on caution while editing these values
@@ -96,6 +98,8 @@ public class BookingPageIos extends BookingPageBase {
                     if (phoneNumberField.equals(PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD)){
                         sendTextByXpath(XPATH_OF_PHONENUMBER_FIELD,Labels.phoneNumber);
                         closeTheKeyboard_iOS();
+                    }else {
+                        Logger.logComment(Labels.phoneNumber+" - is already entered in the in the phone number text field");
                     }
                 }
             }
@@ -111,6 +115,7 @@ public class BookingPageIos extends BookingPageBase {
     public void tapOnContinueButton() {
         Logger.logAction("Tapping on continue button");
         try{
+//            compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout(); // After iOS is implemented by "Online Check In toggle button", this method needs to be removed from here and call it as a step of TC from workflows directly
             if (isElementDisplayedByName(CONTINUE_BUTTON)){
                 driver.findElementByName(CONTINUE_BUTTON).click();
             }else{
@@ -588,5 +593,63 @@ public class BookingPageIos extends BookingPageBase {
             Logger.logError("encountered error: unable to tap on apply coupon code button");
         }
         return false;
+    }
+
+    /**
+     * Compare the final price displayed in footer view with the final fare displayed in offers and discounts layout
+     */
+    public static void compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout() {
+        Logger.logAction("Comparing the final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+        try{
+            Double reviewBookingPriceInFooterView = getTheBookingPriceDisplayedInFooterView();
+            if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.equals(String.valueOf(reviewBookingPriceInFooterView))){
+                Logger.logStep("Final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+            }else if(reviewBookingPriceInFooterView == Double.valueOf(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN)){
+                Logger.logStep("Final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+            }else if(reviewBookingPriceInFooterView.toString().contains(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN)){
+                Logger.logStep("Final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
+            }else {
+                Logger.logError("Final price displayed in footer view is not matches with the final fare displayed in offers and discounts layout");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to compare the final price displayed in footer view with the final fare displayed in the offers and discounts layout");
+        }
+    }
+
+    /**
+     * Get the booking price displayed in the footer view layout
+     * @return
+     */
+    public static Double getTheBookingPriceDisplayedInFooterView(){
+        Logger.logAction("Getting the booking price displayed in footer view");
+        try{
+            Thread.sleep(1000);
+//            if (isElementDisplayedByXPath(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE)){
+//                String xPathOfReviewBookingPrice = XPATH_OF_FOOTER_VIEW_LAYOUT+"/XCUIElementTypeStaticText[2]"; // "indexOfFinalFareElementXPath" is the hard coded value of final fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
+//                if (isElementDisplayedByXPath(xPathOfReviewBookingPrice)){
+                WebElement footerView = driver.findElementByXPath(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE);
+                List<WebElement> xcuiElementTypeStaticText = footerView.findElements(By.className("XCUIElementTypeStaticText"));
+                for (int index=0;index<=xcuiElementTypeStaticText.size();index++){
+                    String eachValueInFooterView = xcuiElementTypeStaticText.get(index).getAttribute("name");
+                    if (eachValueInFooterView.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
+                        String actualAmountPrice = eachValueInFooterView.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "");
+                        Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+                        return Double.valueOf(actualAmountPrice);
+                    }
+                }
+//                    String ActualFareWithCurrentName = driver.findElementByXPath(xPathOfReviewBookingPrice).getAttribute(Labels.VALUE_ATTRIBUTE);
+//                    String actualAmountPrice = ActualFareWithCurrentName.replace("KWD ", "");
+//                    return Double.valueOf(actualAmountPrice);
+//                }else {
+//                    Logger.logError(xPathOfReviewBookingPrice+" xpath is incorrect..,Please re check the xpath of review booking price in footer view");
+//                }
+
+//            }else {
+//                Logger.logError(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE+" :- Xpath of footer view is not displayed in the current screen");
+//            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the booking price displayed in footer view");
+        }
+        return null;
     }
 }

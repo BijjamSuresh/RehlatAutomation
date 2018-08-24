@@ -204,7 +204,7 @@ public class Base {
      * Gets the os version on which the script is run for iOS
      * @return String version of the ios device
      */
-    public static String getOsVersionIosOnly() throws Exception {
+    public static String getOsVersionIosOnly() {
         try{
             String commandArrayToListIosDevices[] = General.createArrayOfWordFromString(Labels.TERMINAL_COMMAND_LISTING_CONNECTED_IOS_DEVICES);
             String terminalOutput = General.executeTerminalCommandArray(commandArrayToListIosDevices);
@@ -256,23 +256,23 @@ public class Base {
         WebElement element;
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
-                if (Labels.platform.equals(Labels.ANDROID)) {
-                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
-                } else {
+//                if (Labels.platform.equals(Labels.ANDROID)) {
+//                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
+//                } else {
                     element = driver.findElementByName(elementName);
-                    Logger.logComment(elementName + " - element name is displayed and moving forward to next step");
-                    return true;
-                }
+//                    return true;
+//                }
                 if (element.isDisplayed()) {
+                    Logger.logComment(elementName + " - element name is displayed and moving forward to next step");
                     return true;
                 }
             } catch (Exception e) {
                Logger.logComment(counter + " time trying to find the element name of - " + elementName);
             }
-            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
         }
-        Logger.logWarning(elementName + " - element name is not displayed in the current active screen");
+        Logger.logComment(elementName + " - element name is not displayed in the current active screen");
         return false;
     }
 
@@ -292,7 +292,41 @@ public class Base {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementId + "\")");
 ////                    return true;
 //                } else {
-                    element = driver.findElement(By.id(elementId));
+                    element = driver.findElementById(elementId);
+//                    return true;
+//                }
+                if (element.isDisplayed()) {
+                    Logger.logComment(elementId + " - element id is displayed and moving forward to next step");
+                    return true;
+                }
+            } catch (Exception e) {
+                Logger.logComment(counter + " time trying to find the element id of - " + elementId);
+            }
+            Thread.sleep(Labels.WAIT_TIME_MIN);
+            counter++;
+        }
+        Logger.logWarning(elementId + " - element id is not displayed in the current active screen");
+        return false;
+    }
+
+
+    /**
+     * Verify element is displayed in screen using element id for ios and android.
+     * @param elementId element name for ios and element text for android.
+     * @return status returns true if element displayed else false.
+     * @throws Exception
+     */
+    public static boolean isElementDisplayedByAccessibilityId(String elementId) throws Exception {
+        Logger.logAction("Checking - "+ elementId+" - element id is displayed");
+        int counter = 0;
+        WebElement element = null;
+        while (counter < 1) {
+            try {
+//                if (Labels.platform.equals(Labels.ANDROID)) {
+//                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementId + "\")");
+////                    return true;
+//                } else {
+                element = driver.findElementByAccessibilityId(elementId);
 //                    return true;
 //                }
                 if (element.isDisplayed()) {
@@ -572,14 +606,14 @@ public class Base {
         int counter = 0;
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
-                WebElement status = driver.findElement(By.xpath(elementPath));
+                WebElement status = driver.findElementByXPath(elementPath);
                 if (status.isDisplayed()) {
                     return true;
                 }
             } catch (Exception e) {
                 Logger.logComment(counter + " time trying to find " + elementPath);
             }
-            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
         }
            return false;
@@ -1333,12 +1367,12 @@ public class Base {
         WebElement element = null;
         String elementVisibility = null;
         try {
-            if (Labels.platform.equals(Labels.ANDROID)) {
-                element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + xpath + "\")");
-            } else {
+//            if (Labels.platform.equals(Labels.ANDROID)) {
+//                element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + xpath + "\")");
+//            } else {
                 element = driver.findElementByXPath(xpath);
                 elementVisibility = element.getAttribute(Labels.VISIBLE_ATTRIBUTE);
-            }
+//            }
             if (elementVisibility.equals(true)) {
                 Logger.logComment(xpath + " - XPath is displayed, visible and moving to next test step");
                 return true;
@@ -1445,7 +1479,7 @@ public class Base {
     /**
      * * This method verifies that the key board is displayed or not
      */
-    public static boolean isKeyboardDisplayed() throws Exception{
+    public static boolean isKeyboardDisplayed() {
         try {
             if(Labels.platform.equals(Labels.ANDROID)) {
                 String deviceId = getAndroidDeviceId();
@@ -1602,7 +1636,7 @@ public class Base {
         WebElement element;
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
-                element = driver.findElement(By.xpath(elementXpath));
+                element = driver.findElementByXPath(elementXpath);
                 boolean status = element.isDisplayed();
                 if (status) {
                     element.clear();
@@ -1876,7 +1910,8 @@ public class Base {
             driver.runAppInBackground(timeLimit);
             Logger.logStep("App is suspended to background for time limit of " + timeLimit + " seconds");
         }else if (Labels.platform.equals(ANDROID)){
-            Logger.logError("Please write the code for to suspend the app in Android devices");
+            driver.runAppInBackground(timeLimit);
+            Logger.logStep("App is suspended to background for time limit of " + timeLimit + " seconds");
         } else{
             Logger.logError("Platform of the connected device is neither Android or iOS");
         }
@@ -1905,10 +1940,10 @@ public class Base {
         Logger.logAction("Clearing the keys by using keycode");
         try {
             if (Labels.platform.equals(Labels.ANDROID)){
-                WebElement element = driver.findElementById(elementId);
+                WebElement element = driver.findElement(By.id(elementId));
                 tapOnElementBasedOnLocation(element,"bottomRight");
                 for (int count=0; tapCounts>=count; count++){
-                    Thread.sleep(60);
+                    Thread.sleep(1000);
                     ((AndroidDriver) driver).pressKeyCode(AndroidKeyCode.BACKSPACE);
                 }
                 driver.hideKeyboard();

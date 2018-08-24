@@ -43,6 +43,36 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     }
 
     /**
+     * Accept the auto fill populate modal if displayed
+     */
+    @Override
+    public boolean acceptAutoFillPopulateModalIfDisplayed() {
+        Logger.logAction("Accepting the auto fill popup if displayed");
+        try{
+            if (isElementDisplayedByClassName("XCUIElementTypeSheet")){
+                WebElement popUpModal = driver.findElementByClassName("XCUIElementTypeSheet");
+                String popUpModalTitle = popUpModal.findElement(By.className("XCUIElementTypeStaticText")).getAttribute("name");
+                if (popUpModalTitle.equals("Populate the fields with your previous inputs?")){
+                    Logger.logStep("Auto fill popup modal is displayed and going to accept it");
+                    if (isElementDisplayedByName("Yes")){
+                        driver.findElementByName("Yes").click();
+                        return true;
+                    }else{
+                        Logger.logError("Button with - Yes - name is not displayed in the popup");
+                    }
+                }else{
+                    Logger.logError("Auto fill PopUp is not displayed but a popup is displayed with different title");
+                }
+            } else {
+                Logger.logComment("PopUp modal is not displayed in the current active screen and moving to next test step");
+                return false;
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to decline the auto fill popup ");
+        }
+        return false;
+    }
+    /**
      * Decline the auto fill populate modal if displayed
      */
     @Override
@@ -69,6 +99,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
             Logger.logError("Encountered error: Unable to decline the auto fill popup ");
         }
     }
+
 
     /**
      * Enter adult travellers details

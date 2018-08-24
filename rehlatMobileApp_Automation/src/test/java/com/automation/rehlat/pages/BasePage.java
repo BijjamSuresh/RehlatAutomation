@@ -14,7 +14,9 @@ import com.automation.rehlat.pages.signIn.SignInBase;
 import com.automation.rehlat.pages.signUp.SignUpBase;
 import com.automation.rehlat.pages.travellerDetails.TravellerDetailsBase;
 import io.appium.java_client.TouchAction;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class BasePage extends Base {
 
@@ -168,26 +170,102 @@ public class BasePage extends Base {
         }
     }
 
-
     /**
-     * Check the test running device is an samsung device and if it is pushing it to background for a second
+     * Wait till the progress indicator is invisible
      * @throws Exception
      */
-    public static void runAppInBackGroundIfTheCurrentRunningDeviceIsSamsungDevice() throws Exception{
-        Logger.logAction(" Checking the test running device is a samsung device");
-        try{
-        String deviceName = getAndroidDeviceId();
-        if (deviceName.equals(Labels.SAMSUNG_DEVICE_ID)){
-            Logger.logComment("Pushing the app to background");
-            driver.runAppInBackground(1);
-            Logger.logComment("Getting the app to foreground");
-        }else {
-            Logger.logStep("Current device is not an Samsung device with ID :- "+Labels.SAMSUNG_DEVICE_ID);
-        }
-    }catch (Exception exception){
-            Logger.logError("Unable to run the app in background for a second");
+    public static void waitTillTheProgressIndicatorIsInvisibleById_ANDROID( String parsingID) throws Exception{
+        int count =0;
+        while (count<=Labels.MIN_ATTEMPTS){
+            try{
+                if (isElementDisplayedById(parsingID)){
+                    Logger.logStep("Waiting till the activity indicator is invisible in the current active screen");
+                    driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(parsingID)));
+                }else {
+                    Logger.logStep("Activity indicator is not displayed in the current active screen");
+                }
+            }catch (Exception exception){
+                Logger.logComment(count+" :- time trying to find the element name");
+            }
+            Thread.sleep(Labels.WAIT_TIME_MIN);
+            count++;
         }
     }
+
+    /**
+     * Scroll to an element by id // Scrolling the screen is based on screen size which are hard coded values
+     * @param down
+     */
+    public static void scrollToAnElementById_ANDROID(String parsingId,boolean down){
+        try {
+            if(!isElementDisplayedByIdWithOneTimeChecking(parsingId)) {
+                int counter = 0;
+                if (down) {
+                    while (!isElementDisplayedByIdWithOneTimeChecking(parsingId)) {
+                        Logger.logComment(counter + "  time trying to find the calender month and year - " + parsingId +" - by scrolling down ");
+                        scrollTheCalenderPageUpByAMonthGap_Android(); // scrolling values inside the method are hardcoded for all the screens
+                        counter++;
+                        if (counter > 5) {
+                            break;
+                        }
+                    }
+                    if (!isElementDisplayedByIdWithOneTimeChecking(parsingId)) {
+                        while (!isElementDisplayedByIdWithOneTimeChecking(parsingId)) {
+                            Logger.logComment(counter + "  time trying to find the calender month and year - " + parsingId +" - by scrolling up ");
+                            scrollTheCalenderPageDownAMonthGap_Android(); // scrolling values inside the method are hardcoded for all the screens
+                            counter++;
+                            if (counter > 10) {
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    while (!isElementDisplayedByIdWithOneTimeChecking(parsingId)) {
+                        Logger.logComment(counter + "  time trying to find the calender month and year - " + parsingId +" - by scrolling up ");
+                        scrollTheCalenderPageDownAMonthGap_Android(); // scrolling values inside the method are hardcoded for all the screens
+                        counter++;
+                        if (counter > 5) {
+                            break;
+                        }
+                    }
+                    if (!isElementDisplayedByIdWithOneTimeChecking(parsingId)) {
+                        Logger.logComment(counter + "  time trying to find the calender month and year - " + parsingId +" - by scrolling down ");
+                        while (!isElementDisplayedById(parsingId)) {
+                            scrollTheCalenderPageUpByAMonthGap_Android(); // scrolling values inside the method are hardcoded for all the screens
+                            counter++;
+                            if (counter > 10) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }else {
+                Logger.logComment(parsingId+ " - element is already displayed");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to find the element name in the current active screen :- " +parsingId);
+        }
+    }
+
+//    /**
+//     * Check the test running device is an samsung device and if it is pushing it to background for a second
+//     * @throws Exception
+//     */
+//    public static void runAppInBackGroundIfTheCurrentRunningDeviceIsSamsungDevice() throws Exception{
+//        Logger.logAction(" Checking the test running device is a samsung device");
+//        try{
+////        String deviceName = getAndroidDeviceId();
+//        if (Labels.platform.equals(Labels.ANDROID)){
+//            Logger.logComment("Pushing the app to background");
+//            driver.runAppInBackground(1);
+//            Logger.logComment("Getting the app to foreground");
+//        }else {
+//            Logger.logStep("Current device is not an Android device with ID :- "+Labels.SAMSUNG_DEVICE_ID);
+//        }
+//    }catch (Exception exception){
+//            Logger.logError("Unable to run the app in background for a second");
+//        }
+//    }
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,6 +286,7 @@ public class BasePage extends Base {
                 if (toggleSwitchValue.equals(Labels.VALUE_ONE)){
                     Logger.logStep("Toggle switch is enabled and making it to disable by tapping on it");
                     driver.findElementByClassName(TOGGLE_SWITCH).click();
+                    Logger.logStep("Toggle switched is disabled");
                 }else if (toggleSwitchValue.equals(Labels.VALUE_ZERO)){
                     Logger.logStep("Toggle switch is already disabled");
                 }
@@ -274,6 +353,28 @@ public class BasePage extends Base {
         }
     }
 
+    /**
+     * Wait till the progress indicator is invisible
+     * @throws Exception
+     */
+    public static void waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(String parsingClassName) throws Exception{
+        int count =0;
+        while (count<=Labels.MIN_ATTEMPTS){
+            try{
+                if (isElementDisplayedByClassName(parsingClassName)){
+                    Logger.logStep("Waiting till the activity indicator is invisible in the current active screen");
+                    driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(parsingClassName)));
+                }else {
+                    Logger.logStep("Activity indicator is not displayed in the current active screen");
+                }
+            }catch (Exception exception){
+                Logger.logComment(count+" :- time trying to find the element name");
+            }
+            Thread.sleep(Labels.WAIT_TIME_MIN);
+            count++;
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                                                                             //Common Methods //
@@ -288,6 +389,18 @@ public class BasePage extends Base {
             TouchAction action = new TouchAction(driver);
             Thread.sleep(Labels.WAIT_TIME_MIN);
             action.press(459, 658).moveTo(454, 600).release().perform();
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to scroll the screen");
+        }
+    }
+    /**
+     * Scroll the screen upwards
+     */
+    public static void scrollTheScreenDownwards() {
+        try {
+            TouchAction action = new TouchAction(driver);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
+            action.press(459, 600).moveTo(454, 630).release().perform();
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to scroll the screen");
         }

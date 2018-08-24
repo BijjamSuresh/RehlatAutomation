@@ -15,6 +15,11 @@ public interface TravellersDetails {
     void declineAutoFillPopulateModalIfDisplayed() throws Exception;
 
     /**
+     * Accept the auto fill populate modal if displayed
+     */
+    boolean acceptAutoFillPopulateModalIfDisplayed();
+
+    /**
      * Enter adult travellers details
      * @throws Exception
      */

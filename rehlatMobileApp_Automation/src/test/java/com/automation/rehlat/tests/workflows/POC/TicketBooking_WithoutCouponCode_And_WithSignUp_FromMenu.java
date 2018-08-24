@@ -15,8 +15,8 @@ public class TicketBooking_WithoutCouponCode_And_WithSignUp_FromMenu extends Bas
     public void testTicketBookingWithoutCouponCodeAndWithSignUpFromMenu() throws Exception{
         Logger.beginTest("- Ticket booking without coupon code and with sign up from menu");
         Labels.EMAIL_ID_SIGN_UP = newEmailForSignUp;
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-        FlightsScreen.selectCountryNameAndMoveToFlightsTab(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+        FlightsScreen.selectCountryNameInSelectLanguageModal(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         MenuScreen.checkMenuScreenIsDisplayed();

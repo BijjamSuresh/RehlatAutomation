@@ -90,8 +90,12 @@ public class ReviewBookingIos extends ReviewBookingBase {
     public void disableSecurityCheckInToggle() {
         Logger.logAction("Disabling the security check in toggle");
         try {
-            scrollDown();
-            disableToggleSwitch_iOS();
+            if (isElementEnabledByClassName(TOGGLE_SWITCH)){
+                disableToggleSwitch_iOS();
+            }else {
+                scrollDown();
+                disableToggleSwitch_iOS();
+            }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to disable the security toggle switch");
         }
@@ -102,6 +106,7 @@ public class ReviewBookingIos extends ReviewBookingBase {
      */
     @Override
     public void compareTheSelectedBookingSeatCostInSearchResultsScreenDisplayedInReviewBookingScreen() {
+        Logger.logAction("Comparing the selected booking seat cost in search results screen displayed in review booking screen");
         String bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen;
         try {
              bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen = getTheDisplayedTicketBookingValue();
@@ -115,7 +120,7 @@ public class ReviewBookingIos extends ReviewBookingBase {
                 Logger.logComment("Booking seat cost in Review booking screen : "+Labels.SELECTED_SEAT_BOOKING_COST + "\n" +"        -> Booking seat cost in Flights Search results screen :- "+bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen);
                 Logger.logStep("Selected seat booking cost is not matches in review booking screen and in search results screen.., So checking the booking flight cost again by disabling the toggle button");
                 disableSecurityCheckInToggle();
-                Thread.sleep(Labels.WAIT_TIME_MIN);
+//                Thread.sleep(Labels.WAIT_TIME_MIN);
                 bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen = getTheDisplayedTicketBookingValue();
                 if (bookingSeatCostWithCurrencyTypeDisplayedInReviewBookingScreen.contains(Labels.SELECTED_SEAT_BOOKING_COST)){
                     String bookingCostIncludingCurrencyName = Labels.SELECTED_SEAT_BOOKING_COST;
@@ -139,6 +144,7 @@ public class ReviewBookingIos extends ReviewBookingBase {
      * @throws Exception
      */
     public static String getTheDisplayedTicketBookingValue() throws Exception{
+        Logger.logAction("Getting the ticket cost displayed at footer view of the screen");
         String flightCellTypeText = null;
         WebElement bookingFlightCell;
         WebElement flightCellType;
@@ -149,24 +155,33 @@ public class ReviewBookingIos extends ReviewBookingBase {
         for (cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++){
             flightCellType = flightCellDetails.get(cellIndex);
             flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
-            if (flightCellTypeText.contains(".")){
-                Logger.logComment("Displayed booking cost is: " +flightCellTypeText);
-                return flightCellTypeText;
+            if (flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE) && flightCellTypeText.contains(".")){
+                String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "").trim();
+                Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+                return actualAmountPrice;
+            }else if(flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
+                String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "").trim();
+                Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+                return actualAmountPrice;
             }else if(flightCellTypeText.contains("updating...") || flightCellTypeText.contains("updating.") || flightCellTypeText.contains("updating..")){
-                Thread.sleep(Labels.WAIT_TIME_DEFAULT);
-                Logger.logStep("Booking flight cost is not displayed, price label is still loading");
-                bookingFlightCell = driver.findElementByXPath("//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]");
-                flightCellDetails = bookingFlightCell.findElements(By.className("XCUIElementTypeStaticText"));
-                for (cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++) {
-                    flightCellType = flightCellDetails.get(cellIndex);
-                    flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
-                    if (flightCellTypeText.contains(".")){
-                        Logger.logComment("Displayed booking cost is: " +flightCellTypeText);
-                        return flightCellTypeText;
-                    }else{
-                        Logger.logError("Booking flight cost is not displayed in the current active screen");
-                    }
-                }
+//                Thread.sleep(Labels.WAIT_TIME_MIN);
+//                Logger.logStep("Booking flight cost is not displayed, price label is still loading");
+//                bookingFlightCell = driver.findElementByXPath("//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]");
+//                flightCellDetails = bookingFlightCell.findElements(By.className("XCUIElementTypeStaticText"));
+//                for (cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++) {
+//                    flightCellType = flightCellDetails.get(cellIndex);
+//                    flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
+//                    if (flightCellTypeText.contains(".")){
+//                        Logger.logComment("Displayed booking cost is: " +flightCellTypeText);
+//                        return flightCellTypeText;
+//                    } else if(flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
+//                        String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "").trim();
+//                        Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+//                        return actualAmountPrice;
+//                    }else{
+//                        Logger.logError("Booking flight cost is not displayed in the current active screen");
+//                    }
+//                }
             }else
             {
                 Logger.logStep(cellIndex+" time finding the booking flight cost");

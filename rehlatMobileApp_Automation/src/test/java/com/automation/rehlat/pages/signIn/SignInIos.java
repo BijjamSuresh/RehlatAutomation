@@ -41,9 +41,10 @@ public class SignInIos extends SignInBase {
     public void declineTheTouchIdAccessSetUpPopupIfDisplayed() {
         Logger.logAction("Declining the touch id access popup if displayed");
         try {
+            Thread.sleep(2000);
             if (isElementDisplayedByName(TOUCH_ID_ACCESS_MODAL_TITLE)){
                 Logger.logStep("Touch id access popup is displayed and going to decline it by tapping on no button");
-                driver.findElement(By.name(NO_BUTTON_ON_TOUCH_ID_ACCESS_MODAL)).click();
+                driver.findElementByName(NO_BUTTON_ON_TOUCH_ID_ACCESS_MODAL).click();
             }else {
                 Logger.logComment("Touch id access alert is not displayed");
             }
@@ -127,7 +128,7 @@ public class SignInIos extends SignInBase {
         {
             if (isElementDisplayedByName(LOGIN_BUTTON)){
                 driver.findElement(By.name(LOGIN_BUTTON)).click();
-                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
+                waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
             }else {
                 Logger.logError(LOGIN_BUTTON+" - element name is not displayed in the current active screen");
             }

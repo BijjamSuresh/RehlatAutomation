@@ -37,18 +37,19 @@ public class FlightsIos extends FlightsBase {
      * Check select language modal is displayed
      */
     @Override
-    public void checkSelectLanguageModalIsDisplayed() {
-        Logger.logAction("checking the select language modal is displayed or not");
+    public boolean isSelectLanguageModalIsDisplayed() {
+        Logger.logAction("checking the select language modal is displayed or not ?");
         try{
             if (isElementDisplayedByName(SELECT_LANGUAGE)){
                 Logger.logComment("Select Language modal is displayed");
+                return true;
             }else {
-                Logger.logWarning("Select Language modal is not displayed");
+                return false;
             }
-
         }catch (Exception e){
             Logger.logWarning("Select Language Modal is not displayed");
         }
+        return false;
     }
 
     /**
@@ -98,8 +99,8 @@ public class FlightsIos extends FlightsBase {
     public void selectCountryOfUser(String userCountryName) {
         Logger.logAction("selecting the country of user");
         try{
-            if (userCountryName.equals("INDIA")){
-                if (isElementDisplayedByName("INDIA")|| isElementDisplayedByName("OTHER")){
+            if (userCountryName.equals(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)){
+                if (isElementDisplayedByName(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)|| isElementDisplayedByName("OTHER")){
                     Logger.logComment("Tapping on element - " +userCountryName);
                     driver.findElementByName(userCountryName).click();
                 }else {
@@ -136,12 +137,12 @@ public class FlightsIos extends FlightsBase {
      * @throws Exception
      */
     @Override
-    public void selectCountryNameAndMoveToFlightsTab(String countryName) throws Exception{
-        if (isElementDisplayedByName(SELECT_LANGUAGE)){
+    public void selectCountryNameInSelectLanguageModal(String countryName) throws Exception{
+        if (isSelectLanguageModalIsDisplayed()){
             selectCountryOfUser(countryName);
             tapOnContinueButton();
         }else{
-            Logger.logComment("Select language modal is not displayed and moving to next test step");
+            Logger.logStep("Select language modal is not displayed and moving to next test step");
         }
     }
 
@@ -206,6 +207,7 @@ public class FlightsIos extends FlightsBase {
     public void checkSearchViewScreenIsDisplayed() {
         Logger.logAction("Checking search view screen is displayed or not?");
         try{
+            // Below if condition is added because on first launch loading indicator is displaying after tapping on FROM text field
             if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
                 isElementDisplayedByName(SEARCH_VIEW);
@@ -348,7 +350,7 @@ public class FlightsIos extends FlightsBase {
                         }
                     }else{
                     Logger.logWarning("Two accurate dates are displayed in the departure calender, so tapping on nearest possible date");
-                        scrollToAnElementByName(departureMonthAndYear,true);
+                    scrollToAnElementByName(departureMonthAndYear,true);
                     if (isElementDisplayedByName(departureDay)) {
                         driver.findElementByName(departureDay).click();
                     }else {

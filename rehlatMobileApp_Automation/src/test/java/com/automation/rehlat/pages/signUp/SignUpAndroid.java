@@ -20,7 +20,6 @@ public class SignUpAndroid extends SignUpBase {
     public static final String REFERRAL_CODE_TEXT_FIELD = "com.app.rehlat:id/signupreferalcodeEditText";
     public static final String SELECT_COUNTRY_TEXT_VIEW = "android.widget.TextView";
     public static final String XPATH_OF_SELECT_COUNTRY_VIEW_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[";
-    public static final String SIGN_IN_PROGRESS_INDICATOR = "com.app.rehlat:id/signin_progressbar";
 
 
 
@@ -220,7 +219,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(SIGN_UP_BUTTON)){
                 driver.findElement(By.id(SIGN_UP_BUTTON)).click();
-                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(SIGN_IN_PROGRESS_INDICATOR)));
+                waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
                 declineTheSyncPreviousTravellersDataModalView_Android();
             }else {
                 Logger.logComment(SIGN_UP_BUTTON+" - element name is not displayed in the current active screen");

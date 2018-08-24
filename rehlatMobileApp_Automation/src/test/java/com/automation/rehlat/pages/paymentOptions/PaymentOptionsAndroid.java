@@ -38,7 +38,6 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public static final String POST_TRANSACTIONS_SCREEN = "form1";
     public static final String FINAL_AMOUNT_PAYABLE_LINEAR_LAYOUT = "com.app.rehlat:id/totalAmoutPayableLinearLayout";
     public static final String FINAL_AMOUNT_PAYABLE_PRICE = "com.app.rehlat:id/totalAmountPayablePrice";
-
     public static final String XPATH_OF_KNET_PAYMENT_CELL = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout";
     public static final String XPATH_OF_KNET_PAYMENT_CELL_NAME = XPATH_OF_KNET_PAYMENT_CELL+"/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TextView";
     public static final String XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[";
@@ -49,7 +48,8 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public void checkPaymentOptionsScreenIsDisplayed() {
         Logger.logAction("Checking payment option screen is displayed or not ?");
         try{
-            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
+            waitTillTheProgressIndicatorIsInvisibleById_ANDROID(ACTIVITY_INDICATOR);
+//            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
             acceptTheFareDifferAlert();
             Logger.logComment("Checking payment option screen is displayed or not ?");
             if (isElementDisplayedById(PAYMENT_OPTIONS_TITLE)){
@@ -82,22 +82,30 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
 
     /**
      * Compare the final payment displayed in payment checkout screen with the amount displayed in review booking screen
-     * @throws Exception
      */
     @Override
-    public void compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen() throws Exception{
+    public void compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen() {
+        String finalAmountPayablePriceInPaymentCheckOutScreen;
         Logger.logAction("Comparing the final payment displayed in payment checkout screen with the amount displayed in review booking screen");
         try {
             if (isElementDisplayedById(FINAL_AMOUNT_PAYABLE_LINEAR_LAYOUT)){
                 Logger.logAction("Total amount payable price linear layout is displayed");
                 if (isElementDisplayedById(FINAL_AMOUNT_PAYABLE_PRICE)){
-                    String finalAmountPayablePriceInPaymentCheckOutScreen = driver.findElementById(FINAL_AMOUNT_PAYABLE_PRICE).getText();
+                    finalAmountPayablePriceInPaymentCheckOutScreen = driver.findElementById(FINAL_AMOUNT_PAYABLE_PRICE).getText().trim();
+                    String finalLetterInFinalAmountPayablePriceInPaymentCheckOutScreen = finalAmountPayablePriceInPaymentCheckOutScreen.substring(finalAmountPayablePriceInPaymentCheckOutScreen.length()-1,finalAmountPayablePriceInPaymentCheckOutScreen.length());
+                    if (finalLetterInFinalAmountPayablePriceInPaymentCheckOutScreen.equals("0")){
+                        finalAmountPayablePriceInPaymentCheckOutScreen = finalAmountPayablePriceInPaymentCheckOutScreen.replace("0","");
+                    }
                     Logger.logComment("Final Amount displayed in the payment check out screen is :- "+finalAmountPayablePriceInPaymentCheckOutScreen);
                     Logger.logComment("Booking cost displayed in review booking screen is :- "+Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN);
-                    if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN == finalAmountPayablePriceInPaymentCheckOutScreen){
+                    if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN .equals(String.valueOf(finalAmountPayablePriceInPaymentCheckOutScreen))){
+                        Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+                    }else if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN == finalAmountPayablePriceInPaymentCheckOutScreen){
+                        Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+                    }else if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN .contains(finalAmountPayablePriceInPaymentCheckOutScreen)){
                         Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
                     }else {
-                        Logger.logError("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+                        Logger.logError("Final Amount displayed in the payment check out screen is not matches with booking cost displayed in review booking screen");
                     }
                 }else {
                     Logger.logError(FINAL_AMOUNT_PAYABLE_PRICE+" :- Element id is not displaying in payment checkout screen");
@@ -109,6 +117,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
             Logger.logError("Encountered error: Unable to compare the final payment price in payment list screen with the price dispalyed in review booking screen");
         }
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                                                                                         //** KNET PAYMENT METHODS **\\
@@ -125,7 +134,6 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                 WebElement paymentGateWayName = driver.findElementByXPath(XPATH_OF_KNET_PAYMENT_CELL_NAME); // Getting the value of KNET payment cell name
                 if (paymentGateWayName.getText().equals("Knet")){
                     paymentGateWayName.click();
-                    driver.manage().timeouts().implicitlyWait(8,TimeUnit.SECONDS);
                 }else {
                     Logger.logError("Knet Payment gateway xpath is changed, please do re check the KNET xpath and re-run again");
                 }
@@ -144,11 +152,12 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public void checkKnetPaymentOptionsScreenIsDisplayed() {
         Logger.logAction("Checking KNET payment gateway screen is displayed or not ?");
         try{
-            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
+//            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
+            waitTillTheProgressIndicatorIsInvisibleById_ANDROID(ACTIVITY_INDICATOR);
             if (isElementDisplayedById(PAYMENT_GATEWAY_SCREEN_TITLE) && (isElementDisplayedById(SUBMIT_BUTTON))){
                 Logger.logStep("KNET Payment gateway screen is displayed and moving to next step");
             }else {
-                Logger.logError("Payment payment screen is not displayed");
+                Logger.logError("Payment screen is not displayed");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check the screen name - " + PAYMENT_GATEWAY_SCREEN_TITLE +","+CONFIRM_BUTTON);
@@ -182,15 +191,17 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         Logger.logAction("Selecting the bank :- "+bankName);
         try {
             if(isElementDisplayedById(SELECT_YOUR_BANK_MODAL_SHEET)){
-                int cellNumber = scrollToTheBankName(bankName)+1;
+                int cellNumber = scrollToTheBankName(bankName);
                 nameOfTheCell = driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]");
                 if (nameOfTheCell.getText().equals(bankName)){
                     driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]").click();
+//                    runAppInBackground(2);
                 }else {
                     scrollTheScreenUpwards();
                     nameOfTheCell = driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]");
                     if (nameOfTheCell.getText().equals(bankName)){
                         driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]").click();
+                        runAppInBackground(2);
                     }else {
                         Logger.logError("Tried scrolling the modal view twice, but didn't find the bank name:-"+bankName);
                     }
@@ -213,7 +224,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         List<WebElement> listOfBanksDisplayed = null;
         int count = 0;
         try {
-            while (count < 3) {
+            while (count < 4) {
                 try {
                     Thread.sleep(Labels.WAIT_TIME_MIN);
                     listOfBanksDisplayed = driver.findElements(By.className("android.widget.CheckedTextView"));
@@ -221,13 +232,14 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                         String eachCellName = listOfBanksDisplayed.get(index).getText();
                         if (eachCellName.equals(bankName)) {
                             Logger.logComment(bankName + " is displayed and tapping on it");
-                            bankCellNumber = index;
+                            bankCellNumber = index+1;
                             return bankCellNumber;
                         } else {
                             Logger.logComment(index + " - times trying to find the element name:-" + bankName);
                         }
-                        scrollTheScreenUpwards(); // Check this method tomorrow
                     }
+                    scrollTheScreenUpwards(); // Check this method tomorrow
+
 //                scrollToTheBankName(bankName);
 //            scrollTheScreenUpwards(); // Implement a separate method such that it should scroll to the exact payment method
 //                Logger.logComment("Unable to find the element -"+bankName+" - so scrolling the screen upwards");
@@ -246,10 +258,14 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                     Logger.logComment(count + " - times trying to scroll the screen upwards");
                     scrollTheScreenUpwards();
                 }
+                Logger.logComment(count + " - times trying to scroll the screen upwards");
+                count = count+1;
             }
         } catch (Exception exception) {
-            Logger.logError("Encountered error: Unable to scroll the screen");
+            Logger.logError("Encountered error: Unable to scroll the exact card name :- "+bankName);
         }
+        //Todo :- Implement a logic such that should display error after the counts is finished and not scroll to the element
+//        Logger.logComment("Unable to scroll to the exact card name :- "+bankName);
         return bankCellNumber;
     }
 
@@ -307,7 +323,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
 
                     }else {
 //                        ((ChromeDriver) driver).findElement(By.xpath(xPathOfCardNumberTextField)).sendKeys("0000000001");
-
+                        driver.findElement(By.xpath(xPathOfCardNumberTextField)).click();
                         driver.findElementByXPath(xPathOfCardNumberTextField).sendKeys(Labels.KNET_PAYMENT_CARD_NUMBER);
                     }
 

@@ -46,7 +46,7 @@ public class SignInAndroid extends SignInBase{
     public static void closeThePickerTitleIfDisplayed() {
         Logger.logAction("Closing the picker title");
         try{
-            driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+            Thread.sleep(1000);
             if (isElementDisplayedById(CREDENTIALS_PICKER_TITLE)){
                 driver.findElement(By.id(NONE_OF_THE_ABOVE_BUTTON_IN_CREDENTIALS_PICKER_VIEW)).click();
             }else {
@@ -147,11 +147,10 @@ public class SignInAndroid extends SignInBase{
     @Override
     public void tapOnLoginButton() {
         Logger.logAction("Tapping on Login button");
-        try
-        {
+        try {
             if (isElementDisplayedById(LOGIN_BUTTON)){
                 driver.findElement(By.id(LOGIN_BUTTON)).click();
-                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.ANDROID_ACTIVITY_INDICATOR)));
+                waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
                 declineTheSyncPreviousTravellersDataModalView_Android();
             }else {
                 Logger.logError(LOGIN_BUTTON+" - element name is not displayed in the current active screen");

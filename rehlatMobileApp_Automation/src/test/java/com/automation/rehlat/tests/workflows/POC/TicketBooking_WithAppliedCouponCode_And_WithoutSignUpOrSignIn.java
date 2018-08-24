@@ -13,8 +13,8 @@ public class TicketBooking_WithAppliedCouponCode_And_WithoutSignUpOrSignIn exten
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithoutSignUpOrSignIn() throws Exception{
         Logger.beginTest(" - Ticket booking with applied coupon code and without sign in or sign up ");
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-        FlightsScreen.selectCountryNameAndMoveToFlightsTab(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+        FlightsScreen.selectCountryNameInSelectLanguageModal(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         MenuScreen.checkMenuScreenIsDisplayed();

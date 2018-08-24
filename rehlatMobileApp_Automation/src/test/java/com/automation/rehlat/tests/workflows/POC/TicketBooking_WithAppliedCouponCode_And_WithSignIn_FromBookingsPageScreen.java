@@ -12,8 +12,8 @@ public class TicketBooking_WithAppliedCouponCode_And_WithSignIn_FromBookingsPage
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithSignInFromBookingsPageScreen() throws Exception{
         Logger.beginTest(" - Ticket Booking with sign in from booking page and with applied coupon code ");
-        FlightsScreen.selectCountryNameAndMoveToFlightsTab(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+        FlightsScreen.selectCountryNameInSelectLanguageModal(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         if (MenuScreen.isUserSignedIn()){

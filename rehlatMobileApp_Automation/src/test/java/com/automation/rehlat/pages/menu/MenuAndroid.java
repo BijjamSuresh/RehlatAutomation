@@ -11,15 +11,16 @@ public class MenuAndroid extends MenuBase {
 
     public static final String NAVIGATION_MENU_VIEW = "com.app.rehlat:id/nav_view";
     public static final String SIGNED_IN_EMAIL_ID_IN_MENU_SCREEN = "com.app.rehlat:id/userEmailAddress";
-    public static final String SETTINGS_OPTION = "Settings";
+    public static final String SETTINGS_OPTION = "com.app.rehlat:id/sidemenu_settingllyt";
     public static final String LANGUAGE_ICON = "language_icon";
     public static final String TRIPS_OPTION = "Trips";
     public static final String SIGN_IN_OR_SIGN_UP_BUTTON = "com.app.rehlat:id/menu_signup";
     public static final String FULL_SCREEN_LAYOUT = "com.app.rehlat:id/drawer_layout";
-    public static final String LOGOUT_BUTTON = "com.app.rehlat:id/sidemenu_logoutllyt";
+    public static final String LOGOUT_BUTTON = "com.app.rehlat:id/logoutLayout";
     public static final String SCROLL_VIEW_IN_MENU_SCREEN = "android.widget.ScrollView";
     public static final String TWENTY_FOUR_BAR_SEVEN_SUPPORT_LABEL = "com.app.rehlat:id/sidemenu_supportllyt";
-    public static final String XPATH_OF_LOGOUT_BUTTON_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.support.v4.widget.DrawerLayout/android.widget.FrameLayout/android.support.v7.widget.RecyclerView/android.support.v7.widget.LinearLayoutCompat[";
+    public static final String XPATH_OF_SETTINGS_SCREEN_TITTLE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView";
+//    public static final String
 
 
     /**
@@ -129,37 +130,48 @@ public class MenuAndroid extends MenuBase {
     }
 
     /**
+     * Tap on Settings button
+     */
+    @Override
+    public void tapOnSettingsButton() throws Exception{
+        Logger.logAction("Tapping on settings button");
+        try {
+//            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){
+                if (isElementDisplayedById(SETTINGS_OPTION)){
+                    driver.findElementById(SETTINGS_OPTION).click();
+                }else {
+                    scrollTheMenuViewUp(SCROLL_VIEW_IN_MENU_SCREEN);
+                    if (isElementDisplayedById(SETTINGS_OPTION)) {
+                        driver.findElementById(SETTINGS_OPTION).click();
+                    }else {
+                        Logger.logError(SETTINGS_OPTION+" :- element name is not displayed in the current active screen");
+                    }
+                }
+//            }else {
+//                Logger.logError(SCROLL_VIEW_IN_MENU_SCREEN+" :- element id is not displayed in the current active screen");
+//            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: unable to tap on the logout button");
+        }
+    }
+
+    /**
      * Tap on logout button
      */
     @Override
     public void tapOnLogoutButton() {
         Logger.logAction("Tapping on logout button");
         try {
-            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){
+//            tapOnSettingsButton();
+//            Thread.sleep(4000);
+            if (isSettingsScreenIsDisplayed()){
                 if (isElementDisplayedById(LOGOUT_BUTTON)){
                     driver.findElementById(LOGOUT_BUTTON).click();
                 }else {
-                    scrollTheMenuViewUp(SCROLL_VIEW_IN_MENU_SCREEN);
-                    if (isElementDisplayedById(LOGOUT_BUTTON)) {
-                        driver.findElementById(LOGOUT_BUTTON).click();
-                    }else {
-                        Logger.logError(LOGOUT_BUTTON+" :- element name is not displayed in the current active screen");
-                    }
+                    Logger.logError(LOGOUT_BUTTON+" :- element name is not displayed in the current active screen");
                 }
-//                WebElement checkedTextViews = driver.findElementById(SCROLL_VIEW_IN_MENU_SCREEN);
-//                for (int index=0; index<=checkedTextViews.size()-1;index++){
-//                    String checkedTextViewName = checkedTextViews.get(index).getText();
-//                    if (checkedTextViewName.matches(LOGOUT_BUTTON)){
-//                        index = index+1;
-//                        Logger.logStep("User is signed in and moving to tap on logout button");
-//                        driver.findElement(By.xpath(XPATH_OF_LOGOUT_BUTTON_WITHOUT_INDEX+index+"]")).click();
-//                        break;
-//                    }else {
-//                        continue;
-//                    }
-//                }
             }else {
-                Logger.logError(SCROLL_VIEW_IN_MENU_SCREEN+" :- element id is not displayed in the current active screen");
+                Logger.logError("Settigns screen is not displayed in the current active screen");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: unable to tap on the logout button");
@@ -167,10 +179,34 @@ public class MenuAndroid extends MenuBase {
     }
 
     /**
-     * Scroll the menu screen to upwards
+     * Checking the settings screen is displayed or not ?
+     * @return
      * @throws Exception
      */
-    public static void scrollTheMenuViewUp(String viewType) throws Exception{
+    public static boolean isSettingsScreenIsDisplayed() throws Exception{
+        Logger.logAction("Checking the settings screen is displayed");
+        String valueOfSettingsScreenTitle;
+        try{
+            if (isElementDisplayedByXPath(XPATH_OF_SETTINGS_SCREEN_TITTLE)){
+                valueOfSettingsScreenTitle = driver.findElement(By.xpath(XPATH_OF_SETTINGS_SCREEN_TITTLE)).getText();
+                if (valueOfSettingsScreenTitle.equals("Settings")){
+                    return true;
+                }else {
+                    Logger.logError(" Settings screen is not displayed in the current active screen");
+                }
+            }else {
+                Logger.logError(XPATH_OF_SETTINGS_SCREEN_TITTLE+" :- element xpath is not visible in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to check the screen name");
+        }
+        return false;
+    }
+
+    /**
+     * Scroll the menu screen to upwards
+     */
+    public static void scrollTheMenuViewUp(String viewType) {
         Logger.logAction("Scrolling the menu view upwards");
         try{
             if (isElementDisplayedByClassName(viewType)){

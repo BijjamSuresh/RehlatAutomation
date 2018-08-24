@@ -19,7 +19,7 @@ public class FlightsAndroid extends FlightsBase{
     public static final String TO_TEXTFIELD = "com.app.rehlat:id/toAirportLinearLayout";
     public static final String CONTINUE_BUTTON = "com.app.rehlat:id/domainDialogClose";
     public static final String DEPARTURE_BUTTON = "com.app.rehlat:id/departureLayout";
-    public static final String RETURN_BUTTON = "com.app.rehlat:id/returnDayTextView";
+    public static final String RETURN_BUTTON = "com.app.rehlat:id/returnJourneyLayout";
     public static final String MENU_BUTTON = "com.app.rehlat:id/menuclick";
     public static final String TRIP_RADIO_BUTTON = "com.app.rehlat:id/tripradioGroup";
     public static final String DOMAIN_LIST_VIEW = "com.app.rehlat:id/domainListView";
@@ -39,17 +39,19 @@ public class FlightsAndroid extends FlightsBase{
      * Check select language modal is displayed
      */
     @Override
-    public void checkSelectLanguageModalIsDisplayed() {
+    public boolean isSelectLanguageModalIsDisplayed() {
         Logger.logAction("checking the select language modal is displayed or not");
         try{
             if (isElementDisplayedByName(SELECT_LANGUAGE)){
                 Logger.logStep("Select Language modal is displayed");
+                return true;
             }else {
-                Logger.logWarning("Select Language modal is not displayed");
+                return false;
             }
         }catch (Exception e){
             Logger.logError("Select Language Modal is not displayed");
         }
+        return false;
     }
 
     /**
@@ -59,6 +61,7 @@ public class FlightsAndroid extends FlightsBase{
     public void checkFlightsTabIsDisplayed() {
         Logger.logAction("Checking flights screen tab is displayed");
         try {
+            Thread.sleep(1000);
             if (isElementDisplayedById(MENU_BUTTON)){
                     Logger.logStep("Flights Screen is displayed");
             }else{
@@ -95,7 +98,7 @@ public class FlightsAndroid extends FlightsBase{
         try{
             if (isElementDisplayedById(DOMAIN_LIST_VIEW)) {
                 WebElement displayedCountriesListView = driver.findElement(By.id(DOMAIN_LIST_VIEW));
-                if (userCountryName.equals("India")) {
+                if (userCountryName.equals(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)) {
                     List<WebElement> displayedCountriesList = displayedCountriesListView.findElements(By.className(TEXT_VIEW));
                     for (int index = 0; index <= displayedCountriesList.size(); index++) {
                         WebElement countryNameTextView = displayedCountriesList.get(index);
@@ -153,9 +156,9 @@ public class FlightsAndroid extends FlightsBase{
      * @throws Exception
      */
     @Override
-    public void selectCountryNameAndMoveToFlightsTab(String countryName) throws Exception{
+    public void selectCountryNameInSelectLanguageModal(String countryName) throws Exception{
         Logger.logAction("Selecting the country name and move to the flights tab");
-        if (isElementDisplayedByName(SELECT_LANGUAGE)){
+        if (isSelectLanguageModalIsDisplayed()){
             selectCountryOfUser(countryName);
             tapOnContinueButton();
         }else{
@@ -200,8 +203,9 @@ public class FlightsAndroid extends FlightsBase{
      */
     @Override
     public void checkKeyboardIsDisplayed() {
-        Logger.logAction("Checking keyboard is triggered or not ");
+        Logger.logAction("Checking keyboard is triggered or not ?");
         try {
+            Thread.sleep(1000);
 //            String iOSKeyboard = driver.findElement(By.xpath(IOS_KEYBOARD_XPATH)).getAttribute("type");
             if (isKeyboardDisplayed()){
                 Logger.logComment("Keyboard is triggered");
@@ -220,7 +224,7 @@ public class FlightsAndroid extends FlightsBase{
     public void checkSearchViewScreenIsDisplayed() {
         Logger.logAction("Checking search view screen is displayed or not ?");
         try{
-            Thread.sleep(3); // Implemented wait time due to delay of search view displaying after tapping on TO/FROM airport button in flights tab
+            Thread.sleep(1000); // Implemented wait time due to delay of search view displaying after tapping on TO/FROM airport button in flights tab
             if (isElementDisplayedById(SEARCH_VIEW)){
              Logger.logStep("Search view screen is displayed");
             }else {
@@ -268,12 +272,12 @@ public class FlightsAndroid extends FlightsBase{
                         Logger.logComment(" Searched Airport code - "+airportCode+ "- is not matching with the filtered result - "+airportCodeFromSearchResults+" -");
                     }
                 }
-                // This logic is an work around for android app in Samsung devices...Issue is mentioned inside the logger.logStep messages, please read them for more information..,
-                // Todo:- Discuss this issue with developers and implement final solution if there is no way to fix this issue
-                Logger.logStep("Current test running device is a Samsung device.., After navigating from FROM search list screen (or from departure calendar view) flights tab elements visibility is showing as invisible in samsung devices.., To make flights tab elements visible we are pushing the app for a second and getting it back to foreground");
-                Logger.logStep("This is just an work around yet to discuss with the developers for better solution");
-                runAppInBackGroundIfTheCurrentRunningDeviceIsSamsungDevice();
-                // The workaround logic ends here
+//                // This logic is an work around for android app in Samsung devices...Issue is mentioned inside the logger.logStep messages, please read them for more information..,
+//                // Todo:- Discuss this issue with developers and implement final solution if there is no way to fix this issue
+//                Logger.logStep("Current test running device is a Samsung device.., After navigating from FROM search list screen (or from departure calendar view) flights tab elements visibility is showing as invisible in samsung devices.., To make flights tab elements visible we are pushing the app for a second and getting it back to foreground");
+//                Logger.logStep("This is just an work around yet to discuss with the developers for better solution");
+//                runAppInBackground(1);
+//                // The workaround logic ends here
             }else{
                 Logger.logError("Unable to tap on the airport code - " +airportCode);
             }
@@ -528,12 +532,12 @@ public class FlightsAndroid extends FlightsBase{
             if (isElementDisplayedById("com.app.rehlat:id/closeCalImageView")){
                 driver.findElementById("com.app.rehlat:id/closeCalImageView").click();
 
-                // This logic is an work around for android app in Samsung devices...Issue is mentioned inside the logger.logStep messages, please read them for more information..,
-                // Todo:- Discuss this issue with developers and implement final solution if there is no way to fix this issue
-                Logger.logStep("Current test running device is a Samsung device.., After navigating from FROM search list screen (or from departure calendar view) flights tab elements visibility is showing as invisible in samsung devices.., To make flights tab elements visible we are pushing the app for a second and getting it back to foreground");
-                Logger.logStep("This is just an work around yet to discuss with the developers for better solution");
-                runAppInBackGroundIfTheCurrentRunningDeviceIsSamsungDevice();
-                // The workaround logic ends here
+//                // This logic is an work around for android app in Samsung devices...Issue is mentioned inside the logger.logStep messages, please read them for more information..,
+//                // Todo:- Discuss this issue with developers and implement final solution if there is no way to fix this issue
+//                Logger.logStep("Current test running device is a Samsung device.., After navigating from FROM search list screen (or from departure calendar view) flights tab elements visibility is showing as invisible in samsung devices.., To make flights tab elements visible we are pushing the app for a second and getting it back to foreground");
+//                Logger.logStep("This is just an work around yet to discuss with the developers for better solution");
+//                runAppInBackground(1);
+//                // The workaround logic ends here
 
             }else {
                 Logger.logError("Done button is not displayed in the calendar view");

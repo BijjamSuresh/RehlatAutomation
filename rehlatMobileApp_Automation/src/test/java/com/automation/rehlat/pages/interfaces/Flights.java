@@ -4,7 +4,7 @@ public interface Flights {
     /**
      * Check select language modal is displayed
      */
-    void checkSelectLanguageModalIsDisplayed() throws Exception;
+    boolean isSelectLanguageModalIsDisplayed() throws Exception;
 
     /**
      * Check the flights tab is displayed
@@ -33,7 +33,7 @@ public interface Flights {
      * Select the country name and move to flights tab
      * @throws Exception
      */
-     void selectCountryNameAndMoveToFlightsTab(String countryName) throws Exception;
+     void selectCountryNameInSelectLanguageModal(String countryName) throws Exception;
 
     /**
      * Tap on From text field in flights tab

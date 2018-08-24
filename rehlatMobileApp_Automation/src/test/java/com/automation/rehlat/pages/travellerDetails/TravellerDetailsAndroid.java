@@ -80,6 +80,31 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     }
 
     /**
+     * Accept the auto fill populate modal if displayed
+     */
+    @Override
+    public boolean acceptAutoFillPopulateModalIfDisplayed() {
+        Logger.logAction("Accepting the auto fill popup if displayed");
+        try{
+            if (isElementDisplayedById("com.app.rehlat:id/traveller_prepopulated_list_layout")){
+                if (isElementDisplayedById("com.app.rehlat:id/item_traveller_prepopulated_travellerName")){
+                    WebElement closeButton = driver.findElementById("com.app.rehlat:id/item_traveller_prepopulated_travellerName");
+                    closeButton.click();
+                    return true;
+                }else {
+                    Logger.logError("Travellers data is not displayed in the pre populated list layout");
+                }
+            } else {
+                Logger.logComment("PopUp modal is not displayed in the current active screen and moving to next test step");
+                return false;
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to decline the auto fill popup ");
+        }
+        return false;
+    }
+
+    /**
      * Enter adult travellers details
      */
     @Override
@@ -148,9 +173,15 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
         Logger.logStep("Entering travellers first name");
         try{
             if (isElementDisplayedById(TRAVELLERS_FIRST_NAME)){
-                clearKeysByUsingKeycode(TRAVELLERS_FIRST_NAME,TRAVELLERS_FIRST_NAME.length());
-                driver.findElementById(TRAVELLERS_FIRST_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
-                driver.hideKeyboard();
+                String firstName = driver.findElementById(TRAVELLERS_FIRST_NAME).getText();
+                if (firstName.equals(Labels.STRING_NULL)){
+                    driver.findElementById(TRAVELLERS_FIRST_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
+                    driver.hideKeyboard();
+                }else {
+                    clearKeysByUsingKeycode(TRAVELLERS_FIRST_NAME,firstName.length());
+                    driver.findElementById(TRAVELLERS_FIRST_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
+                    driver.hideKeyboard();
+                }
             }else {
                 Logger.logError("Travellers first name field is not displayed in the current active screen");
             }
@@ -167,9 +198,15 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
         Logger.logStep("Entering travellers middle name");
         try{
             if (isElementDisplayedById(TRAVELLERS_MIDDLE_NAME)){
-                clearKeysByUsingKeycode(TRAVELLERS_MIDDLE_NAME,TRAVELLERS_MIDDLE_NAME.length());
-                driver.findElementById(TRAVELLERS_MIDDLE_NAME).sendKeys(Labels.TRAVELLERS_MIDDLE_NAME);
-                driver.hideKeyboard();
+                String middleName = driver.findElementById(TRAVELLERS_MIDDLE_NAME).getText();
+                if (middleName.equals(Labels.STRING_NULL)){
+                    driver.findElementById(TRAVELLERS_MIDDLE_NAME).sendKeys(Labels.TRAVELLERS_MIDDLE_NAME);
+                    driver.hideKeyboard();
+                }else {
+                    clearKeysByUsingKeycode(TRAVELLERS_MIDDLE_NAME,middleName.length());
+                    driver.findElementById(TRAVELLERS_MIDDLE_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
+                    driver.hideKeyboard();
+                }
             }else {
                 Logger.logError("Travellers middle name field is not displayed in the current active screen");
             }
@@ -186,9 +223,15 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
         Logger.logStep("Entering travellers last name");
         try{
             if (isElementDisplayedById(TRAVELLERS_LAST_NAME)){
-                clearKeysByUsingKeycode(TRAVELLERS_LAST_NAME,TRAVELLERS_LAST_NAME.length());
-                driver.findElementById(TRAVELLERS_LAST_NAME).sendKeys(Labels.TRAVELLERS_LAST_NAME);
-                driver.hideKeyboard();
+                String lastName = driver.findElementById(TRAVELLERS_LAST_NAME).getText();
+                if (lastName.equals(Labels.STRING_NULL)){
+                    driver.findElementById(TRAVELLERS_LAST_NAME).sendKeys(Labels.TRAVELLERS_LAST_NAME);
+                    driver.hideKeyboard();
+                }else {
+                    clearKeysByUsingKeycode(TRAVELLERS_LAST_NAME,lastName.length());
+                    driver.findElementById(TRAVELLERS_LAST_NAME).sendKeys(Labels.TRAVELLERS_LAST_NAME);
+                    driver.hideKeyboard();
+                }
             }else {
                 Logger.logError("Travellers last name field is not displayed in the current active screen");
             }
@@ -401,9 +444,15 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
         Logger.logStep("Entering travellers passport number");
         try{
             if (isElementDisplayedById(TRAVELLERS_PASSPORT_TEXTFIELD)){
-                clearKeysByUsingKeycode(TRAVELLERS_PASSPORT_TEXTFIELD,TRAVELLERS_PASSPORT_TEXTFIELD.length());
-                driver.findElementById(TRAVELLERS_PASSPORT_TEXTFIELD).sendKeys(Labels.TRAVELLERS_PASSPORT_NUMBER);
-                driver.hideKeyboard();
+                String passportName = driver.findElementById(TRAVELLERS_PASSPORT_TEXTFIELD).getText();
+                if (passportName.equals(Labels.STRING_NULL)){
+                    driver.findElementById(TRAVELLERS_PASSPORT_TEXTFIELD).sendKeys(Labels.TRAVELLERS_PASSPORT_NUMBER);
+                    driver.hideKeyboard();
+                }else {
+                    clearKeysByUsingKeycode(TRAVELLERS_PASSPORT_TEXTFIELD,passportName.length());
+                    driver.findElementById(TRAVELLERS_PASSPORT_TEXTFIELD).sendKeys(Labels.TRAVELLERS_PASSPORT_NUMBER);
+                    driver.hideKeyboard();
+                }
             }else {
                 Logger.logError("Travellers passport field is not displayed in the current active screen");
             }

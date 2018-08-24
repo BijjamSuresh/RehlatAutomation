@@ -15,8 +15,8 @@ public class TicketBooking_WithoutCouponCode_And_WithSignUp_FromBookingsPage ext
     public void testTicketBookingWithoutCouponCodeAndWithSignUpFromBookingsPage() throws Exception{
         Logger.beginTest("- Ticket booking without coupon code and with sign up from bookings page");
         Labels.EMAIL_ID_SIGN_UP = newEmailForSignUp;
-        FlightsScreen.selectCountryNameAndMoveToFlightsTab(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+        FlightsScreen.selectCountryNameInSelectLanguageModal(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         if (MenuScreen.isUserSignedIn()){

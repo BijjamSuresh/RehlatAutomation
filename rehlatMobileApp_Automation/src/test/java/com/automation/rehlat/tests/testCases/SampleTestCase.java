@@ -9,21 +9,21 @@ public class SampleTestCase extends BaseTest {
     @Test
     public void testSampleTestCase() throws Exception{
         Logger.beginTest("Test Sample Test Case Is Started");
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-
-        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
+//
+//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
 
         Logger.endTest("Test Sample Test Case Ended");
     }

@@ -4,6 +4,7 @@ import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.pages.flights.FlightsIos;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SignUpIos extends SignUpBase {
 
@@ -206,6 +207,7 @@ public class SignUpIos extends SignUpBase {
         try {
             if (isElementDisplayedByName(SIGN_UP_BUTTON)){
                 driver.findElement(By.name(SIGN_UP_BUTTON)).click();
+                waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
             }else {
                 Logger.logError(SIGN_UP_BUTTON+" - element name is not displayed in the current active screen");
             }
