@@ -68,6 +68,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(FIRST_NAME_TEXT_FIELD)){
                 driver.findElement(By.id(FIRST_NAME_TEXT_FIELD)).sendKeys(Labels.FIRST_NAME);
+                Logger.logComment(Labels.FIRST_NAME+" - element name is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError(FIRST_NAME_TEXT_FIELD+" - element name is not displayed in the current active screen");
@@ -86,6 +87,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(LAST_NAME_TEXT_FIELD)){
                 driver.findElement(By.id(LAST_NAME_TEXT_FIELD)).sendKeys(Labels.LAST_NAME);
+                Logger.logComment(Labels.LAST_NAME+" - element name is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError(LAST_NAME_TEXT_FIELD+" - element name is not displayed in the current active screen");
@@ -104,6 +106,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(EMAIL_TEXT_FIELD)){
                 driver.findElement(By.id(EMAIL_TEXT_FIELD)).sendKeys(Labels.EMAIL_ID_SIGN_UP);
+                Logger.logComment(Labels.EMAIL_ID_SIGN_UP+" - element name is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError(EMAIL_TEXT_FIELD+" - element name is not displayed in the current active screen");
@@ -122,6 +125,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(PASSWORD_TEXT_FIELD)){
                 driver.findElement(By.id(PASSWORD_TEXT_FIELD)).sendKeys(Labels.PASSWORD);
+                Logger.logComment(Labels.PASSWORD+" - element name is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError(PASSWORD_TEXT_FIELD+" - element name is not displayed in the current active screen");
@@ -140,6 +144,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(REPEAT_PASSWORD_TEXT_FIELD)){
                 driver.findElement(By.id(REPEAT_PASSWORD_TEXT_FIELD)).sendKeys(Labels.REPEAT_PASSWORD);
+                Logger.logComment(Labels.REPEAT_PASSWORD+" - element name is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError(REPEAT_PASSWORD_TEXT_FIELD+" - element name is not displayed in the current active screen");
@@ -158,6 +163,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(SELECT_DOMAIN_TEXT_FIELD)){
                 driver.findElement(By.id(SELECT_DOMAIN_TEXT_FIELD)).click();
+                Logger.logComment(SELECT_DOMAIN_TEXT_FIELD+" :- Domain is selected");
                 selectCountryName();
             }else {
                 Logger.logError(REPEAT_PASSWORD_TEXT_FIELD+" - element name is not displayed in the current active screen");
@@ -201,6 +207,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(REFERRAL_CODE_TEXT_FIELD)){
                 driver.findElement(By.id(REFERRAL_CODE_TEXT_FIELD)).sendKeys(Labels.REFERRAL_CODE);
+                Logger.logComment(Labels.REFERRAL_CODE+" :- referral code is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError(REFERRAL_CODE_TEXT_FIELD +" - element name is not displayed in the current active screen");
@@ -219,6 +226,7 @@ public class SignUpAndroid extends SignUpBase {
         try {
             if (isElementDisplayedById(SIGN_UP_BUTTON)){
                 driver.findElement(By.id(SIGN_UP_BUTTON)).click();
+                Logger.logComment(" Tapped on signed up button");
                 waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
                 declineTheSyncPreviousTravellersDataModalView_Android();
             }else {

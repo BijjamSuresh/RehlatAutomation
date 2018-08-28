@@ -19,6 +19,7 @@ public class BookingPageIos extends BookingPageBase {
     public static final String TICKET_SOLD_OUT_POPUP = "Ticket had been Sold out";
     public static final String OK_BUTTON = "OK";
     public static final String CONTACT_DETAILS_VIEW ="Contact Details";
+    public static final String ADD_TRAVELLERS_DETAILS = "Add Travellers Details";
     public static final String SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON = "Sign in for faster bookings";
     public static final String ACTUAL_DISPLAYING_FARE = "com.app.rehlat:id/traveller_detail_onward_price_strikedoff";
     public static final String APPLIED_COUPON_AMOUNT_CURRENCY_WIHOUT_AMOUNT = "(-) KWD ";
@@ -32,11 +33,11 @@ public class BookingPageIos extends BookingPageBase {
     public static final String KARAM_POINTS_TOGGLE_BUTTON = "XCUIElementTypeSwitch";
     public static final String XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[3]";
 
-
     // These are used in multiple methods, be on caution while editing these values
     public static Integer indexOfActualFareElementXPath = null;
     public static Integer indexOfFinalFareElementXPath = null;
     public static Integer indexOfAppliedCouponAmountElementXPath = null;
+
     /**
      * Check booking page screen is displayed
      */
@@ -44,7 +45,7 @@ public class BookingPageIos extends BookingPageBase {
     public void checkBookingPageScreenIsDisplayed() {
         Logger.logAction("Checking the Booking page screen is displayed or not ?");
         try{
-            if (isElementDisplayedByName(CONTACT_DETAILS_VIEW)){
+            if (isElementDisplayedByName(CONTACT_DETAILS_VIEW) || isElementDisplayedByName(ADD_TRAVELLERS_DETAILS)){
                 Logger.logStep("Booking Page screen is displayed");
             }else{
                 Logger.logError("Booking page screen is not displayed");
@@ -63,9 +64,11 @@ public class BookingPageIos extends BookingPageBase {
         try{
             if (isElementDisplayedByName(SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON)){
                 Logger.logStep("User is not signed in");
+                isUserSignedIn = false;
                 return false;
             }else{
                 Logger.logStep("User is signed in");
+                isUserSignedIn = true;
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check the user sign in status");
@@ -115,13 +118,14 @@ public class BookingPageIos extends BookingPageBase {
     public void tapOnContinueButton() {
         Logger.logAction("Tapping on continue button");
         try{
+            checkFinalFareCalculationIsCorrect(); // This method needs to be removed after fixing the issue :- "Auto Enabling of toggle switch after navigating from travellers details screen, when user is signed in or signed up from bookings screen"
 //            compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout(); // After iOS is implemented by "Online Check In toggle button", this method needs to be removed from here and call it as a step of TC from workflows directly
             if (isElementDisplayedByName(CONTINUE_BUTTON)){
                 driver.findElementByName(CONTINUE_BUTTON).click();
+                Logger.logStep("Tapped on continue button");
             }else{
                 Logger.logError("Unable to tap on continue button");
             }
-
         }catch (Exception exception){
             Logger.logError("Encountered error: Continue button is not displayed in the current active screen");
         }
@@ -207,56 +211,63 @@ public class BookingPageIos extends BookingPageBase {
     public void checkFinalFareCalculationIsCorrect() {
         Logger.logAction("Checking the final fare calculation is correct or not ?");
         try {
-            Double bookingSeatCostInReviewBookingScreen = null;
-            Double couponAmount;
-            Double finalDisplayedFare;
-            Double displayedActualFare;
-            Double karamPoints;
+            Double reviewBookingPriceInFooterView = Double.valueOf(getTheDisplayedTicketBookingValueInFooterView("BookingPageScreen",3));
+            Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(reviewBookingPriceInFooterView);
+            Logger.logComment("Cost of ticket in Booking page is :- "+reviewBookingPriceInFooterView);
 
-           // Checking and getting the booking cost displaying in review booking screen
-            if (Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN == null){
-                Logger.logError("Booking cost displaying in the review booking screen is :- "+Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN);
-            }else {
-                bookingSeatCostInReviewBookingScreen = Double.valueOf(Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN);
-            }
-            setTheXpathIndexesForPriceDetailsInOffersAndDiscountsCell();
-            couponAmount = getThePriceOf("couponAmount", indexOfAppliedCouponAmountElementXPath);
-            finalDisplayedFare = getThePriceOf("finalDisplayedFare", indexOfFinalFareElementXPath);
-            displayedActualFare = getThePriceOf("displayedActualFare", indexOfActualFareElementXPath);
-            if (isUserIsSignedIn()){
-                karamPoints = Double.valueOf(getKaramPoints()); // Implement if condition after developer enable the karam points price element visibility
-            }else {
-                karamPoints = 0.00;
-                Logger.logComment("User is not logged in. So applied karam points are:- "+karamPoints);
-            }
-            Logger.logStep("Flights booking details are :- ");
-            Logger.logComment("Actual Fare cost of booking flight :- "+displayedActualFare);
-            Logger.logComment("Applied Coupon amount of booking flight :- "+couponAmount);
-            Logger.logComment("Applied Karam points cost of booking flight :- "+karamPoints);
-            Logger.logComment("Final Fare cost of booking flight (Displaying value) :- "+finalDisplayedFare);
-            if (finalDisplayedFare.equals(0.00)){
-                finalDisplayedFare = displayedActualFare;
-                Logger.logComment("Final Fare cost of booking flight (For Math Calculation) :- "+finalDisplayedFare);
-                Logger.logAction("All the values are ready for to calculate the math");
-            }else {
-              Logger.logAction("All the values are ready for to calculate the math");
-            }
-            if (displayedActualFare.equals(bookingSeatCostInReviewBookingScreen)){
-                Double finalFareMathCalculation = (displayedActualFare)-(couponAmount)-(karamPoints); // Internal math calculation logic
-                Logger.logComment("Final fare math calculation value is :- "+finalFareMathCalculation);
-                if (finalFareMathCalculation.equals(finalDisplayedFare)){
-                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
-                    Logger.logStep("Final fare calculation is correct");
-                }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This method is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
-                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
-                    Logger.logStep("Final fare calculation is correct");
-                }else {
-                    Logger.logError("Final fare calculation is in-correct");
-                }
-            }else {
-                Logger.logError("Booking seat cost in review booking screen is not matching with the cost displaying in booking page..,i.e.., Booking seat cost in Booking page screen & Review Booking screen is:- "+displayedActualFare+" & "+Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN);
-            }
+            ////// Below code is to check the values of math calculation done in offers and discounts layout /////
+
+//            Double bookingSeatCostInReviewBookingScreen = null;
+//            Double couponAmount;
+//            Double finalDisplayedFare;
+//            Double displayedActualFare;
+//            Double karamPoints;
+//
+//           // Checking and getting the booking cost displaying in review booking screen
+//            if (Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN == null){
+//                Logger.logError("Booking cost displaying in the review booking screen is :- "+Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN);
+//            }else {
+//                bookingSeatCostInReviewBookingScreen = Double.valueOf(Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN);
+//            }
+//            setTheXpathIndexesForPriceDetailsInOffersAndDiscountsCell();
+//            couponAmount = getThePriceOf("couponAmount", indexOfAppliedCouponAmountElementXPath);
+//            finalDisplayedFare = getThePriceOf("finalDisplayedFare", indexOfFinalFareElementXPath);
+//            displayedActualFare = getThePriceOf("displayedActualFare", indexOfActualFareElementXPath);
+//            if (isUserIsSignedIn()){
+//                karamPoints = Double.valueOf(getKaramPoints()); // Implement if condition after developer enable the karam points price element visibility
+//            }else {
+//                karamPoints = 0.00;
+//                Logger.logComment("User is not logged in. So applied karam points are:- "+karamPoints);
+//            }
+//            Logger.logStep("Flights booking details are :- ");
+//            Logger.logComment("Actual Fare cost of booking flight :- "+displayedActualFare);
+//            Logger.logComment("Applied Coupon amount of booking flight :- "+couponAmount);
+//            Logger.logComment("Applied Karam points cost of booking flight :- "+karamPoints);
+//            Logger.logComment("Final Fare cost of booking flight (Displaying value) :- "+finalDisplayedFare);
+//            if (finalDisplayedFare.equals(0.00)){
+//                finalDisplayedFare = displayedActualFare;
+//                Logger.logComment("Final Fare cost of booking flight (For Math Calculation) :- "+finalDisplayedFare);
+//                Logger.logAction("All the values are ready for to calculate the math");
+//            }else {
+//              Logger.logAction("All the values are ready for to calculate the math");
+//            }
+//            if (displayedActualFare.equals(bookingSeatCostInReviewBookingScreen)){
+//                Double finalFareMathCalculation = (displayedActualFare)-(couponAmount)-(karamPoints); // Internal math calculation logic
+//                Logger.logComment("Final fare math calculation value is :- "+finalFareMathCalculation);
+//                if (finalFareMathCalculation.equals(finalDisplayedFare)){
+//                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
+//                    Logger.logStep("Final fare calculation is correct");
+//                }else if (finalFareMathCalculation.toString().contains(finalDisplayedFare.toString())){ // This method is because of internal math calculation is giving more than a digit after the decimal point eg: 14.10000000000000001 which is not matching with the actual value of Eg: 14.1
+//                    Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(finalFareMathCalculation);
+//                    Logger.logStep("Final fare calculation is correct");
+//                }else {
+//                    Logger.logError("Final fare calculation is in-correct");
+//                }
+//            }else {
+//                Logger.logError("Booking seat cost in review booking screen is not matching with the cost displaying in booking page..,i.e.., Booking seat cost in Booking page screen & Review Booking screen is:- "+displayedActualFare+" & "+Labels.BOOKING_COST_DISPLAYING_IN_REVIEW_BOOKING_SCREEN);
+//            }
         }catch (Exception exception){
+            exception.printStackTrace();
             Logger.logError("Encountered error: Unable to check the final fare calculation");
         }
     }
@@ -601,7 +612,7 @@ public class BookingPageIos extends BookingPageBase {
     public static void compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout() {
         Logger.logAction("Comparing the final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
         try{
-            Double reviewBookingPriceInFooterView = getTheBookingPriceDisplayedInFooterView();
+            Double reviewBookingPriceInFooterView = Double.valueOf(getTheDisplayedTicketBookingValueInFooterView("BookingPageScreen",3));
             if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.equals(String.valueOf(reviewBookingPriceInFooterView))){
                 Logger.logStep("Final price displayed in footer view is matches with the final fare displayed in offers and discounts layout");
             }else if(reviewBookingPriceInFooterView == Double.valueOf(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN)){
@@ -616,40 +627,40 @@ public class BookingPageIos extends BookingPageBase {
         }
     }
 
-    /**
-     * Get the booking price displayed in the footer view layout
-     * @return
-     */
-    public static Double getTheBookingPriceDisplayedInFooterView(){
-        Logger.logAction("Getting the booking price displayed in footer view");
-        try{
-            Thread.sleep(1000);
-//            if (isElementDisplayedByXPath(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE)){
-//                String xPathOfReviewBookingPrice = XPATH_OF_FOOTER_VIEW_LAYOUT+"/XCUIElementTypeStaticText[2]"; // "indexOfFinalFareElementXPath" is the hard coded value of final fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
-//                if (isElementDisplayedByXPath(xPathOfReviewBookingPrice)){
-                WebElement footerView = driver.findElementByXPath(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE);
-                List<WebElement> xcuiElementTypeStaticText = footerView.findElements(By.className("XCUIElementTypeStaticText"));
-                for (int index=0;index<=xcuiElementTypeStaticText.size();index++){
-                    String eachValueInFooterView = xcuiElementTypeStaticText.get(index).getAttribute("name");
-                    if (eachValueInFooterView.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
-                        String actualAmountPrice = eachValueInFooterView.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "");
-                        Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
-                        return Double.valueOf(actualAmountPrice);
-                    }
-                }
-//                    String ActualFareWithCurrentName = driver.findElementByXPath(xPathOfReviewBookingPrice).getAttribute(Labels.VALUE_ATTRIBUTE);
-//                    String actualAmountPrice = ActualFareWithCurrentName.replace("KWD ", "");
-//                    return Double.valueOf(actualAmountPrice);
-//                }else {
-//                    Logger.logError(xPathOfReviewBookingPrice+" xpath is incorrect..,Please re check the xpath of review booking price in footer view");
+//    /**
+//     * Get the booking price displayed in the footer view layout
+//     * @return
+//     */
+//    public static Double getTheBookingPriceDisplayedInFooterView(){
+//        Logger.logAction("Getting the booking price displayed in footer view");
+//        try{
+//            Thread.sleep(1000);
+////            if (isElementDisplayedByXPath(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE)){
+////                String xPathOfReviewBookingPrice = XPATH_OF_FOOTER_VIEW_LAYOUT+"/XCUIElementTypeStaticText[2]"; // "indexOfFinalFareElementXPath" is the hard coded value of final fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
+////                if (isElementDisplayedByXPath(xPathOfReviewBookingPrice)){
+//                WebElement footerView = driver.findElementByXPath(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE);
+//                List<WebElement> xcuiElementTypeStaticText = footerView.findElements(By.className("XCUIElementTypeStaticText"));
+//                for (int index=0;index<=xcuiElementTypeStaticText.size();index++){
+//                    String eachValueInFooterView = xcuiElementTypeStaticText.get(index).getAttribute("name");
+//                    if (eachValueInFooterView.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
+//                        String actualAmountPrice = eachValueInFooterView.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "");
+//                        Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+//                        return Double.valueOf(actualAmountPrice);
+//                    }
 //                }
-
-//            }else {
-//                Logger.logError(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE+" :- Xpath of footer view is not displayed in the current screen");
-//            }
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to get the booking price displayed in footer view");
-        }
-        return null;
-    }
+////                    String ActualFareWithCurrentName = driver.findElementByXPath(xPathOfReviewBookingPrice).getAttribute(Labels.VALUE_ATTRIBUTE);
+////                    String actualAmountPrice = ActualFareWithCurrentName.replace("KWD ", "");
+////                    return Double.valueOf(actualAmountPrice);
+////                }else {
+////                    Logger.logError(xPathOfReviewBookingPrice+" xpath is incorrect..,Please re check the xpath of review booking price in footer view");
+////                }
+//
+////            }else {
+////                Logger.logError(XPATH_OF_FOOTER_VIEW_IN_BOOKINGPAGE+" :- Xpath of footer view is not displayed in the current screen");
+////            }
+//        }catch (Exception exception){
+//            Logger.logError("Encountered error: Unable to get the booking price displayed in footer view");
+//        }
+//        return null;
+//    }
 }

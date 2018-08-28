@@ -134,6 +134,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                 WebElement paymentGateWayName = driver.findElementByXPath(XPATH_OF_KNET_PAYMENT_CELL_NAME); // Getting the value of KNET payment cell name
                 if (paymentGateWayName.getText().equals("Knet")){
                     paymentGateWayName.click();
+                    Logger.logComment("Tapped on Knet payment option");
                 }else {
                     Logger.logError("Knet Payment gateway xpath is changed, please do re check the KNET xpath and re-run again");
                 }
@@ -174,6 +175,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
             if (isElementDisplayedByXPath(XPATH_OF_SELECT_YOUR_BANK_BUTTON)){
 //                Logger.logStep("KNET Payment gateway screen is displayed and moving to next step");
                 driver.findElementByXPath(XPATH_OF_SELECT_YOUR_BANK_BUTTON).click();
+                Logger.logComment("Tapped on select your bank field");
                 selectBankNameFromBankPicker(bankName);
             }else {
                 Logger.logError("Select your bank option is not displayed in the current active screen");
@@ -195,13 +197,14 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                 nameOfTheCell = driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]");
                 if (nameOfTheCell.getText().equals(bankName)){
                     driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]").click();
+                    Logger.logComment(bankName+" :- bank name is parsed");
 //                    runAppInBackground(2);
                 }else {
                     scrollTheScreenUpwards();
                     nameOfTheCell = driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]");
                     if (nameOfTheCell.getText().equals(bankName)){
                         driver.findElementByXPath(XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX+cellNumber+"]").click();
-                        runAppInBackground(2);
+                        Logger.logComment(bankName+" :- bank name is parsed");
                     }else {
                         Logger.logError("Tried scrolling the modal view twice, but didn't find the bank name:-"+bankName);
                     }
@@ -357,6 +360,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
 //                pinNumberTextField.click();
                 Logger.logStep("Entering the pin number");
                 pinNumberTextField.sendKeys(Labels.KNET_PAYMENT_CARD_PIN_NUMBER);
+                Logger.logComment(Labels.KNET_PAYMENT_CARD_PIN_NUMBER+" :- is entered as pin number");
                 Thread.sleep(Labels.WAIT_TIME_MIN);
                 driver.hideKeyboard();
             }else {
@@ -376,6 +380,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try{
             if (isElementDisplayedById(SUBMIT_BUTTON)){
                 driver.findElementById(SUBMIT_BUTTON).click();
+                Logger.logComment(" Tapped on submit button");
             }else {
                 Logger.logError("Submit button is not displayed in the current active screen");
             }
@@ -413,6 +418,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try{
             if (isElementDisplayedById(CONFIRM_BUTTON)){
                 driver.findElementById(CONFIRM_BUTTON).click();
+                Logger.logComment("Tapped on confirm button");
             }else {
                 Logger.logError("Confirm button is not displayed in the current active screen");
             }

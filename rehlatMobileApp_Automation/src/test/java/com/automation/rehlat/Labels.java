@@ -84,12 +84,14 @@ public class Labels extends Base{
                                                                                         ////////////////////  Types of devices ////////////////////
     public static final String IOS="iOS";
     public static final String ANDROID="Android";
-    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type everytime w.r.t. the testing device platform
-//    public static final String DEFAULT_PLATFORM = "iOS";
+//    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type everytime w.r.t. the testing device platform
+    public static final String DEFAULT_PLATFORM = "iOS";
 
 
                                                                                     ////////////////////  Web element attribute values ////////////////////
     public static final String UIA_DATEPICKER ="XCUIElementTypeDatePicker";
+    public static final String ANDROID_LINEAR_LAYOUT = "android.widget.LinearLayout";
+    public static final String ANDROID_VIEW_GROUP = "android.view.ViewGroup";
     public static final String UIA_KEYBOARD = "UIAKeyboard";
     public static final String ALERT_ID = "android:id/contentPanel";
     public static final String TERMINAL_COMMAND_LIST_CONNECTED_USB_DEVICE = "system_profiler SPUSBDataType";
@@ -205,13 +207,13 @@ public class Labels extends Base{
     public static String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String FIRST_NAME = "Suresh";
     public static final String LAST_NAME = "Reddy";
-    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestingEmail40@gmail.com";
+    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestingEmail107@gmail.com";
     public static final String EMAIL_ID_SIGN_IN = "rehlatAutomationTestEmail1@gmail.com";  // Always add the two digit email number so that on every test script a new email id is generated for to test sign up
     public static final String PASSWORD = "testPasswordFromLabels";
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";
     public static final String REFERRAL_CODE = "chaitu";
     public static String phoneNumber = "8050510545";
-    public static final String COUPON_CODE = "MARHABA"; // Both for international and national flights searching should be the same
+    public static final String COUPON_CODE = "GOREHLAT"; // Both for international and national flights searching should be the same
     public static final String IOS_APPLIED_KARAM_POINTS = "1";
 
 

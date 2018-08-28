@@ -14,10 +14,11 @@ import java.util.concurrent.TimeUnit;
 public class PaymentOptionsIos extends PaymentOptionsBase {
 
     public static final String PAYMENT_OPTIONS_TITLE = "Payment Options";
-    public static final String KNET_PAYMENT_GATEWAY_OPTION = "KnetPayment";
+    public static final String KNET_PAYMENT_GATEWAY_OPTION = "KNET";
     public static final String KNET_PAYMENT_GATEWAY_TITLE = "Knet Payment Gateway";
     public static final String PIN_TEXTFIELD = "XCUIElementTypeSecureTextField";
     public static final String SELECT_YOUR_BANK = "Select Your Bank";
+    public static final String PAYMENT_FAILED = "Payment Failed";
     public static final String SUBMIT_BUTTON = "Submit";
     public static final String CONFIRM_BUTTON = "Confirm";
     public static final String SELECT_YOUR_BANK_PICKER_WHEEL ="XCUIElementTypePickerWheel";
@@ -51,11 +52,11 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 acceptTheFareDifferAlert();
             }else {
                 acceptTheFareDifferAlert();
-                if (isElementDisplayedByName(PAYMENT_OPTIONS_TITLE)){
-                    Logger.logStep("Payment options screen is displayed and moving to next step");
-                }else {
-                    Logger.logError("Payment options screen is not displayed");
-                }
+            }
+            if (isElementDisplayedByName(PAYMENT_OPTIONS_TITLE)){
+                Logger.logStep("Payment options screen is displayed and moving to next step");
+            }else {
+                Logger.logError("Payment options screen is not displayed");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check the screen name - " + PAYMENT_OPTIONS_TITLE);
@@ -90,16 +91,19 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 Logger.logAction("Total amount payable price linear layout is displayed");
                 String xPathOfFinalPaymentPrice = XPATH_OF_FINAL_PAYMENT_CELL_IN_PAYMENT_OPTIONS_SCREEN+"/XCUIElementTypeStaticText[3]";
                 if (isElementDisplayedByXPath(xPathOfFinalPaymentPrice)){
-                    String finalAmountPayablePriceInPaymentCheckOutScreen = driver.findElementByXPath(xPathOfFinalPaymentPrice).getText();
+                    Double finalAmountPayablePriceInPaymentCheckOutScreen = Double.parseDouble(driver.findElementByXPath(xPathOfFinalPaymentPrice).getText());
+                    Double ticketAmountDisplayedInBookingPageScreen = Double.parseDouble(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN);
                     Logger.logComment("Final Amount displayed in the payment check out screen is :- "+finalAmountPayablePriceInPaymentCheckOutScreen);
                     Logger.logComment("Booking cost displayed in review booking screen is :- "+Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN);
-                    if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.equals(String.valueOf(finalAmountPayablePriceInPaymentCheckOutScreen))) {
+                    if (finalAmountPayablePriceInPaymentCheckOutScreen.equals(ticketAmountDisplayedInBookingPageScreen)) {
                         Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
-                    }else if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN == finalAmountPayablePriceInPaymentCheckOutScreen) {
+                    }else if (finalAmountPayablePriceInPaymentCheckOutScreen == ticketAmountDisplayedInBookingPageScreen) {
                         Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
-                    }else if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.contains(finalAmountPayablePriceInPaymentCheckOutScreen)) {
-                        Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
-                    }else {
+                    }
+//                    else if (Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.contains(finalAmountPayablePriceInPaymentCheckOutScreen)) {
+//                        Logger.logStep("Final Amount displayed in the payment check out screen is matches with booking cost displayed in review booking screen");
+//                    }
+                    else {
                         Logger.logError("Final Amount displayed in the payment check out screen is not matches with booking cost displayed in review booking screen");
                     }
                 }else {
@@ -126,7 +130,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
     public void tapOnKnetPaymentGateWay() {
         Logger.logAction("Tapping on KNET payment gateway");
         try{
-            if (isElementDisplayedByName(KNET_PAYMENT_GATEWAY_OPTION)){
+            if (isElementEnabledByName(KNET_PAYMENT_GATEWAY_OPTION)){
                 driver.findElementByName(KNET_PAYMENT_GATEWAY_OPTION).click();
 //                if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
 //                    driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
@@ -150,12 +154,16 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
         try{
             if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
+            }
+            if (isElementDisplayedById(PAYMENT_FAILED)){
+                System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
+                        "//////////////////////////////////////////  "+PAYMENT_FAILED+"////////////////////////////////////////////////////\n"+
+                        "        ////////////////////////////////////////////////////////////////////////////////////");
+                Logger.logError("Payment Failed screen is displayed");
+            }else if (isElementDisplayedByName(KNET_PAYMENT_GATEWAY_TITLE)){
+                Logger.logStep("KNET Payment gateway screen is displayed and moving to next step");
             }else {
-                if (isElementDisplayedByName(KNET_PAYMENT_GATEWAY_TITLE)){
-                    Logger.logStep("KNET Payment gateway screen is displayed and moving to next step");
-                }else {
-                    Logger.logError("KNET Payment screen is not displayed");
-                }
+                Logger.logError("KNET Payment screen is not displayed");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check the screen name - " + KNET_PAYMENT_GATEWAY_TITLE);

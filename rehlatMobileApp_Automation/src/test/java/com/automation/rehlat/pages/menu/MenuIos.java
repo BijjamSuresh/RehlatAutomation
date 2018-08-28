@@ -1,6 +1,5 @@
 package com.automation.rehlat.pages.menu;
 
-import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -94,11 +93,11 @@ public class MenuIos extends MenuBase {
     public boolean isUserSignedIn() {
         Logger.logAction("Checking user is signed in or not ?");
         try {
-            if (! (isElementDisplayedByName(SIGN_IN_OR_SIGN_UP_BUTTON))){
-                Logger.logComment("User is signed in");
+            if (! isElementDisplayedByAccessibilityId(SIGN_IN_OR_SIGN_UP_BUTTON)){
+                Logger.logStep("User is signed in");
                 return true;
             }else {
-                Logger.logComment("User is not signed in");
+                Logger.logStep("User is not signed in");
                 return false;
             }
         }catch (Exception exception){
@@ -111,7 +110,7 @@ public class MenuIos extends MenuBase {
      * Tap on Settings button
      */
     @Override
-    public void tapOnSettingsButton() throws Exception{
+    public void tapOnSettingsButton() {
         Logger.logAction("Tapping on settings button");
         try {
 //            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){

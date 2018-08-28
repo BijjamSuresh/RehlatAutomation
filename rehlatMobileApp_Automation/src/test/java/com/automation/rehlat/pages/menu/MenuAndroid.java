@@ -50,6 +50,7 @@ public class MenuAndroid extends MenuBase {
         try {
             if (isElementDisplayedById(SIGN_IN_OR_SIGN_UP_BUTTON)){
                 driver.findElement(By.id(SIGN_IN_OR_SIGN_UP_BUTTON)).click();
+                Logger.logComment("Tapped on sign in / sign up button");
             }else {
                 Logger.logError("Sign in or sign up button is not displayed");
             }
@@ -133,16 +134,18 @@ public class MenuAndroid extends MenuBase {
      * Tap on Settings button
      */
     @Override
-    public void tapOnSettingsButton() throws Exception{
+    public void tapOnSettingsButton() {
         Logger.logAction("Tapping on settings button");
         try {
 //            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){
                 if (isElementDisplayedById(SETTINGS_OPTION)){
                     driver.findElementById(SETTINGS_OPTION).click();
+                    Logger.logComment("Tapped on settings button");
                 }else {
                     scrollTheMenuViewUp(SCROLL_VIEW_IN_MENU_SCREEN);
                     if (isElementDisplayedById(SETTINGS_OPTION)) {
                         driver.findElementById(SETTINGS_OPTION).click();
+                        Logger.logComment("Tapped on settings button");
                     }else {
                         Logger.logError(SETTINGS_OPTION+" :- element name is not displayed in the current active screen");
                     }
@@ -162,11 +165,12 @@ public class MenuAndroid extends MenuBase {
     public void tapOnLogoutButton() {
         Logger.logAction("Tapping on logout button");
         try {
-//            tapOnSettingsButton();
+            tapOnSettingsButton();
 //            Thread.sleep(4000);
             if (isSettingsScreenIsDisplayed()){
                 if (isElementDisplayedById(LOGOUT_BUTTON)){
                     driver.findElementById(LOGOUT_BUTTON).click();
+                    Logger.logComment("Tapped on logout button");
                 }else {
                     Logger.logError(LOGOUT_BUTTON+" :- element name is not displayed in the current active screen");
                 }
@@ -181,13 +185,12 @@ public class MenuAndroid extends MenuBase {
     /**
      * Checking the settings screen is displayed or not ?
      * @return
-     * @throws Exception
      */
-    public static boolean isSettingsScreenIsDisplayed() throws Exception{
+    public static boolean isSettingsScreenIsDisplayed() {
         Logger.logAction("Checking the settings screen is displayed");
         String valueOfSettingsScreenTitle;
         try{
-            if (isElementDisplayedByXPath(XPATH_OF_SETTINGS_SCREEN_TITTLE)){
+            if (isElementEnabledByXpath(XPATH_OF_SETTINGS_SCREEN_TITTLE)){
                 valueOfSettingsScreenTitle = driver.findElement(By.xpath(XPATH_OF_SETTINGS_SCREEN_TITTLE)).getText();
                 if (valueOfSettingsScreenTitle.equals("Settings")){
                     return true;

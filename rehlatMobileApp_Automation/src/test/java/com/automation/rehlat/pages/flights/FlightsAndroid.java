@@ -18,6 +18,7 @@ public class FlightsAndroid extends FlightsBase{
     public static final String FROM_TEXTFIELD = "com.app.rehlat:id/fromAirportLinearLayout";
     public static final String TO_TEXTFIELD = "com.app.rehlat:id/toAirportLinearLayout";
     public static final String CONTINUE_BUTTON = "com.app.rehlat:id/domainDialogClose";
+    public static final String SELECT_DOMAIN_LAYOUT = "com.app.rehlat:id/domainDialogLinearLayout";
     public static final String DEPARTURE_BUTTON = "com.app.rehlat:id/departureLayout";
     public static final String RETURN_BUTTON = "com.app.rehlat:id/returnJourneyLayout";
     public static final String MENU_BUTTON = "com.app.rehlat:id/menuclick";
@@ -34,6 +35,9 @@ public class FlightsAndroid extends FlightsBase{
     public static final String XPATH_OF_COUNTRY_NAME = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.ListView/android.widget.RelativeLayout[";
     public static final String CALENDER_MODAL_VIEW = "com.app.rehlat:id/calendar_view";
     public static final String SEARCH_TEXTFIELD = "com.app.rehlat:id/searchFlightEditText";
+    public static final String OTHER_COUNTRY_OPTION ="Other";
+    public static final String DONE_BUTTON_IN_CALENDAR_VIEW = "com.app.rehlat:id/closeCalImageView";
+    public static final String SEARCH_BUTTON_IN_FLIGHTS_TAB = "com.app.rehlat:id/flightSearchTextView";
 
     /**
      * Check select language modal is displayed
@@ -42,7 +46,7 @@ public class FlightsAndroid extends FlightsBase{
     public boolean isSelectLanguageModalIsDisplayed() {
         Logger.logAction("checking the select language modal is displayed or not");
         try{
-            if (isElementDisplayedByName(SELECT_LANGUAGE)){
+            if (isElementDisplayedById(SELECT_DOMAIN_LAYOUT)){
                 Logger.logStep("Select Language modal is displayed");
                 return true;
             }else {
@@ -81,6 +85,7 @@ public class FlightsAndroid extends FlightsBase{
         try {
             if (isElementDisplayedById(MENU_BUTTON)){
                 driver.findElement(By.id(MENU_BUTTON)).click();
+                Logger.logStep("Menu button is tapped");
             }else{
                 Logger.logError("Menu button is not displayed in the current active screen");
             }
@@ -103,7 +108,7 @@ public class FlightsAndroid extends FlightsBase{
                     for (int index = 0; index <= displayedCountriesList.size(); index++) {
                         WebElement countryNameTextView = displayedCountriesList.get(index);
                         String countryNameLabel = countryNameTextView.getText();
-                        if (countryNameLabel.equals(userCountryName) || countryNameLabel.equals("Other")) {
+                        if (countryNameLabel.equals(userCountryName) || countryNameLabel.equals(OTHER_COUNTRY_OPTION)) {
                             Logger.logComment("Tapping on element - " + userCountryName);
                             index = index + 1;
                             driver.findElement(By.xpath(XPATH_OF_COUNTRY_NAME + index + "]")).click();
@@ -153,10 +158,9 @@ public class FlightsAndroid extends FlightsBase{
 
     /**
      * Select the country name and move to flights tab
-     * @throws Exception
      */
     @Override
-    public void selectCountryNameInSelectLanguageModal(String countryName) throws Exception{
+    public void selectCountryNameInSelectLanguageModal(String countryName) {
         Logger.logAction("Selecting the country name and move to the flights tab");
         if (isSelectLanguageModalIsDisplayed()){
             selectCountryOfUser(countryName);
@@ -176,6 +180,7 @@ public class FlightsAndroid extends FlightsBase{
             if (isElementDisplayedById(FROM_TEXTFIELD)){
                 Logger.logComment("Tapping on element - " +FROM_TEXTFIELD);
                 driver.findElementById(FROM_TEXTFIELD).click();
+                Logger.logStep("FROM text field is tapped");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on From text field in flights tab ");
@@ -192,6 +197,7 @@ public class FlightsAndroid extends FlightsBase{
             if (isElementDisplayedById(TO_TEXTFIELD)){
                 Logger.logComment("Tapping on element - " + TO_TEXTFIELD);
                 driver.findElement(By.id(TO_TEXTFIELD)).click();
+                Logger.logStep("TO text field is tapped");
             }
         }catch (Exception exception){
             Logger.logError("Encountered Error: Unable to tap on TO text field");
@@ -259,7 +265,7 @@ public class FlightsAndroid extends FlightsBase{
         Logger.logAction("Selecting the airport code -"+airportCode+"- from search results");
         try {
             if (isElementDisplayedById(SEARCH_FLIGHT_LISTVIEW_ID)){
-                WebElement searchFlightListView = driver.findElement(By.id("com.app.rehlat:id/searchFlightListView"));
+                WebElement searchFlightListView = driver.findElement(By.id(SEARCH_FLIGHT_LISTVIEW_ID));
                 List<WebElement> searchResultsAirportNamesListWithCodes = searchFlightListView.findElements(By.className(TEXT_VIEW));
                 for (int index=0; index <= searchResultsAirportNamesListWithCodes.size();index++)
                 {
@@ -296,6 +302,7 @@ public class FlightsAndroid extends FlightsBase{
         try{
             if (isElementDisplayedById(DEPARTURE_BUTTON)){
                 driver.findElementById(DEPARTURE_BUTTON).click();
+                Logger.logStep("Departure button is tapped");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on Departure button");
@@ -311,6 +318,7 @@ public class FlightsAndroid extends FlightsBase{
         try{
             if (isElementDisplayedById(RETURN_BUTTON)){
                 driver.findElementById(RETURN_BUTTON).click();
+                Logger.logStep("Return button is tapped");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on Departure button");
@@ -382,14 +390,14 @@ public class FlightsAndroid extends FlightsBase{
             Thread.sleep(WAIT_TIME_MIN);
             WebElement calenderView = driver.findElement(By.id(CALENDER_MODAL_VIEW));
             try {
-                List<WebElement> monthTitle = calenderView.findElements(By.className("android.widget.LinearLayout"));
+                List<WebElement> monthTitle = calenderView.findElements(By.className(ANDROID_LINEAR_LAYOUT));
                 for (int index = 0; index <= monthTitle.size()-1; index++) {
                     WebElement monthCalenderLayout = monthTitle.get(index);
                     WebElement monthCalenderTitleLayout = monthCalenderLayout.findElement(By.className(TEXT_VIEW));
                     String monthCalenderTitleValue = monthCalenderTitleLayout.getText();
                     if (monthCalenderTitleValue.equals(parsingMonthAndYear)){
-                        WebElement daysCalenderLayout = monthCalenderLayout.findElement(By.className("android.view.ViewGroup"));
-                        List<WebElement> groupViewOfDaysIncludingRows = daysCalenderLayout.findElements(By.className("android.view.ViewGroup"));
+                        WebElement daysCalenderLayout = monthCalenderLayout.findElement(By.className(ANDROID_VIEW_GROUP));
+                        List<WebElement> groupViewOfDaysIncludingRows = daysCalenderLayout.findElements(By.className(ANDROID_VIEW_GROUP));
                         for (int row = 0; row <= groupViewOfDaysIncludingRows.size()-1; row++) {
                             WebElement eachRowInaGroupView = groupViewOfDaysIncludingRows.get(row);
                             List<WebElement> listOfRowsInMonthCalender = eachRowInaGroupView.findElements(By.className(TEXT_VIEW));
@@ -440,7 +448,7 @@ public class FlightsAndroid extends FlightsBase{
             Thread.sleep(WAIT_TIME_MIN);
             WebElement calenderView = driver.findElement(By.id(CALENDER_MODAL_VIEW));
             try{
-                List<WebElement> linearLayout = calenderView.findElements(By.className("android.widget.LinearLayout"));
+                List<WebElement> linearLayout = calenderView.findElements(By.className(ANDROID_LINEAR_LAYOUT));
                 for (int index =0; index <= linearLayout.size()-1;index++){
                     if (linearLayout.get(index).findElement(By.className(TEXT_VIEW)).isDisplayed()){
                         WebElement calenderMonth = linearLayout.get(index).findElement(By.className(TEXT_VIEW));
@@ -529,8 +537,9 @@ public class FlightsAndroid extends FlightsBase{
     public void tapOnDoneButton() {
         Logger.logAction("Tapping on Done button");
         try {
-            if (isElementDisplayedById("com.app.rehlat:id/closeCalImageView")){
-                driver.findElementById("com.app.rehlat:id/closeCalImageView").click();
+            if (isElementDisplayedById(DONE_BUTTON_IN_CALENDAR_VIEW)){
+                driver.findElementById(DONE_BUTTON_IN_CALENDAR_VIEW).click();
+                Logger.logStep("Tapped on Done button");
 
 //                // This logic is an work around for android app in Samsung devices...Issue is mentioned inside the logger.logStep messages, please read them for more information..,
 //                // Todo:- Discuss this issue with developers and implement final solution if there is no way to fix this issue
@@ -554,8 +563,9 @@ public class FlightsAndroid extends FlightsBase{
     public void tapOnSearchButton() {
         Logger.logAction(" Tapping on Search button in flights tab");
         try {
-            if (isElementDisplayedById("com.app.rehlat:id/flightSearchTextView")){
-                driver.findElementById("com.app.rehlat:id/flightSearchTextView").click();
+            if (isElementDisplayedById(SEARCH_BUTTON_IN_FLIGHTS_TAB)){
+                driver.findElementById(SEARCH_BUTTON_IN_FLIGHTS_TAB).click();
+                Logger.logStep("Tapped on Search button");
             }else {
                 Logger.logError("Search button is not displayed in flights tab");
             }

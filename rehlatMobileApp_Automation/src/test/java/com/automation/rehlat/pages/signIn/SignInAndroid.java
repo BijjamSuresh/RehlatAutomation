@@ -85,6 +85,7 @@ public class SignInAndroid extends SignInBase{
         try {
             if (isElementDisplayedById(CREATE_ACCOUNT_BUTTON)){
                 driver.findElement(By.id(CREATE_ACCOUNT_BUTTON)).click();
+                Logger.logStep("Create account button is tapped");
             }else {
                 Logger.logComment(CREATE_ACCOUNT_BUTTON+" - element name is not displayed in the current active screen");
             }
@@ -115,6 +116,7 @@ public class SignInAndroid extends SignInBase{
         try {
             if (isElementDisplayedById(EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN)){
                 driver.findElement(By.id(EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN)).sendKeys(Labels.EMAIL_ID_SIGN_IN);
+                Logger.logComment(Labels.EMAIL_ID_SIGN_IN +":- email id is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError("unable to find the element name :- "+EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN);
@@ -132,6 +134,7 @@ public class SignInAndroid extends SignInBase{
         try {
             if (isElementDisplayedById(PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN)){
                 driver.findElement(By.id(PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN)).sendKeys(Labels.PASSWORD);
+                Logger.logComment(Labels.PASSWORD +":- password is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError("unable to find the element name :- "+PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN);
@@ -150,6 +153,7 @@ public class SignInAndroid extends SignInBase{
         try {
             if (isElementDisplayedById(LOGIN_BUTTON)){
                 driver.findElement(By.id(LOGIN_BUTTON)).click();
+                Logger.logComment("Tapped on logout button");
                 waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
                 declineTheSyncPreviousTravellersDataModalView_Android();
             }else {

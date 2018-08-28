@@ -4,7 +4,6 @@ import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.tests.BaseTest;
 import org.junit.Test;
-
 import static com.automation.rehlat.Labels.*;
 
 public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_FromBookingsPageScreen extends BaseTest {
@@ -12,7 +11,6 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
     public void testTicketBookingWithAppliedCouponCodeAndWithSignInFromBookingsPageScreen() throws Exception{
         Logger.beginTest(" - Ticket Booking with sign in from booking page and with applied coupon code ");
         FlightsScreen.selectCountryNameInSelectLanguageModal(INDIA_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
-//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         if (MenuScreen.isUserSignedIn()){
@@ -23,7 +21,6 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
         MenuScreen.navigateToFlightsTab();
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnFromTextField();
-//        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
         FlightsScreen.checkSearchViewScreenIsDisplayed();
         FlightsScreen.checkKeyboardIsDisplayed();
         FlightsScreen.enterAirportName(FROM_DOMESTIC_AIRPORT_NAME); // Automation Defect: search results are not matching w.r.t. the send keys and due to that using Xpath of first element in search results

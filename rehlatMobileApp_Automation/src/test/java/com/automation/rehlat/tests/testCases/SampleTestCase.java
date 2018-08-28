@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class SampleTestCase extends BaseTest {
     @Test
-    public void testSampleTestCase() throws Exception{
+    public void testSampleTestCase() {
         Logger.beginTest("Test Sample Test Case Is Started");
 //        FlightsScreen.checkSelectLanguageModalIsDisplayed();
 //

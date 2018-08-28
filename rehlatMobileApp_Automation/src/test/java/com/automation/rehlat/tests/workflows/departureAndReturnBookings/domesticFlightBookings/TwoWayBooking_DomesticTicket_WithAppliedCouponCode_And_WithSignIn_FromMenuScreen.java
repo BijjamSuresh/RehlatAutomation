@@ -21,7 +21,7 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
         MenuScreen.checkMenuScreenIsDisplayed();
         if (MenuScreen.isUserSignedIn()){
             Logger.logComment("User is already logged in. so going to signed out from that account and signed with new account");
-            MenuScreen.tapOnSettingsButton();
+//            MenuScreen.tapOnSettingsButton();
             MenuScreen.tapOnLogoutButton();
             FlightsScreen.checkFlightsTabIsDisplayed();
             FlightsScreen.tapOnMenuButton();

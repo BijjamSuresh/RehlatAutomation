@@ -21,6 +21,8 @@ public class TwoWayBooking_DomesticTicket_WithoutCouponCode_And_WithoutSignUpOrS
             MenuScreen.tapOnLogoutButton();
             FlightsScreen.checkFlightsTabIsDisplayed();
             FlightsScreen.tapOnMenuButton();
+        }else {
+            Logger.logStep("User is not signed in.., So go to next test scripts");
         }
         MenuScreen.checkMenuScreenIsDisplayed();
         MenuScreen.navigateToFlightsTab();

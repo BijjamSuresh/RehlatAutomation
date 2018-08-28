@@ -4,6 +4,7 @@ import com.automation.rehlat.Base;
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.pages.bookingPage.BookingPageBase;
+import com.automation.rehlat.pages.bookingPage.BookingPageIos;
 import com.automation.rehlat.pages.flights.FlightsBase;
 import com.automation.rehlat.pages.flightsSearchResults.FlightsSearchResultsBase;
 import com.automation.rehlat.pages.flightsSimilarOptionsSearchResults.FlightsSimilarOptionsSearchResultsBase;
@@ -11,12 +12,15 @@ import com.automation.rehlat.pages.menu.MenuBase;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsBase;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingBase;
 import com.automation.rehlat.pages.signIn.SignInBase;
+import com.automation.rehlat.pages.signIn.SignInIos;
 import com.automation.rehlat.pages.signUp.SignUpBase;
 import com.automation.rehlat.pages.travellerDetails.TravellerDetailsBase;
 import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.List;
 
 public class BasePage extends Base {
 
@@ -33,10 +37,16 @@ public class BasePage extends Base {
     public static PaymentOptionsBase PaymentOptionsScreen;
 
 
-    ////////////////////////////// Strings Related To The Methods In Base Page //////////////////////////////////////
+    ////////////////////////////// IOS Strings Related To The Methods In Base Page //////////////////////////////////////
     public static final String IOS_DONE_BUTTON = "Done";
     public static final String IOS_DATE_PICKER = "XCUIElementTypeDatePicker";
     public static final String TOGGLE_SWITCH = "XCUIElementTypeSwitch";
+    public static String TRIP_TYPE ;
+    public static boolean isUserSignedIn;
+    public static final String SRP_ONE_WAY_VIEW = "Rehlat.SRPOneWayView";
+    public static final String SRP_TWO_WAY_VIEW = "Rehlat.SRPRoundTripView";
+
+    ////////////////////////////// Android Strings Related To The Methods In Base Page //////////////////////////////////////
     public static final String MODAL_VIEW = "com.app.rehlat:id/networkErrormsgTextview";
     public static final String SYNC_PREVIOUS_MODAL_VIEW_DATA = "Do you want to sync previous travellers data to your account?";
     public static final String DONT_SYNC_PREVIOUS_TRAVELLERS_DATA = "com.app.rehlat:id/noBtn";
@@ -247,6 +257,7 @@ public class BasePage extends Base {
         }
     }
 
+
 //    /**
 //     * Check the test running device is an samsung device and if it is pushing it to background for a second
 //     * @throws Exception
@@ -280,7 +291,7 @@ public class BasePage extends Base {
     public void disableToggleSwitch_iOS() {
         Logger.logAction("Disabling the toggle button");
         try {
-            if (isElementEnabledByClassName(TOGGLE_SWITCH)){
+            if (isElementDisplayedByClassName(TOGGLE_SWITCH)){
                 WebElement toggleSwitch = driver.findElementByClassName(TOGGLE_SWITCH);
                 String toggleSwitchValue = toggleSwitch.getAttribute(Labels.VALUE_ATTRIBUTE);
                 if (toggleSwitchValue.equals(Labels.VALUE_ONE)){
@@ -370,9 +381,72 @@ public class BasePage extends Base {
             }catch (Exception exception){
                 Logger.logComment(count+" :- time trying to find the element name");
             }
-            Thread.sleep(Labels.WAIT_TIME_MIN);
             count++;
         }
+    }
+
+    /**
+     * Get the displayed ticket booking value
+     * @return
+     */
+    public static Double getTheDisplayedTicketBookingValueInFooterView(String screeName, Integer footerViewCellNumber) throws Exception {
+        Logger.logAction("Getting the ticket cost displayed at footer view of the screen");
+        String flightCellTypeText = null;
+        WebElement bookingFlightCell;
+        WebElement flightCellType;
+        List<WebElement> flightCellDetails;
+        try{
+            int cellIndex;
+            // The below if condition is because  footer view cell number is changed to "2" when user is signed in and is "3" when user is not signed in...To handle this logic implemented below if condition.
+            if (screeName.equalsIgnoreCase("BookingPageScreen") && isUserSignedIn==true){
+                footerViewCellNumber = footerViewCellNumber -1;
+            }
+            bookingFlightCell = driver.findElementByXPath("//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther["+footerViewCellNumber+"]");
+            flightCellDetails = bookingFlightCell.findElements(By.className("XCUIElementTypeStaticText"));
+            for (cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++){
+                flightCellType = flightCellDetails.get(cellIndex);
+                flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
+                if (flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE) && flightCellTypeText.contains(".")){
+                    String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "").trim();
+                    Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+                    return Double.valueOf(actualAmountPrice);
+                }else if(flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
+                    String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "").trim();
+                    Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+                    return Double.valueOf(actualAmountPrice);
+                }
+//            else if(flightCellTypeText.contains("updating...") || flightCellTypeText.contains("updating.") || flightCellTypeText.contains("updating..")){
+//                Thread.sleep(Labels.WAIT_TIME_MIN);
+//                Logger.logStep("Booking flight cost is not displayed, price label is still loading");
+//                bookingFlightCell = driver.findElementByXPath("//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]");
+//                flightCellDetails = bookingFlightCell.findElements(By.className("XCUIElementTypeStaticText"));
+//                for (cellIndex=0;cellIndex<flightCellDetails.size();cellIndex++) {
+//                    flightCellType = flightCellDetails.get(cellIndex);
+//                    flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
+//                    if (flightCellTypeText.contains(".")){
+//                        Logger.logComment("Displayed booking cost is: " +flightCellTypeText);
+//                        return flightCellTypeText;
+//                    } else if(flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
+//                        String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "").trim();
+//                        Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
+//                        return actualAmountPrice;
+//                    }else{
+//                        Logger.logError("Booking flight cost is not displayed in the current active screen");
+//                    }
+//                }
+//            }
+                else
+                {
+                    Logger.logStep(cellIndex+" time finding the booking flight cost");
+                }
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the displayed ticket booking value in footer view");
+        }
+        if (flightCellTypeText==null){
+            Logger.logError("Booking flight cost is not displayed in the current active screen");
+        }
+        return Double.valueOf(flightCellTypeText);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

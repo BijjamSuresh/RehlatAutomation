@@ -15,6 +15,7 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
     public static final String IN_PROGRESS_INDICATOR = "com.app.rehlat:id/journeContinueProgressBar";
     public static final String CONTINUE_BUTTON = "com.app.rehlat:id/countinue_text";
     public static final String TOGGLE_SWITCH = "com.app.rehlat:id/set_subscription_switch";
+    public static final String REVIEW_BOOKING_PRICE ="com.app.rehlat:id/reviewbooking_price";
 
 
     /**
@@ -243,8 +244,8 @@ public class ReviewBookingAndroid extends ReviewBookingBase {
             }
 //            else {
 //                Thread.sleep(Labels.WAIT_TIME_MIN);
-                if (isElementDisplayedById("com.app.rehlat:id/reviewbooking_price")){
-                    WebElement reviewBookingPriceLabel = driver.findElementById("com.app.rehlat:id/reviewbooking_price");
+                if (isElementDisplayedById(REVIEW_BOOKING_PRICE)){
+                    WebElement reviewBookingPriceLabel = driver.findElementById(REVIEW_BOOKING_PRICE);
                     String reviewBookingPrice = reviewBookingPriceLabel.getText();
 //                if (reviewBookingPrice.contains(".")){
 //                    Logger.logComment("Displayed booking cost is: " +reviewBookingPrice);

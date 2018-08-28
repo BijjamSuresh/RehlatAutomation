@@ -259,6 +259,7 @@ public class Base {
 //                if (Labels.platform.equals(Labels.ANDROID)) {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
 //                } else {
+//                Thread.sleep(Labels.WAIT_TIME_DEFAULT);
                     element = driver.findElementByName(elementName);
 //                    return true;
 //                }
@@ -336,10 +337,10 @@ public class Base {
             } catch (Exception e) {
                 Logger.logComment(counter + " time trying to find the element id of - " + elementId);
             }
-            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
         }
-        Logger.logWarning(elementId + " - element id is not displayed in the current active screen");
+        Logger.logWarning(elementId + " - element accessibility id is not displayed in the current active screen");
         return false;
     }
 

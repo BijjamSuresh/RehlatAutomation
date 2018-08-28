@@ -47,7 +47,7 @@ public class BaseTest extends Base {
     public static final String DOMESTIC_TRAVELLERS_COUNTRY_NAME = "India";
 
     public static final String KUWAIT_AIRPORT_NAME_XPATH_IN_SEARCH_RESULTS = "//XCUIElementTypeStaticText[@name=\"Kuwait - Kuwait Intl - Kuwait\"]";
-    public static final String DEPARTURE_DAY = "5";
+    public static final String DEPARTURE_DAY = "2";
     public static final String RETURN_DAY = "5";
     public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS = "2"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
     public static final String CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS_WHEN_SOLDOUT_POPUP_INTERRUPTRED = "1"; // For Android should give number less than 3, because flight card ids/xpaths are reset to 1 to 4 only
@@ -143,8 +143,8 @@ public class BaseTest extends Base {
             String BASE_EMAIL_ID_FOR_SIGN_UP = "rehlatAutomationTestingEmail";
             String MAIL_OPERATOR = "@gmail.com";
             String currentEmailIdForSignUp = Labels.EMAIL_ID_SIGN_UP;
-            Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(28, 30));
-            for (int index = 0; index <= 99; index++) {
+            Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(28, 31));
+            for (int index = 0; index <= 999; index++) {
                 Integer settingEmailValue = index;
                 if (settingEmailValue == currentEmailIdNumber) {
                     newEmailNumber = settingEmailValue + 1;

@@ -17,6 +17,7 @@ public class TwoWayBooking_InternationalTicket_WithAppliedCouponCode_And_Without
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         MenuScreen.checkMenuScreenIsDisplayed();
+//        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
         if (MenuScreen.isUserSignedIn()){
             Logger.logComment("User is signed with an account.., So going to logout form that account");
             MenuScreen.tapOnLogoutButton();

@@ -15,6 +15,7 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
     public static final String XPATH_OF_ONLY_DEPARTURE_CARD_PRICE_VIEW_WITHOUT_CARD_VIEW_XPATH = "/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout[2]/android.widget.TextView[2]";
     public static final String XPATH_OF_DEPARTURE_AND_RETURN_CARD_PRICE_VIEW_WITHOUT_CARD_VIEW_XPATH = "/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout[2]/android.widget.TextView[2]";
     public static final String TWO_WAY_LIST_VIEW = "com.app.rehlat:id/internationalTwoWayListView";
+    public static final String DOMESTIC_ONE_WAY_RECYCLER_VIEW = "com.app.rehlat:id/domesticOneWayRecyclerView";
     //    public WebElement EXPANDABLELIST;
     /**
      * Check flights search results screen is displayed or not
@@ -42,9 +43,13 @@ public class FlightsSearchResultsAndroid extends FlightsSearchResultsBase {
     public static boolean waitTillFlightsSearchResultsScreenIsDisplayed() {
         Logger.logAction("Waiting till the active screen is loaded");
         try{
-            driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.app.rehlat:id/domesticOneWayRecyclerView")));
-            Logger.logStep("Active screen is loaded and moving to check the screen name");
-            return true;
+            if (isElementDisplayedById(DOMESTIC_ONE_WAY_RECYCLER_VIEW)){
+                driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id(DOMESTIC_ONE_WAY_RECYCLER_VIEW)));
+                Logger.logStep("Active screen is loaded and moving to check the screen name");
+                return true;
+            }else {
+                Logger.logStep("Active screen is loaded and moving to check the screen name");
+            }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to find the visibility of an element");
         }

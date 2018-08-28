@@ -27,6 +27,7 @@ public class FlightsIos extends FlightsBase {
     public static final String SEARCH_BUTTON = "Search";
     public static final String DEPARTURE_BUTTON = "Departure";
     public static final String RETURN_BUTTON = "Return";
+    public static final String DONE_BUTTON_IN_CALENDAR_VIEW = "Done";
     public static final String XPATH_OF_MONTH_AND_DAY_DEPARTURE_IN_CALENDAR_VIEW = "(//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther";
     public static final String XPATH_OF_MONTH_DEPARTURE_IN_CALENDAR_VIEW = "(//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther";
     public static final String CALENDER_MODAL_VIEW_XPATH = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElementTypeCollectionView";
@@ -61,6 +62,7 @@ public class FlightsIos extends FlightsBase {
         try {
             if (isElementDisplayedByName(MENU_BUTTON)){
                 driver.findElement(By.name(MENU_BUTTON)).click();
+                Logger.logStep("Tapped on Menu button");
             }else{
                 Logger.logError("Menu button is not displayed in the current active screen");
             }
@@ -80,7 +82,7 @@ public class FlightsIos extends FlightsBase {
                 Thread.sleep(Labels.WAIT_TIME_MIN);
                 String menuButton = driver.findElement(By.name(MENU_BUTTON)).getAttribute(Labels.VISIBLE_ATTRIBUTE);
                 if (menuButton.equals(Labels.STATUS_TRUE)){
-                    Logger.logComment("Flights Screen is displayed");
+                    Logger.logStep("Flights Screen is displayed");
                 }else{
                     Logger.logError("Flights screen is not displayed");
                 }
@@ -101,13 +103,13 @@ public class FlightsIos extends FlightsBase {
         try{
             if (userCountryName.equals(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)){
                 if (isElementDisplayedByName(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)|| isElementDisplayedByName("OTHER")){
-                    Logger.logComment("Tapping on element - " +userCountryName);
+                    Logger.logStep("Tapping on element - " +userCountryName);
                     driver.findElementByName(userCountryName).click();
                 }else {
                     Logger.logError(userCountryName+" :- element name is not displaying in the current active screen");
                 }
             } else if (isElementDisplayedByName(userCountryName)){
-                Logger.logComment("Tapping on element - " +userCountryName);
+                Logger.logStep("Tapping on element - " +userCountryName);
                 driver.findElementByName(userCountryName).click();
             }else {
                 Logger.logError(userCountryName+" :- element name is not displaying in the current active screen");
@@ -124,6 +126,7 @@ public class FlightsIos extends FlightsBase {
         try{
             if (isElementDisplayedByName(CONTINUE_BUTTON)){
                 driver.findElementByName(CONTINUE_BUTTON).click();
+                Logger.logStep("Tapped on Menu button");
             }else{
                 Logger.logError("Unable to tap on continue button");
             }
@@ -134,10 +137,9 @@ public class FlightsIos extends FlightsBase {
 
     /**
      * Select the country name and move to flights tab
-     * @throws Exception
      */
     @Override
-    public void selectCountryNameInSelectLanguageModal(String countryName) throws Exception{
+    public void selectCountryNameInSelectLanguageModal(String countryName) {
         if (isSelectLanguageModalIsDisplayed()){
             selectCountryOfUser(countryName);
             tapOnContinueButton();
@@ -154,8 +156,8 @@ public class FlightsIos extends FlightsBase {
         Logger.logAction("Tapping on From text field in flights tab");
         try {
             if (isElementEnabledById(FROM_TEXTFIELD)){
-                Logger.logComment("Tapping on element - " + FROM_TEXTFIELD);
                 driver.findElement(By.id(FROM_TEXTFIELD)).click();
+                Logger.logStep("Tapped on FROM text field button");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on From text field in flights tab ");
@@ -169,8 +171,8 @@ public class FlightsIos extends FlightsBase {
     public void tapOnToTextField() {
         try {
             if (isElementEnabledById(TO_TEXTFIELD)){
-                Logger.logComment("Tapping on element - " + TO_TEXTFIELD);
                 driver.findElement(By.id(TO_TEXTFIELD)).click();
+                Logger.logStep("Tapped on TO text field button");
             }
         }catch (Exception exception){
             Logger.logError("Encountered Error: Unable to tap on TO text field");
@@ -244,6 +246,7 @@ public class FlightsIos extends FlightsBase {
             closeTheKeyboard_iOS();
             if (isElementDisplayedByName(airPortCodeOfPlaceName)){
                 driver.findElementByName(airPortCodeOfPlaceName).click();
+                Logger.logStep("Tapped on airport code :- "+airPortCodeOfPlaceName);
             }else{
                 Logger.logError("Unable to tap on the airport code of place - " +airPortCodeOfPlaceName);
             }
@@ -262,6 +265,7 @@ public class FlightsIos extends FlightsBase {
         try{
             if (isElementEnabledByName(DEPARTURE_BUTTON)){
                 driver.findElement(By.name(DEPARTURE_BUTTON)).click();
+                Logger.logStep("Tapped on departure button");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on Departure button");
@@ -277,6 +281,7 @@ public class FlightsIos extends FlightsBase {
         try{
             if (isElementEnabledByName(RETURN_BUTTON)){
                 driver.findElementByName(RETURN_BUTTON).click();
+                Logger.logStep("Tapped on return button");
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on Departure button");
@@ -542,8 +547,9 @@ public class FlightsIos extends FlightsBase {
     public void tapOnDoneButton() {
         Logger.logAction("Tapping on Done button");
         try {
-            if (isElementDisplayedByName("Done")){
-                driver.findElementByName("Done").click();
+            if (isElementDisplayedByName(DONE_BUTTON_IN_CALENDAR_VIEW)){
+                driver.findElementByName(DONE_BUTTON_IN_CALENDAR_VIEW).click();
+                Logger.logStep("Tapped on Done button");
             }else {
                 Logger.logError("Done button is not displayed in the calendar view");
             }
@@ -561,6 +567,7 @@ public class FlightsIos extends FlightsBase {
         try {
             if (isElementDisplayedByName(SEARCH_BUTTON)){
                 driver.findElementByName(SEARCH_BUTTON).click();
+                Logger.logStep("Tapped on Search button");
             }else {
                 Logger.logError("Search button is not displayed in flights tab");
             }

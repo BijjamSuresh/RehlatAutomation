@@ -19,6 +19,10 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     public static final String TRAVELLERS_PASSPORT_EXPIRY_TEXTFIELD="com.app.rehlat:id/travellerExpirtyDateEditText";
     public static final String TRAVELLERS_PASSPORT_ISSUING_COUNTRY="com.app.rehlat:id/issuecountry_textview";
     public static final String TRAVELLERS_NATIONALITY="com.app.rehlat:id/travellerNationalitytextview";
+    public static final String TRAVELLERS_PRE_POPULATED_LAYOUT = "com.app.rehlat:id/traveller_prepopulated_list_layout";
+    public static final String CLOSE_BUTTON_IN_TRAVELLERS_PRE_POPULATED_LAYOUT = "com.app.rehlat:id/traveller_prepopulated_close_dialog";
+    public static final String FIRST_TRAVLLERS_NAME_IN_PREPOPULATED_LIST ="com.app.rehlat:id/item_traveller_prepopulated_travellerName";
+    public static final String AUTO_TUTORIAL_DIALOG = "com.app.rehlat:id/tutorialDialog";
     public static final String SELECT_COUNTRY_MODAL="SELECT COUNTRY";
     public static final String TRAVELLERS_DETAILS_SCREEN_TITLE_LAYOUT="com.app.rehlat:id/addTravellersLayoutHeadingView";
     public static final String TRAVELLERS_DETAILS_SCREEN_TITLE="Traveller Details";
@@ -64,9 +68,9 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     public void declineAutoFillPopulateModalIfDisplayed() {
         Logger.logAction("Declining the auto fill popup if displayed");
         try{
-            if (isElementDisplayedById("com.app.rehlat:id/traveller_prepopulated_list_layout")){
-                if (isElementDisplayedById("com.app.rehlat:id/traveller_prepopulated_close_dialog")){
-                    WebElement closeButton = driver.findElementById("com.app.rehlat:id/traveller_prepopulated_close_dialog");
+            if (isElementDisplayedById(TRAVELLERS_PRE_POPULATED_LAYOUT)){
+                if (isElementDisplayedById(CLOSE_BUTTON_IN_TRAVELLERS_PRE_POPULATED_LAYOUT)){
+                    WebElement closeButton = driver.findElementById(CLOSE_BUTTON_IN_TRAVELLERS_PRE_POPULATED_LAYOUT);
                     closeButton.click();
                     }else {
                     Logger.logError("Close button is not displayed in the pre populated list layout");
@@ -86,9 +90,9 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
     public boolean acceptAutoFillPopulateModalIfDisplayed() {
         Logger.logAction("Accepting the auto fill popup if displayed");
         try{
-            if (isElementDisplayedById("com.app.rehlat:id/traveller_prepopulated_list_layout")){
-                if (isElementDisplayedById("com.app.rehlat:id/item_traveller_prepopulated_travellerName")){
-                    WebElement closeButton = driver.findElementById("com.app.rehlat:id/item_traveller_prepopulated_travellerName");
+            if (isElementDisplayedById(TRAVELLERS_PRE_POPULATED_LAYOUT)){
+                if (isElementDisplayedById(FIRST_TRAVLLERS_NAME_IN_PREPOPULATED_LIST)){
+                    WebElement closeButton = driver.findElementById(FIRST_TRAVLLERS_NAME_IN_PREPOPULATED_LIST);
                     closeButton.click();
                     return true;
                 }else {
@@ -176,10 +180,12 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                 String firstName = driver.findElementById(TRAVELLERS_FIRST_NAME).getText();
                 if (firstName.equals(Labels.STRING_NULL)){
                     driver.findElementById(TRAVELLERS_FIRST_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
+                    Logger.logComment(Labels.TRAVELLERS_FIRST_NAME+" :- element name is entered as first name");
                     driver.hideKeyboard();
                 }else {
                     clearKeysByUsingKeycode(TRAVELLERS_FIRST_NAME,firstName.length());
                     driver.findElementById(TRAVELLERS_FIRST_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
+                    Logger.logComment(Labels.TRAVELLERS_FIRST_NAME+" :- element name is entered as first name");
                     driver.hideKeyboard();
                 }
             }else {
@@ -201,10 +207,12 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                 String middleName = driver.findElementById(TRAVELLERS_MIDDLE_NAME).getText();
                 if (middleName.equals(Labels.STRING_NULL)){
                     driver.findElementById(TRAVELLERS_MIDDLE_NAME).sendKeys(Labels.TRAVELLERS_MIDDLE_NAME);
+                    Logger.logComment(Labels.TRAVELLERS_MIDDLE_NAME+" :- element name is entered as middle name");
                     driver.hideKeyboard();
                 }else {
                     clearKeysByUsingKeycode(TRAVELLERS_MIDDLE_NAME,middleName.length());
                     driver.findElementById(TRAVELLERS_MIDDLE_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
+                    Logger.logComment(Labels.TRAVELLERS_MIDDLE_NAME+" :- element name is entered as middle name");
                     driver.hideKeyboard();
                 }
             }else {
@@ -226,10 +234,12 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                 String lastName = driver.findElementById(TRAVELLERS_LAST_NAME).getText();
                 if (lastName.equals(Labels.STRING_NULL)){
                     driver.findElementById(TRAVELLERS_LAST_NAME).sendKeys(Labels.TRAVELLERS_LAST_NAME);
+                    Logger.logComment(Labels.TRAVELLERS_LAST_NAME+" :- element name is entered as middle name");
                     driver.hideKeyboard();
                 }else {
                     clearKeysByUsingKeycode(TRAVELLERS_LAST_NAME,lastName.length());
                     driver.findElementById(TRAVELLERS_LAST_NAME).sendKeys(Labels.TRAVELLERS_LAST_NAME);
+                    Logger.logComment(Labels.TRAVELLERS_LAST_NAME+" :- element name is entered as middle name");
                     driver.hideKeyboard();
                 }
             }else {
@@ -254,6 +264,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                     swipeTheCalendarViewToDate(Labels.DATEOFBIRTH_CALENDAR,Labels.TRAVELLERS_DATEOFBIRTH_ANDROID);
                     if (isElementDisplayedById(Labels.TRAVELLERS_DATEOFBIRTH_ANDROID)){
                         driver.findElementById(Labels.TRAVELLERS_DATEOFBIRTH_ANDROID).click();
+                        Logger.logComment(Labels.TRAVELLERS_LAST_NAME+" :- element name is selected as date of birth");
                         closeTheCalendarView();
                     }else {
                         driver.findElementById(CALENDER_MONTH_VIEW_ANDROID).click();
@@ -274,7 +285,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Swipe the calender view to a particular date based on calendar type
      * @param parsingDate
      */
-    public static void swipeTheCalendarViewToDate(String dateType, String parsingDate) {
+     public static void swipeTheCalendarViewToDate(String dateType, String parsingDate) {
         Logger.logAction("Swiping the calendar view to date:- "+parsingDate);
         try {
             if (dateType.equals(Labels.DATEOFBIRTH_CALENDAR)){
@@ -293,6 +304,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Swipe the date of birth calendar // For now only adult Date of birth logic is implemented, yet to implement for infant and child type also
      */
     public static void swipeDateOfBirthCalendar(String parsingDate) {
+        Logger.logAction("Swiping to the date of birth calendar date :- "+parsingDate);
         int monthValueOfParsingYear = 0;
         int currentMonthValueInThePreviousYearOfParsingYear = 0;
         int totalTapsOnForwardButtonInPreviousYearOfParsingYear = 0;
@@ -352,6 +364,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Swipe the date of birth calendar // For now only adult Date of birth logic is implemented, yet to implement for infant and child type also
      */
     public static void swipePassportExpiryCalendar(String parsingDate) {
+        Logger.logAction("Swiping to the passport expiry calendar date :- "+parsingDate);
         int monthValueOfParsingYear = 0;
         int currentMonthValueInThePreviousYearOfParsingYear = 0;
         int totalTapsOnForwardButtonInPreviousYearOfParsingYear = 0;
@@ -410,9 +423,11 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Close the date picker for Android Platform
      */
     public static void closeTheCalendarView() {
+        Logger.logAction("Closing the calender view");
         try{
             if (isElementDisplayedById(CALENDAR_OK_BUTTON)){
                 driver.findElementById(CALENDAR_OK_BUTTON).click();
+                Logger.logStep("Tapped on ok button in calendar view");
             }else{
                 Logger.logStep("Date picker is not displayed in the current active screen");
             }
@@ -425,10 +440,11 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
      * Close the auto tutorial dialog of calendar
      */
     public static void closeAutoTutorialDialog() {
+        Logger.logAction("Closing the auto tutorial dialog");
         try{
-            if (isElementDisplayedById("com.app.rehlat:id/tutorialDialog")){
+            if (isElementDisplayedById(AUTO_TUTORIAL_DIALOG)){
                 Logger.logComment("Tutorial is displayed and going to close it by tapping on it");
-                driver.findElementById("com.app.rehlat:id/tutorialDialog").click();
+                driver.findElementById(AUTO_TUTORIAL_DIALOG).click();
             }else {
                 Logger.logComment("No tutorials are displayed and moving forward to next step");
             }
@@ -447,10 +463,12 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                 String passportName = driver.findElementById(TRAVELLERS_PASSPORT_TEXTFIELD).getText();
                 if (passportName.equals(Labels.STRING_NULL)){
                     driver.findElementById(TRAVELLERS_PASSPORT_TEXTFIELD).sendKeys(Labels.TRAVELLERS_PASSPORT_NUMBER);
+                    Logger.logComment(Labels.TRAVELLERS_PASSPORT_NUMBER+" :- element name is parsed as passport number");
                     driver.hideKeyboard();
                 }else {
                     clearKeysByUsingKeycode(TRAVELLERS_PASSPORT_TEXTFIELD,passportName.length());
                     driver.findElementById(TRAVELLERS_PASSPORT_TEXTFIELD).sendKeys(Labels.TRAVELLERS_PASSPORT_NUMBER);
+                    Logger.logComment(Labels.TRAVELLERS_PASSPORT_NUMBER+" :- element name is parsed as passport number");
                     driver.hideKeyboard();
                 }
             }else {
@@ -474,9 +492,11 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                     swipeTheCalendarViewToDate(Labels.PASSPORT_EXPIRY_CALENDAR,Labels.TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID);
                     if (isElementDisplayedById(Labels.TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID)){
                         driver.findElementById(Labels.TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID).click();
+                        Logger.logComment(Labels.TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID+" :- element name is selected as passport expiry date");
                         closeTheCalendarView();
                     }else {
                         driver.findElementById(CALENDER_MONTH_VIEW_ANDROID).click();
+                        Logger.logComment(Labels.TRAVELLERS_PASSPORT_EXPIRY_DATE_ANDROID+" :- element name is selected as passport expiry date");
                         closeTheCalendarView();
                     }
                 }else {
@@ -554,10 +574,12 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
                     WebElement firstSearchResult = driver.findElementByXPath(XPATH_OF_FIRST_FILTER_RESULT_IN_SELECT_COUNTRY_SCREEN);
                     if (firstSearchResult.getText().equals(countryName)){
                         firstSearchResult.click();
+                        Logger.logComment(firstSearchResult.getText()+" :- element name is selected as country");
                     }else {
                         WebElement secondSearchResult = driver.findElementByXPath(XPATH_OF_SECOND_FILTER_RESULT_IN_SELECT_COUNTRY_SCREEN);
                         if (secondSearchResult.getText().equals(countryName)){
                             secondSearchResult.click();
+                            Logger.logComment(firstSearchResult.getText()+" :- element name is selected as country");
                         }else {
                             Logger.logError(countryName+" - is not matched with the displayed country name in second search cell :- "+firstSearchResult.getText());
                         }
@@ -582,6 +604,7 @@ public class TravellerDetailsAndroid extends TravellerDetailsBase {
         try{
             if (isElementDisplayedById(SAVE_BUTTON)){
                 driver.findElementById(SAVE_BUTTON).click();
+                Logger.logComment(SAVE_BUTTON+" :- element name is selected");
             }else {
 //                if (isElementDisplayedByName("Next")) // Implement a method such that should verify multiple travellers info (Verify the save button name if it is NEXT, return false and call a method that enters the other travellers info), this process needs to be continued till save button is displayed.
                 Logger.logError("Save button is not displayed in the current active screen");

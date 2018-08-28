@@ -170,6 +170,7 @@ public class BookingPageAndroid extends BookingPageBase {
             compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout(); // After iOS is implemented by "Online Check In toggle button", this method needs to be removed from here and call it as a step of TC from workflows directly
             if (isElementDisplayedById(BOOKING_PAGE_CONTINUE_BUTTON)){
                 driver.findElementById(BOOKING_PAGE_CONTINUE_BUTTON).click();
+                Logger.logComment("Tapped on continue button");
             }else{
                 Logger.logError("Unable to tap on continue button");
             }
@@ -193,6 +194,7 @@ public class BookingPageAndroid extends BookingPageBase {
                     scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
                 }
                 driver.findElementById(ADULT_BUTTON).click();
+                Logger.logComment("Tapped on adult button");
             }else{
                 scrollToAnElementById_ANDROID(ADULT_BUTTON,true);
                 if (isElementDisplayedById(ADULT_BUTTON)){
@@ -203,6 +205,7 @@ public class BookingPageAndroid extends BookingPageBase {
                         scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
                     }
                     driver.findElementById(ADULT_BUTTON).click();
+                    Logger.logComment("Tapped on adult button");
                 }else{
                     scrollTheScreenDownwards();
                     if (isElementDisplayedById(ADULT_BUTTON)){
@@ -213,6 +216,7 @@ public class BookingPageAndroid extends BookingPageBase {
                             scrollTheCalenderPageUpByDaysGap_Android(); // scrolling values inside are hardcoded by screen basis
                         }
                         driver.findElementById(ADULT_BUTTON).click();
+                        Logger.logComment("Tapped on adult button");
                     }else{
                         Logger.logError("Unable to tap on add travellers details button");
                     }
@@ -253,6 +257,7 @@ public class BookingPageAndroid extends BookingPageBase {
         try {
             if (isElementDisplayedById(TICKET_SOLD_OUT_POPUP)){
                 driver.findElementById(TICKET_SOLD_OUT_POPUP).click();
+                Logger.logComment("Tapped on ticket sold out button");
             }else {
                 Logger.logError(" - button name is not displayed in the current active screen");
             }
@@ -269,6 +274,7 @@ public class BookingPageAndroid extends BookingPageBase {
         try {
             if (isElementDisplayedById(SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON)){
                 driver.findElement(By.id(SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON)).click();
+                Logger.logComment("Tapped on sign in or sign up button");
             }else {
                 Logger.logError(SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON+" - element name is not displayed in the current active screen");
             }
@@ -524,6 +530,7 @@ public class BookingPageAndroid extends BookingPageBase {
         try {
             if (isElementDisplayedById(COUPON_CODE_TEXT_VIEW)){
                 driver.findElementById(COUPON_CODE_TEXT_VIEW).sendKeys(Labels.COUPON_CODE);
+                Logger.logComment(Labels.COUPON_CODE+":- coupon code is parsed");
 //                driver.hideKeyboard();
             }else {
                 Logger.logError(COUPON_CODE_TEXT_VIEW+" - element name is not displayed in the current active screen");
@@ -541,6 +548,7 @@ public class BookingPageAndroid extends BookingPageBase {
         try {
             if (isElementDisplayedById(APPLY_COUPON_CODE_BUTTON)){
                 driver.findElementById(APPLY_COUPON_CODE_BUTTON).click();
+                Logger.logComment("Tapped on apply coupon button");
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(Labels.ANDROID_ACTIVITY_INDICATOR))); // Before running check this activity indicator label is correct or not?
             }else {
                 Logger.logError(APPLY_COUPON_CODE_BUTTON+" - element name is not displayed in the current active screen");
