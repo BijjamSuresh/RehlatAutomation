@@ -84,10 +84,13 @@ public class BookingPageIos extends BookingPageBase {
         Logger.logAction("Entering the user information");
         try {
             if (isUserIsSignedIn()){
+                Logger.logComment("User is signed in.., so no need to parse the email string");
                 if (isElementDisplayedByXPath(XPATH_OF_PHONENUMBER_FIELD)){
+                    Logger.logComment("Parsing the string to phone number field");
                     String phoneNumberField = driver.findElementByXPath(XPATH_OF_PHONENUMBER_FIELD).getAttribute(Labels.VALUE_ATTRIBUTE);
                     if (phoneNumberField.equals(PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD)){
                         sendTextByXpath(XPATH_OF_PHONENUMBER_FIELD,Labels.phoneNumber);
+                        Logger.logComment(Labels.phoneNumber+" :- is parsed");
                         closeTheKeyboard_iOS();
                     }else {
                         Logger.logComment(Labels.phoneNumber+" - is already entered in the in the phone number text field");
@@ -95,11 +98,14 @@ public class BookingPageIos extends BookingPageBase {
                 }
             }else{
                 sendTextByXpath(XPATH_OF_EMAIL_FIELD, Labels.EMAIL_ID_SIGN_IN);
+                Logger.logComment(Labels.EMAIL_ID_SIGN_IN+" :- is parsed");
                 closeTheKeyboard_iOS();
                 if (isElementDisplayedByXPath(XPATH_OF_PHONENUMBER_FIELD)){
+                    Logger.logComment("Parsing the string to phone number field");
                     String phoneNumberField = driver.findElementByXPath(XPATH_OF_PHONENUMBER_FIELD).getAttribute(Labels.VALUE_ATTRIBUTE);
                     if (phoneNumberField.equals(PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD)){
                         sendTextByXpath(XPATH_OF_PHONENUMBER_FIELD,Labels.phoneNumber);
+                        Logger.logComment(Labels.phoneNumber+" :- is parsed");
                         closeTheKeyboard_iOS();
                     }else {
                         Logger.logComment(Labels.phoneNumber+" - is already entered in the in the phone number text field");
@@ -118,7 +124,6 @@ public class BookingPageIos extends BookingPageBase {
     public void tapOnContinueButton() {
         Logger.logAction("Tapping on continue button");
         try{
-            checkFinalFareCalculationIsCorrect(); // This method needs to be removed after fixing the issue :- "Auto Enabling of toggle switch after navigating from travellers details screen, when user is signed in or signed up from bookings screen"
 //            compareFinalPriceDisplayedInFooterViewWithTheFinalFareDisplayedInOffersAndDiscountLayout(); // After iOS is implemented by "Online Check In toggle button", this method needs to be removed from here and call it as a step of TC from workflows directly
             if (isElementDisplayedByName(CONTINUE_BUTTON)){
                 driver.findElementByName(CONTINUE_BUTTON).click();
@@ -136,15 +141,15 @@ public class BookingPageIos extends BookingPageBase {
      */
     @Override
     public void tapOnAdultAddTravellersDetailsButton() {
-        Logger.logAction("Tapping on adult add travellers details button");
+        Logger.logStep("Tapping on adult add travellers details button");
         try{
             scrollDown();
             if (isElementDisplayedByName(ADULT_BUTTON)){
                 driver.findElementByName(ADULT_BUTTON).click();
+                Logger.logComment("Tapped on adult button");
             }else{
                 Logger.logError("Unable to tap on add travellers details button");
             }
-
         }catch (Exception exception){
             Logger.logError("Encountered error: Add travellers details button is not displayed in the current active screen");
         }
@@ -158,6 +163,7 @@ public class BookingPageIos extends BookingPageBase {
     public boolean isTicketSoldOutPopUpIsDisplayed() {
         Logger.logAction("Checking the ticket sold out popup is displayed or not ?");
         try{
+            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
             if (isElementDisplayedByName(TICKET_SOLD_OUT_POPUP)){
                 Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is displayed in the current active screen");
                 return true;
@@ -180,6 +186,7 @@ public class BookingPageIos extends BookingPageBase {
         try {
             if (isElementDisplayedByName(OK_BUTTON)){
                 driver.findElementByName(OK_BUTTON).click();
+                Logger.logComment("Tapped on ok button in the ticket sold out popup");
             }else {
                 Logger.logError(" - button name is not displayed in the current active screen");
             }
@@ -193,9 +200,11 @@ public class BookingPageIos extends BookingPageBase {
      */
     @Override
     public void tapOnSignInForFasterBookingsButton() {
+        Logger.logStep("Tapping on sign in for faster bookings button");
         try {
             if (isElementDisplayedById(SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON)){
                 driver.findElement(By.id(SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON)).click();
+                Logger.logAction("Tapped on signed in for faster booking button");
             }else {
                 Logger.logError(SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON+" - element name is not displayed in the current active screen");
             }
@@ -209,14 +218,14 @@ public class BookingPageIos extends BookingPageBase {
      */
     @Override
     public void checkFinalFareCalculationIsCorrect() {
-        Logger.logAction("Checking the final fare calculation is correct or not ?");
+        Logger.logStep("Checking the final fare calculation is correct or not ?");
         try {
             Double reviewBookingPriceInFooterView = Double.valueOf(getTheDisplayedTicketBookingValueInFooterView("BookingPageScreen",3));
             Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = String.valueOf(reviewBookingPriceInFooterView);
             Logger.logComment("Cost of ticket in Booking page is :- "+reviewBookingPriceInFooterView);
 
             ////// Below code is to check the values of math calculation done in offers and discounts layout /////
-
+            Logger.logComment("Unable to check the final fare calculation due to improper elements implementation on multiple probabilities and conditions...,");
 //            Double bookingSeatCostInReviewBookingScreen = null;
 //            Double couponAmount;
 //            Double finalDisplayedFare;
@@ -364,7 +373,7 @@ public class BookingPageIos extends BookingPageBase {
         {
             String xPathOfActualFare = XPATH_OF_OFFERS_AND_DISCOUNTS_VIEW+"/XCUIElementTypeStaticText["+indexOfActualFareElementXPAth+"]"; // "indexOfActualFareElementXPath" is the hard coded value of actual fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
             String ActualFareWithCurrentName = driver.findElementByXPath(xPathOfActualFare).getAttribute(Labels.VALUE_ATTRIBUTE);
-            String actualAmountPrice = ActualFareWithCurrentName.replace("KWD ", "");
+            String actualAmountPrice = ActualFareWithCurrentName.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.STRING_NULL, Labels.STRING_NULL);
             Logger.logComment("Actual Fare cost of booking flight :- "+actualAmountPrice);
             actualDisplayingFare = actualAmountPrice;
             return actualDisplayingFare;
@@ -453,7 +462,7 @@ public class BookingPageIos extends BookingPageBase {
         {
             String xPathOfActualFare = XPATH_OF_OFFERS_AND_DISCOUNTS_VIEW+"/XCUIElementTypeStaticText["+indexOfFinalFareElementXPAth+"]"; // "indexOfFinalFareElementXPath" is the hard coded value of final fare currency label when coupon code is applied (Doesn't matter whether karam is applied or not)
             String ActualFareWithCurrentName = driver.findElementByXPath(xPathOfActualFare).getAttribute(Labels.VALUE_ATTRIBUTE);
-            String actualAmountPrice = ActualFareWithCurrentName.replace("KWD ", "");
+            String actualAmountPrice = ActualFareWithCurrentName.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.STRING_NULL, Labels.STRING_NULL);
             finalDisplayedFare = actualAmountPrice;
             Logger.logComment("Final Fare cost of booking flight :- "+finalDisplayedFare);
             return finalDisplayedFare;
@@ -528,7 +537,7 @@ public class BookingPageIos extends BookingPageBase {
      */
     @Override
     public void applyTheCouponCode() {
-        Logger.logAction("Applying the coupon code");
+        Logger.logStep("Applying the coupon code");
         try {
             sendKeysToCouponCodeTextField();
             tapOnApplyCouponCodeButton();
@@ -550,6 +559,7 @@ public class BookingPageIos extends BookingPageBase {
         try {
             if (isElementDisplayedByXPath(XPATH_OF_COUPON_CODE_TEXT_VIEW)){
                 driver.findElement(By.xpath(XPATH_OF_COUPON_CODE_TEXT_VIEW)).sendKeys(Labels.COUPON_CODE);
+                Logger.logComment(Labels.COUPON_CODE+"  :- coupon is parsed");
                 closeTheKeyboard_iOS();
             }else {
                 Logger.logError(XPATH_OF_COUPON_CODE_TEXT_VIEW+" - element xpath is not displayed in the current active screen");
@@ -567,7 +577,7 @@ public class BookingPageIos extends BookingPageBase {
         try {
             if (isElementDisplayedById(APPLY_COUPON_CODE_BUTTON)){
                 driver.findElement(By.id(APPLY_COUPON_CODE_BUTTON)).click();
-                Logger.logComment("Coupon code is applied");
+                Logger.logComment("Tapped on apply coupon code button");
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(APPLY_COUPON_CODE_BUTTON)));
             }else {
                 Logger.logError(APPLY_COUPON_CODE_BUTTON+" - element name is not displayed in the current active screen");

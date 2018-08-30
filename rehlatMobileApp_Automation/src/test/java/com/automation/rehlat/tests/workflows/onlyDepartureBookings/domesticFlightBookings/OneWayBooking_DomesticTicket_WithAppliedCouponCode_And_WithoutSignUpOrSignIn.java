@@ -10,8 +10,8 @@ import static com.automation.rehlat.Labels.*;
 public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithoutSignUpOrSignIn extends BaseTest {
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithoutSignUpOrSignIn() throws Exception{
+        Labels.FLIGHT_BOOKING_TYPE = DOMESTIC_FLIGHT_BOOKING;
         Logger.beginTest(" - Ticket booking with applied coupon code and without sign in or sign up ");
-//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.selectCountryNameInSelectLanguageModal(INDIA_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
@@ -26,7 +26,6 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithoutSignU
         MenuScreen.navigateToFlightsTab();
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnFromTextField();
-//        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
         FlightsScreen.checkSearchViewScreenIsDisplayed();
         FlightsScreen.checkKeyboardIsDisplayed();
         FlightsScreen.enterAirportName(FROM_DOMESTIC_AIRPORT_NAME); // Automation Defect: search results are not matching w.r.t. the send keys and due to that using Xpath of first element in search results
@@ -58,7 +57,6 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithoutSignU
         }
         BookingPageScreen.enterUserBookingInfo();
         BookingPageScreen.applyTheCouponCode();
-        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
         if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
             TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -68,6 +66,7 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithoutSignU
         }
         TravellerDetailsScreen.tapOnSaveButton();
         BookingPageScreen.checkBookingPageScreenIsDisplayed();
+        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnContinueButton();
         if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()){
             BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
@@ -88,7 +87,6 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithoutSignU
             }
             BookingPageScreen.enterUserBookingInfo();
             BookingPageScreen.applyTheCouponCode();
-            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
             if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
                 TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -98,6 +96,7 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithoutSignU
             }
             TravellerDetailsScreen.tapOnSaveButton();
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
+            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnContinueButton();
             if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()) {
                 BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();

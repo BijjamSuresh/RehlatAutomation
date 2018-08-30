@@ -22,6 +22,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     public static final String SAVE_BUTTON="Save";
     public static final String PICKER_WHEEL = "XCUIElementTypePickerWheel";
     public static final String TRAVELLERS_DETAILS_SCREEN_TITLE ="Traveller Details";
+    public static final String TRAVELLERS_PRE_POPULLATE_MODAL_VIEW = "Populate the fields with your previous inputs?";
     public static final String XPATH_OF_TRAVELLERS_DETAILS_MODAL ="//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther";
 
 
@@ -49,13 +50,14 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     public boolean acceptAutoFillPopulateModalIfDisplayed() {
         Logger.logAction("Accepting the auto fill popup if displayed");
         try{
-            if (isElementDisplayedByClassName("XCUIElementTypeSheet")){
-                WebElement popUpModal = driver.findElementByClassName("XCUIElementTypeSheet");
-                String popUpModalTitle = popUpModal.findElement(By.className("XCUIElementTypeStaticText")).getAttribute("name");
-                if (popUpModalTitle.equals("Populate the fields with your previous inputs?")){
+            if (isElementDisplayedByClassName(Labels.IOS_XCUI_ELEMENT_TYPE_SHEET)){
+                WebElement popUpModal = driver.findElementByClassName(Labels.IOS_XCUI_ELEMENT_TYPE_SHEET);
+                String popUpModalTitle = popUpModal.findElement(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_STATIC_TEXT)).getAttribute(Labels.NAME_ATTRIBUTE);
+                if (popUpModalTitle.equals(TRAVELLERS_PRE_POPULLATE_MODAL_VIEW)){
                     Logger.logStep("Auto fill popup modal is displayed and going to accept it");
-                    if (isElementDisplayedByName("Yes")){
-                        driver.findElementByName("Yes").click();
+                    if (isElementDisplayedByName(YES_BUTTON)){
+                        driver.findElementByName(YES_BUTTON).click();
+                        Logger.logComment("Tapped on yes button");
                         return true;
                     }else{
                         Logger.logError("Button with - Yes - name is not displayed in the popup");
@@ -79,13 +81,14 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
     public void declineAutoFillPopulateModalIfDisplayed() {
         Logger.logAction("Declining the auto fill popup if displayed");
         try{
-            if (isElementDisplayedByClassName("XCUIElementTypeSheet")){
-                WebElement popUpModal = driver.findElementByClassName("XCUIElementTypeSheet");
-                String popUpModalTitle = popUpModal.findElement(By.className("XCUIElementTypeStaticText")).getAttribute("name");
-                if (popUpModalTitle.equals("Populate the fields with your previous inputs?")){
+            if (isElementDisplayedByClassName(Labels.IOS_XCUI_ELEMENT_TYPE_SHEET)){
+                WebElement popUpModal = driver.findElementByClassName(Labels.IOS_XCUI_ELEMENT_TYPE_SHEET);
+                String popUpModalTitle = popUpModal.findElement(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_STATIC_TEXT)).getAttribute(Labels.NAME_ATTRIBUTE);
+                if (popUpModalTitle.equals(TRAVELLERS_PRE_POPULLATE_MODAL_VIEW)){
                     Logger.logStep("Auto fill popup modal is displayed and going to decline it");
-                    if (isElementDisplayedByName("No")){
-                        driver.findElementByName("No").click();
+                    if (isElementDisplayedByName(NO_BUTTON)){
+                        driver.findElementByName(NO_BUTTON).click();
+                        Logger.logComment("Tapped on no button");
                     }else{
                         Logger.logError("Button with - No - name is not displayed in the popup");
                     }
@@ -106,7 +109,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      */
     @Override
     public void enterAdultTravellersDetails(String travellersCountry) {
-        Logger.logAction("Entering the adult travellers details");
+        Logger.logStep("Entering the adult travellers details");
         try{
             if (isElementDisplayedByXPath(XPATH_OF_TRAVELLERS_DETAILS_MODAL)){
                 Logger.logStep("Travellers details modal is displayed and moving to next step");
@@ -165,15 +168,15 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter the travellers first name
      */
     public static void enterTravellersFirstName() {
-        Logger.logStep("Entering travellers first name");
+        Logger.logAction("Entering travellers first name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_FIRST_NAME)){
                 driver.findElementByName(TRAVELLERS_FIRST_NAME).sendKeys(Labels.TRAVELLERS_FIRST_NAME);
+                Logger.logComment(Labels.TRAVELLERS_FIRST_NAME+" :- is parsed");
                 closeTheKeyboard_iOS();
             }else {
                 Logger.logError("Travellers first name field is not displayed in the current active screen");
             }
-
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to enter the travellers first name");
         }
@@ -183,15 +186,15 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter the travellers middle name
      */
     public static void enterTravellersMiddleName() {
-        Logger.logStep("Entering travellers middle name");
+        Logger.logAction("Entering travellers middle name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_MIDDLE_NAME)){
                 driver.findElementByName(TRAVELLERS_MIDDLE_NAME).sendKeys(Labels.TRAVELLERS_MIDDLE_NAME);
+                Logger.logComment(Labels.TRAVELLERS_MIDDLE_NAME+" :- is parsed");
                 closeTheKeyboard_iOS();
             }else {
                 Logger.logError("Travellers middle name field is not displayed in the current active screen");
             }
-
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to enter the travellers middle name");
         }
@@ -201,15 +204,15 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter the travellers last name
      */
     public static void enterTravellersLastName() {
-        Logger.logStep("Entering travellers last name");
+        Logger.logAction("Entering travellers last name");
         try{
             if (isElementDisplayedByName(TRAVELLERS_LAST_NAME)){
                 driver.findElementByName(TRAVELLERS_LAST_NAME).sendKeys(Labels.TRAVELLERS_LAST_NAME);
+                Logger.logComment(Labels.TRAVELLERS_LAST_NAME+" :- is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError("Travellers last name field is not displayed in the current active screen");
             }
-
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to enter the travellers last name");
         }
@@ -218,18 +221,19 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter the travellers Date of Birth
      */
     public static void enterTravellersDateOfBirth() {
-        Logger.logStep("Entering travellers Date of Birth");
+        Logger.logAction("Entering travellers Date of Birth");
         try{
             if (isElementDisplayedByName(TRAVELLERS_DATEOFBIRTH_NAME)){
-                driver.findElementByName(TRAVELLERS_LAST_NAME).click();
+                driver.findElementByName(TRAVELLERS_DATEOFBIRTH_NAME).click();
+                Logger.logComment("Tapped on Travellers date of birth field");
                 if (isDatePickerDisplayed()){
                     List<IOSElement> wheels = (List) driver.findElements(By.className(PICKER_WHEEL));
-                    Logger.logStep("selecting the day in travellers date of birth");
                     wheels.get(0).sendKeys(Labels.DAY_IN_TRAVELLERS_DATEOFBIRTH_IOS);
-                    Logger.logStep("selecting the month in travellers date of birth");
+                    Logger.logComment("Selected the day "+Labels.DAY_IN_TRAVELLERS_DATEOFBIRTH_IOS+" in travellers date of birth");
                     wheels.get(1).sendKeys(Labels.MONTH_IN_TRAVELLERS_DATEOFBIRTH_IOS);
-                    Logger.logStep("selecting the year in travellers date of birth");
+                    Logger.logComment("Selected the month "+Labels.MONTH_IN_TRAVELLERS_DATEOFBIRTH_IOS+" in travellers date of birth");
                     wheels.get(2).sendKeys(Labels.YEAR_IN_TRAVELLERS_DATEOFBIRTH_IOS);
+                    Logger.logComment("Selected the year "+Labels.YEAR_IN_TRAVELLERS_DATEOFBIRTH_IOS+" in travellers date of birth");
                     closeTheDatePicker_iOS();
                 }else {
                     Logger.logError("Date picker is not displayed");
@@ -247,10 +251,11 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter the travellers passport number
      */
     public static void enterTravellersPassportNumber() {
-        Logger.logStep("Entering travellers passport number");
+        Logger.logAction("Entering travellers passport number");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_NUMBER)){
                 driver.findElementByName(TRAVELLERS_PASSPORT_NUMBER).sendKeys(Labels.TRAVELLERS_PASSPORT_NUMBER);
+                Logger.logComment(Labels.TRAVELLERS_PASSPORT_NUMBER+" :- is parsed");
                 driver.hideKeyboard();
             }else {
                 Logger.logError("Travellers passport field is not displayed in the current active screen");
@@ -263,18 +268,19 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      * Enter the travellers passport expiry date
      */
     public static void enterTravellersPassportExpiryDate() {
-        Logger.logStep("Entering travellers passport expiry date");
+        Logger.logAction("Entering travellers passport expiry date");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_EXPIRY_NUMBER)){
                 driver.findElementByName(TRAVELLERS_PASSPORT_EXPIRY_NUMBER).click();
+                Logger.logComment("Tapped on Travellers passport expiry text field");
                 if (isDatePickerDisplayed()){
                     List<IOSElement> wheels = (List) driver.findElements(By.className(PICKER_WHEEL));
-                    Logger.logStep("selecting the day in travellers passport expiry day");
                     wheels.get(0).sendKeys(Labels.DAY_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS);
-                    Logger.logStep("selecting the month in travellers passport expiry month");
+                    Logger.logComment("Selected the day "+Labels.DAY_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS+" in travellers passport expiry day");
                     wheels.get(1).sendKeys(Labels.MONTH_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS);
-                    Logger.logStep("selecting the year in travellers passport expiry year");
+                    Logger.logComment("Selected the month "+Labels.MONTH_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS+" in travellers passport expiry month");
                     wheels.get(2).sendKeys(Labels.YEAR_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS);
+                    Logger.logComment("Selected the year "+Labels.YEAR_IN_TRAVELLERS_PASSPORT_EXPIRY_DATE_IOS+" in travellers passport expiry year");
                     closeTheDatePicker_iOS();
                 }else {
                     Logger.logError("Date picker is not displayed");
@@ -295,8 +301,8 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
         Logger.logAction("Selecting the passport issuing country");
         try{
             if (isElementDisplayedByName(TRAVELLERS_PASSPORT_ISSUING_COUNTRY)){
-                Logger.logStep("Tapping on Issuing country field");
                 driver.findElementByName(TRAVELLERS_PASSPORT_ISSUING_COUNTRY).click();
+                Logger.logComment("Tapped on Issuing country text field");
                 if (isElementDisplayedByName(CHOOSE_COUNTRY_MODAL)) {
                     chooseCountry(passportIssuingCountryName);
                 }else{
@@ -317,8 +323,8 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
         Logger.logAction("Selecting the travellers nationality");
         try{
             if (isElementDisplayedByName(TRAVELLERS_NATIONALITY)){
-                Logger.logStep("Tapping on Issuing country field");
                 driver.findElementByName(TRAVELLERS_NATIONALITY).click();
+                Logger.logComment("Tapped on travellers nationality country field");
                 if (isElementDisplayedByName(CHOOSE_COUNTRY_MODAL)) {
                     chooseCountry(travellersNationality);
                 }else{
@@ -338,9 +344,11 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
      */
     // To do: Implement a method such that automatically select the country name (if country name is not on visible list scroll to that element and click on it)
     public static void chooseCountry(String countryName) {
+        Logger.logAction("Choosing the country name :- "+countryName);
         try{
             if (isElementDisplayedByName(countryName)){
                 driver.findElementByName(countryName).click();
+                Logger.logComment(countryName+" :- country name is selected");
             }else {
                 Logger.logError(countryName+ " - is not displayed in the current active screen");
             }
@@ -358,6 +366,7 @@ public class TravellerDetailsIos extends TravellerDetailsBase {
         try{
             if (isElementDisplayedByName(SAVE_BUTTON)){
                 driver.findElementByName(SAVE_BUTTON).click();
+                Logger.logComment("Tapped on save button");
             }else {
 //                if (isElementDisplayedByName("Next")) // Implement a method such that should verify multiple travellers info (Verify the save button name if it is NEXT, return false and call a method that enters the other travellers info), this process needs to be continued till save button is displayed.
                 Logger.logError("Save button is not displayed in the current active screen");

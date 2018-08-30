@@ -43,8 +43,9 @@ public class SignInIos extends SignInBase {
         try {
             Thread.sleep(2000);
             if (isElementDisplayedByName(TOUCH_ID_ACCESS_MODAL_TITLE)){
-                Logger.logStep("Touch id access popup is displayed and going to decline it by tapping on no button");
+                Logger.logComment("Touch id access popup is displayed and going to decline it by tapping on no button");
                 driver.findElementByName(NO_BUTTON_ON_TOUCH_ID_ACCESS_MODAL).click();
+                Logger.logComment("Touch id access popup is declined");
             }else {
                 Logger.logComment("Touch id access alert is not displayed");
             }
@@ -62,6 +63,7 @@ public class SignInIos extends SignInBase {
         try {
             if (isElementDisplayedByName(CREATE_ACCOUNT_BUTTON)){
                 driver.findElement(By.name(CREATE_ACCOUNT_BUTTON)).click();
+                Logger.logComment("Tapped on create account button");
             }else {
                 Logger.logComment(CREATE_ACCOUNT_BUTTON+" - element name is not displayed in the current active screen");
             }
@@ -92,6 +94,7 @@ public class SignInIos extends SignInBase {
         try {
             if (isElementDisplayedByName(EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN)){
                 driver.findElement(By.name(EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN)).sendKeys(Labels.EMAIL_ID_SIGN_IN);
+                Logger.logComment(Labels.EMAIL_ID_SIGN_IN+" :- is parsed");
                 closeTheKeyboard_iOS();
             }else {
                 Logger.logError("unable to find the element name :- "+EMAIL_TEXT_FIELD_OF_SIGN_IN_SCREEN);
@@ -109,6 +112,7 @@ public class SignInIos extends SignInBase {
         try {
             if (isElementDisplayedByName(PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN)){
                 driver.findElement(By.name(PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN)).sendKeys(Labels.PASSWORD);
+                Logger.logComment(Labels.PASSWORD+" :- is parsed");
                 closeTheKeyboard_iOS();
             }else {
                 Logger.logError("unable to find the element name :- "+PASSWORD_TEXT_FIELD_OF_SIGN_IN_SCREEN);
@@ -128,6 +132,7 @@ public class SignInIos extends SignInBase {
         {
             if (isElementDisplayedByName(LOGIN_BUTTON)){
                 driver.findElement(By.name(LOGIN_BUTTON)).click();
+                Logger.logComment("Tapped on Login is button");
                 waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
             }else {
                 Logger.logError(LOGIN_BUTTON+" - element name is not displayed in the current active screen");

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
 
-    public static final String XPATH_OF_FIRST_FLIGHT_CELL = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeOther[1]";
+    public static final String XPATH_OF_FIRST_FLIGHT_CELL = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeOther[5]";
     public static final String XPATH_OF_FLIGHT_SEARCH_RESULTS_CELL_WITHOUT_INDEX = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[";
 //    public static final String XPATH_OF_BOOKING_COST_IN_FIRST_CELL_WITHOUT_SIMILAR_OPTIONS_IN_SEARCH_RESULTS = "//XCUIElementTypeApplication[@name=\\\"Rehlat\\\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[3]";
 //    public static final String XPATH_OF_BOOKING_COST_IN_FIRST_CELL_WITH_SIMILAR_OPTIONS_IN_SEARCH_RESULTS = "//XCUIElementTypeApplication[@name=\\\"Rehlat\\\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[4]";
@@ -23,7 +23,7 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
      */
     @Override
     public void checkFlightsSearchResultsScreenIsDisplayed() {
-        Logger.logAction("Checking the flights search results screen is displayed or not");
+        Logger.logAction("Checking the flights search results screen is displayed or not ?");
         try {
             waitTillFlightsSearchResultsScreenIsDisplayed();
             if (isElementEnabledByName(PRICE_LABLE) && isElementDisplayedByName(SRP_ONE_WAY_VIEW))
@@ -50,15 +50,25 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
     public static void waitTillFlightsSearchResultsScreenIsDisplayed() {
         Logger.logAction("Waiting till the active screen is loaded");
         try{
-            Thread.sleep(4000); // This code has to be replaced with the below logic
-
-            // Below logic needs to update and make it enable after verifying with stable build
-//            if (!isElementDisplayedByXPath(XPATH_OF_FIRST_FLIGHT_CELL)){
-//                driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XPATH_OF_FIRST_FLIGHT_CELL)));
-//            }
-            // Logic ends here
-
-            Logger.logStep("Active screen is loaded and moving to check the screen name");
+            if (Labels.FLIGHT_BOOKING_TYPE.equalsIgnoreCase(Labels.INTERNATIONAL_FLIGHT_BOOKING)){
+                Thread.sleep(Labels.WAIT_TIME_MIN);
+                if (!isElementDisplayedByName(Labels.TO_INTERNATIONAL_AIRPORT_CODE)){
+                    driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.name(Labels.TO_INTERNATIONAL_AIRPORT_CODE)));
+                }else {
+                    Thread.sleep(Labels.WAIT_TIME_MIN);
+                    Logger.logStep("Active screen is loaded and moving to check the screen name");
+                }
+            }else if (Labels.FLIGHT_BOOKING_TYPE.equalsIgnoreCase(Labels.DOMESTIC_FLIGHT_BOOKING)){
+                Thread.sleep(Labels.WAIT_TIME_MIN);
+                if (!isElementDisplayedByName(Labels.TO_DOMESTIC_AIRPORT_CODE)){
+                    driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.name(Labels.TO_DOMESTIC_AIRPORT_CODE)));
+                }else {
+                    Thread.sleep(Labels.WAIT_TIME_MIN);
+                    Logger.logStep("Active screen is loaded and moving to check the screen name");
+                }
+            }else {
+                Logger.logError("Current booking type is not an domestic nor international");
+            }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to find the visibility of an element");
         }
@@ -72,22 +82,33 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
         Logger.logAction("Tapping on "+ flightSearchResultCellNumber + " cell in the flights search results screen");
         String xPathOfBookingFlightCellType = XPATH_OF_FLIGHT_SEARCH_RESULTS_CELL_WITHOUT_INDEX+ flightSearchResultCellNumber + "]";
         try{
-            if (isElementDisplayedByXPath(xPathOfBookingFlightCellType)){
-                getTheBookingCostOfSelectingFlightInSearchResults(flightSearchResultCellNumber);
-                Logger.logComment(flightSearchResultCellNumber+" - cell number is displayed and tapping on it");
-                driver.findElementByXPath(xPathOfBookingFlightCellType).click();
-                Logger.logStep("Tapped on "+flightSearchResultCellNumber+" flight cell");
-            }else{
-                scrollToAnElementByXPath(xPathOfBookingFlightCellType,true);
-                if (isElementDisplayedByXPath(xPathOfBookingFlightCellType)){
-                    getTheBookingCostOfSelectingFlightInSearchResults(flightSearchResultCellNumber);
-                    Logger.logComment(flightSearchResultCellNumber+" - cell number is displayed and tapping on it");
-                    driver.findElementByXPath(xPathOfBookingFlightCellType).click();
-                    Logger.logStep("Tapped on "+flightSearchResultCellNumber+" flight cell");
-                }else {
-                    Logger.logError(flightSearchResultCellNumber+" - cell number is not displayed in the search results screen");
-                }
-            }
+            //This logic is to find the parsing element by scrolling to the element and if displayed then immediately tap on it else throws error
+//            scrollToAnElementByXPath(xPathOfBookingFlightCellType,true);
+            getTheBookingCostOfSelectingFlightInSearchResults(flightSearchResultCellNumber);
+            findElementByXPathAndClick(xPathOfBookingFlightCellType);
+            Logger.logStep("Tapped on flight cell number :- "+flightSearchResultCellNumber);
+            // Logic ends here
+
+            //Todo: - Below code is very important on tapping on the flight cell more than 2..,For to reduce the execution time implemented the above logic is implemented
+            // The below logic is find the parsing flight cell number is displayed and if displayed and then search for the element and tap on it else scroll to the element and then check the element is displayed and if displayed find the element and tap on it else throw error
+//            if (isElementDisplayedByXPath(xPathOfBookingFlightCellType)){
+//                getTheBookingCostOfSelectingFlightInSearchResults(flightSearchResultCellNumber);
+//                Logger.logComment(flightSearchResultCellNumber+" - cell number is displayed and tapping on it");
+//                driver.findElementByXPath(xPathOfBookingFlightCellType).click();
+//                Logger.logStep("Tapped on "+flightSearchResultCellNumber+" flight cell");
+//            }else{
+//                scrollToAnElementByXPath(xPathOfBookingFlightCellType,true);
+//                if (isElementDisplayedByXPath(xPathOfBookingFlightCellType)){
+//                    getTheBookingCostOfSelectingFlightInSearchResults(flightSearchResultCellNumber);
+//                    Logger.logComment(flightSearchResultCellNumber+" - cell number is displayed and tapping on it");
+//                    driver.findElementByXPath(xPathOfBookingFlightCellType).click();
+//                    Logger.logStep("Tapped on "+flightSearchResultCellNumber+" flight cell");
+//                }else {
+//                    Logger.logError(flightSearchResultCellNumber+" - cell number is not displayed in the search results screen");
+//                }
+//            }
+            // Logic ends here
+
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on the "+ flightSearchResultCellNumber + "cell in Flights search results");
 
@@ -112,9 +133,10 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
                     WebElement flightCellType = flightCellDetails.get(cellIndex);
                     String flightCellTypeText = flightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
                     if (flightCellTypeText.contains(".")){
-                        String bookingCostExcludingCurrencyName = flightCellTypeText.replace("KWD ", "");
+                        Logger.logComment("Flight cell number - " + selectedFlightCellTypeNumber + " and with index : " + cellIndex + " is having any booking flight cost");
+                        String bookingCostExcludingCurrencyName = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, Labels.STRING_NULL);
                         Labels.SELECTED_SEAT_BOOKING_COST = bookingCostExcludingCurrencyName;
-                        Logger.logComment("Booking cost of the flight cell number - " +selectedFlightCellTypeNumber + " is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
+                        Logger.logComment("Booking cost of the flight cell number - " +selectedFlightCellTypeNumber + "and with index " + cellIndex + " is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
                         return  Labels.SELECTED_SEAT_BOOKING_COST;
                     }else{
                         Logger.logComment("Flight cell number - "+selectedFlightCellTypeNumber+" and with index : " + cellIndex + " is not having any booking flight cost");
@@ -130,9 +152,9 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
                             cellIndex = cellIndex + 1;
                             WebElement newFlightCellType = flightCellDetails.get(cellIndex);
                             String newFlightCellTypeText = newFlightCellType.getAttribute(Labels.VALUE_ATTRIBUTE);
-                            String bookingCostExcludingCurrencyName = newFlightCellTypeText.replace("KWD ", "");
+                            String bookingCostExcludingCurrencyName = newFlightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE, Labels.STRING_NULL);
                             Labels.SELECTED_SEAT_BOOKING_COST = bookingCostExcludingCurrencyName;
-                            Logger.logComment("Booking cost of the flight cell type number - " + selectedFlightCellTypeNumber + " is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
+                            Logger.logComment("Booking cost of the flight cell type number - " + selectedFlightCellTypeNumber + "and with index " + cellIndex + "  is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
                             return Labels.SELECTED_SEAT_BOOKING_COST;
                         } else {
                             Logger.logComment("Flight cell number - " + selectedFlightCellTypeNumber + " and with index : " + cellIndex + " is not having any booking flight cost");

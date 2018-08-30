@@ -10,34 +10,33 @@ import static com.automation.rehlat.Labels.*;
 public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_FromBookingsPageScreen extends BaseTest {
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithSignInFromBookingsPageScreen() throws Exception{
+        Labels.FLIGHT_BOOKING_TYPE = DOMESTIC_FLIGHT_BOOKING;
         Logger.beginTest(" - Ticket Booking with sign in from booking page and with applied coupon code ");
-//        FlightsScreen.selectCountryNameInSelectLanguageModal(INDIA_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
-////        FlightsScreen.checkSelectLanguageModalIsDisplayed();
-//        FlightsScreen.checkFlightsTabIsDisplayed();
-//        FlightsScreen.tapOnMenuButton();
-//        if (MenuScreen.isUserSignedIn()){
-//            MenuScreen.tapOnLogoutButton();
-//            FlightsScreen.checkFlightsTabIsDisplayed();
-//            FlightsScreen.tapOnMenuButton();
-//        }
-//        MenuScreen.navigateToFlightsTab();
-//        FlightsScreen.checkFlightsTabIsDisplayed();
-//        FlightsScreen.tapOnFromTextField();
-////        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
-//        FlightsScreen.checkSearchViewScreenIsDisplayed();
-//        FlightsScreen.checkKeyboardIsDisplayed();
-//        FlightsScreen.enterAirportName(FROM_DOMESTIC_AIRPORT_NAME); // Automation Defect: search results are not matching w.r.t. the send keys and due to that using Xpath of first element in search results
-//        FlightsScreen.selectAirportCodeFromSearchResults(FROM_DOMESTIC_AIRPORT_CODE);
-//        FlightsScreen.checkFlightsTabIsDisplayed();
-//        FlightsScreen.tapOnToTextField();
-//        FlightsScreen.checkKeyboardIsDisplayed();
-//        FlightsScreen.enterAirportName(TO_DOMESTIC_AIRPORT_NAME);
-//        FlightsScreen.selectAirportCodeFromSearchResults(TO_DOMESTIC_AIRPORT_CODE);
-//        FlightsScreen.checkFlightsTabIsDisplayed();
-//        FlightsScreen.tapOnDepartureButton();
-//        FlightsScreen.selectDepartureDate(DEPARTURE_MONTH,DEPARTURE_DAY); // Automation Defect: Due to improper element names in calendar view unable to tap on accurate departure date
-//        FlightsScreen.tapOnDoneButton();
-//        FlightsScreen.checkFlightsTabIsDisplayed();
+        FlightsScreen.selectCountryNameInSelectLanguageModal(INDIA_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
+        FlightsScreen.checkFlightsTabIsDisplayed();
+        FlightsScreen.tapOnMenuButton();
+        if (MenuScreen.isUserSignedIn()){
+            MenuScreen.tapOnLogoutButton();
+            FlightsScreen.checkFlightsTabIsDisplayed();
+            FlightsScreen.tapOnMenuButton();
+        }
+        MenuScreen.navigateToFlightsTab();
+        FlightsScreen.checkFlightsTabIsDisplayed();
+        FlightsScreen.tapOnFromTextField();
+        FlightsScreen.checkSearchViewScreenIsDisplayed();
+        FlightsScreen.checkKeyboardIsDisplayed();
+        FlightsScreen.enterAirportName(FROM_DOMESTIC_AIRPORT_NAME); // Automation Defect: search results are not matching w.r.t. the send keys and due to that using Xpath of first element in search results
+        FlightsScreen.selectAirportCodeFromSearchResults(FROM_DOMESTIC_AIRPORT_CODE);
+        FlightsScreen.checkFlightsTabIsDisplayed();
+        FlightsScreen.tapOnToTextField();
+        FlightsScreen.checkKeyboardIsDisplayed();
+        FlightsScreen.enterAirportName(TO_DOMESTIC_AIRPORT_NAME);
+        FlightsScreen.selectAirportCodeFromSearchResults(TO_DOMESTIC_AIRPORT_CODE);
+        FlightsScreen.checkFlightsTabIsDisplayed();
+        FlightsScreen.tapOnDepartureButton();
+        FlightsScreen.selectDepartureDate(DEPARTURE_MONTH,DEPARTURE_DAY); // Automation Defect: Due to improper element names in calendar view unable to tap on accurate departure date
+        FlightsScreen.tapOnDoneButton();
+        FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnSearchButton();
         FlightsSearchResultsScreen.checkFlightsSearchResultsScreenIsDisplayed();
         FlightsSearchResultsScreen.tapOnACellInFlightSearchResults(CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS); //Change this method to tap on a flight cell by sending the cell number as string/integer like this : //  FlightsSearchResultsIos.getTheBookingCostOfSelectedFlightInSearchResults("6");
@@ -60,7 +59,6 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
         BookingPageScreen.checkBookingPageScreenIsDisplayed();
         BookingPageScreen.enterUserBookingInfo();
         BookingPageScreen.applyTheCouponCode();
-        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
         if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
             TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -70,6 +68,7 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
         }
         TravellerDetailsScreen.tapOnSaveButton();
         BookingPageScreen.checkBookingPageScreenIsDisplayed();
+        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnContinueButton();
         if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()){
             BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
@@ -92,7 +91,6 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
             BookingPageScreen.enterUserBookingInfo();
             BookingPageScreen.applyTheCouponCode();
-            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
             if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
                 TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -102,6 +100,7 @@ public class OneWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
             }
             TravellerDetailsScreen.tapOnSaveButton();
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
+            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnContinueButton();
             if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()) {
                 BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();

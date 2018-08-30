@@ -19,6 +19,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
+import static com.automation.rehlat.Labels.WDA_LOCAL_PORT;
 import static com.automation.rehlat.Labels.setCountryLanguageAndAirportFromAndToLabels;
 import static com.automation.rehlat.pages.constructors.PageConstructor.initializePageObject;
 
@@ -140,20 +141,41 @@ public class BaseTest extends Base {
         Logger.logStep("Creating new sign up email id for the current test run");
         Integer newEmailNumber ;
         try {
-            String BASE_EMAIL_ID_FOR_SIGN_UP = "rehlatAutomationTestingEmail";
-            String MAIL_OPERATOR = "@gmail.com";
-            String currentEmailIdForSignUp = Labels.EMAIL_ID_SIGN_UP;
-            Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(28, 31));
-            for (int index = 0; index <= 999; index++) {
-                Integer settingEmailValue = index;
-                if (settingEmailValue == currentEmailIdNumber) {
-                    newEmailNumber = settingEmailValue + 1;
-                    String newEmailId = BASE_EMAIL_ID_FOR_SIGN_UP + newEmailNumber + MAIL_OPERATOR;
-                    Labels.EMAIL_ID_SIGN_UP = newEmailId;
-                    break;
+            if (Labels.WDA_LOCAL_PORT=="8001" || Labels.WDA_LOCAL_PORT=="8010" ){
+                String BASE_EMAIL_ID_FOR_SIGN_UP = "rehlatAutomationPort1TestingEmail";
+                String MAIL_OPERATOR = "@gmail.com";
+                String currentEmailIdForSignUp = Labels.EMAIL_ID_SIGN_UP_PORT_1;
+                Integer currentEmailIdNumber = Integer.valueOf(currentEmailIdForSignUp.substring(33, 36));
+                for (int index = 0; index <= 999; index++) {
+                    Integer settingEmailValue = index;
+                    if (settingEmailValue == currentEmailIdNumber) {
+                        newEmailNumber = settingEmailValue + 1;
+                        String newEmailId = BASE_EMAIL_ID_FOR_SIGN_UP + newEmailNumber + MAIL_OPERATOR;
+                        Labels.EMAIL_ID_SIGN_UP = newEmailId;
+                        Labels.EMAIL_ID_SIGN_UP_PORT_1 = newEmailId;
+                        break;
+                    }
                 }
+                Logger.logComment("Newly created email id for to the current test run is :-  " + Labels.EMAIL_ID_SIGN_UP);
+            }else if(Labels.WDA_LOCAL_PORT =="8005"|| Labels.WDA_LOCAL_PORT=="8015"){
+                String BASE_EMAIL_ID_FOR_SIGN_UP = "rehlatAutomationPort2TestingEmail";
+                String MAIL_OPERATOR = "@gmail.com";
+                String currentEmailIdForSignUp = Labels.EMAIL_ID_SIGN_UP_PORT_2;
+                Integer currentEmailIdNumber = Integer.parseInt(currentEmailIdForSignUp.substring(33, 36));
+                for (int index = 0; index <= 999; index++) {
+                    Integer settingEmailValue = index;
+                    if (settingEmailValue == currentEmailIdNumber) {
+                        newEmailNumber = settingEmailValue + 1;
+                        String newEmailId = BASE_EMAIL_ID_FOR_SIGN_UP + newEmailNumber + MAIL_OPERATOR;
+                        Labels.EMAIL_ID_SIGN_UP = newEmailId;
+                        Labels.EMAIL_ID_SIGN_UP_PORT_2 = newEmailId;
+                        break;
+                    }
+                }
+                Logger.logComment("Newly created email id for to the current test run is :-  " + Labels.EMAIL_ID_SIGN_UP);
+            }else {
+                Logger.logError("Encountered error: Unable to get the current WDA LOCAL PORT..,");
             }
-            Logger.logComment("Newly created email id for to the current test run is :-  " + Labels.EMAIL_ID_SIGN_UP);
         }catch (Exception elementNotFound){
             Logger.logError("Encountered error: Unable to create new email id");
         }

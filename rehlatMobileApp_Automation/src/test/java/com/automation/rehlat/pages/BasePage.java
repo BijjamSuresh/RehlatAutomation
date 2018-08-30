@@ -45,6 +45,8 @@ public class BasePage extends Base {
     public static boolean isUserSignedIn;
     public static final String SRP_ONE_WAY_VIEW = "Rehlat.SRPOneWayView";
     public static final String SRP_TWO_WAY_VIEW = "Rehlat.SRPRoundTripView";
+    public static final String NO_BUTTON = "No";
+    public static final String YES_BUTTON = "Yes";
 
     ////////////////////////////// Android Strings Related To The Methods In Base Page //////////////////////////////////////
     public static final String MODAL_VIEW = "com.app.rehlat:id/networkErrormsgTextview";
@@ -295,13 +297,14 @@ public class BasePage extends Base {
                 WebElement toggleSwitch = driver.findElementByClassName(TOGGLE_SWITCH);
                 String toggleSwitchValue = toggleSwitch.getAttribute(Labels.VALUE_ATTRIBUTE);
                 if (toggleSwitchValue.equals(Labels.VALUE_ONE)){
-                    Logger.logStep("Toggle switch is enabled and making it to disable by tapping on it");
+                    Logger.logComment("Toggle switch is enabled and making it to disable by tapping on it");
                     driver.findElementByClassName(TOGGLE_SWITCH).click();
-                    Logger.logStep("Toggle switched is disabled");
+                    Logger.logComment("Toggle switched is disabled");
                 }else if (toggleSwitchValue.equals(Labels.VALUE_ZERO)){
                     Logger.logStep("Toggle switch is already disabled");
                 }
-            }else {
+            }
+            else {
                 Logger.logError("Toggle switch is not displayed in the current active screen");
             }
 
@@ -341,6 +344,7 @@ public class BasePage extends Base {
         try{
             if (isElementDisplayedByName(IOS_DONE_BUTTON)){
                 driver.findElementByName(IOS_DONE_BUTTON).click();
+                Logger.logComment("Tapped on done button in the Keyboard");
             }else{
                 Logger.logStep("Keyboard is not displayed in the current active screen");
             }
@@ -356,11 +360,12 @@ public class BasePage extends Base {
         try{
             if (isElementDisplayedByClassName(IOS_DATE_PICKER)){
                 driver.findElementByName(IOS_DONE_BUTTON).click();
+                Logger.logComment("Tapped on done button in the date picker");
             }else{
                 Logger.logStep("Date picker is not displayed in the current active screen");
             }
         }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to close the keyboard");
+            Logger.logError("Encountered error: Unable to close the date picker");
         }
     }
 
@@ -376,9 +381,10 @@ public class BasePage extends Base {
                     Logger.logStep("Waiting till the activity indicator is invisible in the current active screen");
                     driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(parsingClassName)));
                 }else {
-                    Logger.logStep("Activity indicator is not displayed in the current active screen");
+                    Logger.logComment("Activity indicator is not displayed in the current active screen");
                 }
             }catch (Exception exception){
+                Thread.sleep(4000);
                 Logger.logComment(count+" :- time trying to find the element name");
             }
             count++;
@@ -411,7 +417,7 @@ public class BasePage extends Base {
                     Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
                     return Double.valueOf(actualAmountPrice);
                 }else if(flightCellTypeText.contains(Labels.CURRENT_USER_CURRENCY_TYPE)){
-                    String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, "").trim();
+                    String actualAmountPrice = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE, "").trim();
                     Logger.logComment("Final Fare cost of booking flight in footer view is :- "+actualAmountPrice);
                     return Double.valueOf(actualAmountPrice);
                 }
@@ -437,7 +443,7 @@ public class BasePage extends Base {
 //            }
                 else
                 {
-                    Logger.logStep(cellIndex+" time finding the booking flight cost");
+                    Logger.logComment(cellIndex+" time finding the booking flight cost");
                 }
             }
         }catch (Exception exception){

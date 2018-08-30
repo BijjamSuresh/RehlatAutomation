@@ -76,9 +76,11 @@ public class Base {
         } else if (Labels.platform.equals(Labels.ANDROID)) {
             new DesiredCapabilities();
             capabilities = DesiredCapabilities.android();
+//            capabilities.setCapability("automationName","UiAutomator2");
             capabilities.setCapability("deviceName", Labels.ANDROID_CAPABILITIES_DEVICE_NAME);
             capabilities.setCapability("appium-version", Labels.ANDROID_CAPABILITIES_APPIUM_VERSION);
             capabilities.setCapability("platformName", Labels.ANDROID);
+            capabilities.setCapability("deviceId", Labels.ANDROID_CAPABILITIES_DEVICE_ID);
             capabilities.setCapability("appPackage", Labels.ANDROID_CAPABILITIES_PACKAGE_NAME);
             capabilities.setCapability("autoAcceptAlerts", true);
             app = new File("../app_debug.apk");
@@ -254,7 +256,7 @@ public class Base {
         Logger.logAction("Checking - "+ elementName+" - element name is displayed");
         int counter = 0;
         WebElement element;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
 //                if (Labels.platform.equals(Labels.ANDROID)) {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
@@ -268,9 +270,9 @@ public class Base {
                     return true;
                 }
             } catch (Exception e) {
-               Logger.logComment(counter + " time trying to find the element name of - " + elementName);
+               Logger.logComment(counter +" time trying to find the element name of - " + elementName);
             }
-            Thread.sleep(Labels.WAIT_TIME_MIN);
+            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
             counter++;
         }
         Logger.logComment(elementName + " - element name is not displayed in the current active screen");
@@ -287,7 +289,7 @@ public class Base {
         Logger.logAction("Checking - "+ elementId+" - element id is displayed");
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
 //                if (Labels.platform.equals(Labels.ANDROID)) {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementId + "\")");
@@ -301,7 +303,7 @@ public class Base {
                     return true;
                 }
             } catch (Exception e) {
-                Logger.logComment(counter + " time trying to find the element id of - " + elementId);
+                Logger.logComment(counter +" time trying to find the element id of - " + elementId);
             }
             Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
@@ -321,7 +323,7 @@ public class Base {
         Logger.logAction("Checking - "+ elementId+" - element id is displayed");
         int counter = 0;
         WebElement element = null;
-        while (counter < 1) {
+        while (counter <= 1) {
             try {
 //                if (Labels.platform.equals(Labels.ANDROID)) {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementId + "\")");
@@ -353,7 +355,7 @@ public class Base {
         Logger.logAction("Checking - "+ elementId+" - element id is displayed");
 //        int counter = 0;
 //        WebElement element = null;
-//        while (counter < 0) {
+//        while (counter <= 0) {
             try {
 //                if (Labels.platform.equals(Labels.ANDROID)) {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementId + "\")");
@@ -385,7 +387,7 @@ public class Base {
     public static boolean isElementDisplayedByClassName(String elementName) throws Exception {
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
 //                if (Labels.platform.equals(Labels.ANDROID)) {
 //                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
@@ -399,7 +401,7 @@ public class Base {
             } catch (Exception e) {
                 Logger.logComment(counter + " time trying to find the element name :- " + elementName);
             }
-            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
         }
         Logger.logComment(elementName + " - element name is not displayed in the current active screen ");
@@ -413,27 +415,27 @@ public class Base {
      * @throws Exception
      */
     public static boolean isElementEnabledByName(String elementName) throws Exception {
-        Logger.logAction("Check "+ elementName+" is enabled");
+        Logger.logAction("Checking "+ elementName+" is enabled or not ?");
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
-                if (Labels.platform.equals(Labels.ANDROID)) {
-                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
-                } else {
+//                if (Labels.platform.equals(Labels.ANDROID)) {
+//                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
+//                } else {
                     element = driver.findElementByName(elementName);
-                    Logger.logComment(elementName + " - is displayed and moving forward to next action");
-                }
+//                }
                 if (element.isEnabled()) {
-                    Logger.logComment( elementName+" is enabled");
+                    Logger.logComment( elementName+" is enabled and moving forward to next action");
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + elementName);
+                Logger.logComment(counter + " time trying to find " + elementName);
             }
-            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
         }
+        Logger.logComment(elementName + " - is not displayed in the current active screen");
         return false;
     }
 
@@ -447,7 +449,7 @@ public class Base {
         Logger.logAction("Checking - "+ elementName+" - element name is enabled");
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (Labels.platform.equals(Labels.ANDROID)) {
                     element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
@@ -477,7 +479,7 @@ public class Base {
     public static boolean isSubElementEnabledByName(String elementName, WebElement webElementName) throws Exception {
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (Labels.platform.equals(Labels.ANDROID)) {
                     element = ((AndroidElement) webElementName).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
@@ -490,7 +492,7 @@ public class Base {
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + elementName);
+               Logger.logComment(counter + " time trying to find " + elementName);
             }
             Thread.sleep(Labels.WAIT_TIME_DEFAULT);
             counter++;
@@ -508,7 +510,7 @@ public class Base {
         Logger.logAction("Check "+ className+" is enabled");
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (Labels.platform.equals(Labels.ANDROID)) {
                     element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + className + "\")");
@@ -521,7 +523,7 @@ public class Base {
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + className);
+                Logger.logComment(counter + " time trying to find " + className);
             }
             Thread.sleep(Labels.WAIT_TIME_DEFAULT);
             counter++;
@@ -539,7 +541,7 @@ public class Base {
         Logger.logAction("Check "+ elementName+" is disabled");
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 System.out.println(counter + " time trying to find " + elementName);
                 if (Labels.platform.equals(Labels.ANDROID)) {
@@ -575,25 +577,25 @@ public class Base {
         Logger.logAction("Checking "+ xpath+" is enabled");
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
-                if (Labels.platform.equals(Labels.ANDROID)) {
-                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + xpath + "\")");
-                } else {
+//                if (Labels.platform.equals(Labels.ANDROID)) {
+//                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + xpath + "\")");
+//                } else {
                     element = driver.findElement(By.xpath(xpath));
-                    Logger.logComment(xpath + " - is displayed and moving forward to next action");
-
-                }
+//                }
                 if (element.isEnabled()) {
-                    Logger.logComment( xpath+" is enabled");
+                    Logger.logComment(xpath + " - is displayed and moving forward to next action");
+//                    Logger.logComment( xpath+" is enabled");
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + xpath);
+                Logger.logComment(counter + " time trying to find " + xpath);
             }
             Thread.sleep(Labels.WAIT_TIME_DEFAULT);
             counter++;
         }
+        Logger.logComment( xpath+" is not enabled in the current active screen");
         return false;
     }
 
@@ -604,11 +606,13 @@ public class Base {
      * @throws Exception
      */
     public static boolean isElementDisplayedByXPath(String elementPath) throws Exception {
+        Logger.logAction("Checking the element xpath is displayed or not ? , XPATH :- "+elementPath);
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 WebElement status = driver.findElementByXPath(elementPath);
                 if (status.isDisplayed()) {
+                    Logger.logComment("Element is displayed and moving to next action");
                     return true;
                 }
             } catch (Exception e) {
@@ -617,7 +621,8 @@ public class Base {
             Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
         }
-           return false;
+        Logger.logComment("Element is not displayed in the current active screen");
+        return false;
     }
 
     /**
@@ -692,7 +697,7 @@ public class Base {
         double bottomY = 1 - stepSize;
         String lastPageSource = "";
         String currentPageSource = "";
-        while (counter < DEFAULT_SCROLL_ATTEMPTS)
+        while (counter <= DEFAULT_SCROLL_ATTEMPTS)
         {
             try {
 
@@ -984,6 +989,7 @@ public class Base {
     // TODO: Check if the element is enabled  in the screen before scrolling
     // Scroll to element by name and direction and verify the element through out the screen
     public static void scrollToAnElementByXPath(String xPath,boolean down) {
+        Logger.logAction("Scrolling to the xpath :- " +xPath);
 //        scrollToAnElement(xPath,down);
         if(!withOutIterationCheckIsElementVisibleByXpath(xPath)) {
             int counter = 0;
@@ -1038,7 +1044,7 @@ public class Base {
     public static String getElementValueByXpath(String elementXpath) throws Exception {
         String elementValue = null;
         int counter = 0;
-        while (counter<Labels.MIN_ATTEMPTS) {
+        while (counter<=Labels.MIN_ATTEMPTS) {
             counter++;
             try {
                 elementValue = driver.findElement(By.xpath(elementXpath)).getAttribute("value");
@@ -1080,7 +1086,7 @@ public class Base {
      */
     public static boolean sendTextToElement(WebElement element, String message) throws Exception {
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 boolean status = element.isDisplayed();
                 if (status) {
@@ -1241,20 +1247,23 @@ public class Base {
      * @return status returns true if element is tapped else false.
      */
     public static boolean findElementByXPathAndClick(String XPath) {
+        Logger.logAction("Finding the element by xpath and tapping on it (if displayed), XPath:- " +XPath);
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
-                WebElement element = driver.findElement(By.xpath(XPath));
+                WebElement element = driver.findElementByXPath(XPath);
                 if (element.isDisplayed()) {
+                    Logger.logComment("Element is displayed on and going to tap on it");
                     element.click();
+                    Logger.logComment("Tapped on the element by xpath :- "+XPath);
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + XPath);
+                Logger.logComment(counter + " time trying to find the xpath :- " + XPath);
             }
             counter++;
         }
-        fail("Couldn't find element named " + XPath);
+        fail("Couldn't find element by xpath :- " + XPath);
         return false;
     }
 
@@ -1266,7 +1275,7 @@ public class Base {
      */
     public static boolean findWebElementAndClick(WebElement element) throws Exception {
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (element.isDisplayed()) {
                     element.click();
@@ -1289,7 +1298,7 @@ public class Base {
      */
     public static boolean isWebElementDisplayed(WebElement element) throws Exception {
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (element.isDisplayed()) {
                     return true;
@@ -1363,7 +1372,7 @@ public class Base {
      * @return status returns true if element displayed else false.
      */
     public static boolean withOutIterationCheckIsElementVisibleByXpath(String xpath) {
-        Logger.logAction("Check "+ xpath+" is displayed.");
+        Logger.logAction("Checking "+ xpath+" is displayed or not ?");
         int counter = 0;
         WebElement element = null;
         String elementVisibility = null;
@@ -1374,7 +1383,7 @@ public class Base {
                 element = driver.findElementByXPath(xpath);
                 elementVisibility = element.getAttribute(Labels.VISIBLE_ATTRIBUTE);
 //            }
-            if (elementVisibility.equals(true)) {
+            if (elementVisibility.equals("true")) {
                 Logger.logComment(xpath + " - XPath is displayed, visible and moving to next test step");
                 return true;
             }
@@ -1483,11 +1492,13 @@ public class Base {
     public static boolean isKeyboardDisplayed() {
         try {
             if(Labels.platform.equals(Labels.ANDROID)) {
+//                boolean status = driver.getKeyboard().equals("true");
                 String deviceId = getAndroidDeviceId();
                 String commandToEnableLocation = "adb -s " + deviceId + " shell dumpsys input_method | grep mInputShown";
                 String commandToCheckKeyBoardIsDisplayed[] = General.createArrayOfWordFromString(commandToEnableLocation);
                 String terminalOutput = General.executeTerminalCommandArray(commandToCheckKeyBoardIsDisplayed);
                 return terminalOutput.contains("mInputShown=true");
+//                return status;
             }
             else if(Labels.platform.equals(Labels.IOS)) {
                 try {
@@ -1555,7 +1566,7 @@ public class Base {
      */
     public static boolean sendTextById(String elementId, String message) throws Exception {
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 boolean status = driver.findElement(By.id(elementId)).isDisplayed();
                 if (status) {
@@ -1582,7 +1593,7 @@ public class Base {
      */
     public static boolean sendTextByName(String elementName, String message) throws Exception {
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 boolean status = driver.findElement(By.id(elementName)).isDisplayed();
                 if (status) {
@@ -1608,7 +1619,7 @@ public class Base {
      */
     public static boolean sendTextByClass(String elementClass, String message) throws Exception {
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 boolean status = driver.findElement(By.className(elementClass)).isDisplayed();
                 if (status) {
@@ -1635,7 +1646,7 @@ public class Base {
     public static boolean sendTextByXpath(String elementXpath, String message) throws Exception {
         int counter = 0;
         WebElement element;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 element = driver.findElementByXPath(elementXpath);
                 boolean status = element.isDisplayed();
@@ -1664,7 +1675,7 @@ public class Base {
     public static boolean findElementByNameAndClick(String elementName) throws Exception {
         int counter = 0;
         WebElement element = null;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (Labels.platform.equals(Labels.ANDROID)) {
                     element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
@@ -1697,7 +1708,7 @@ public class Base {
      */
     public static boolean findElementByClassNameAndClick(String elementClassName) {
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 WebElement element = driver.findElementByClassName(elementClassName);
                 if (platform.equals(ANDROID)) {
@@ -1789,7 +1800,7 @@ public class Base {
     public static boolean isElementNotDisplayedByName(String elementName) {
         Logger.logAction("Is " + elementName + " element not displayed");
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (driver.findElement(By.name(elementName)).isDisplayed()) {
                     Thread.sleep(Labels.WAIT_TIME_MIN);
@@ -1812,7 +1823,7 @@ public class Base {
     public static boolean isElementNotDisplayedByClassName(String elementName) {
         Logger.logAction("Is " + elementName + " element not displayed");
         int counter = 0;
-        while (counter < Labels.MIN_ATTEMPTS) {
+        while (counter <= Labels.MIN_ATTEMPTS) {
             try {
                 if (driver.findElement(By.className(elementName)).isDisplayed()) {
                     Thread.sleep(Labels.WAIT_TIME_MIN);

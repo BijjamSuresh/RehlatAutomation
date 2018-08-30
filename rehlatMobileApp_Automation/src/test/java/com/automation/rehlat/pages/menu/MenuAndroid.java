@@ -190,8 +190,9 @@ public class MenuAndroid extends MenuBase {
         Logger.logAction("Checking the settings screen is displayed");
         String valueOfSettingsScreenTitle;
         try{
-            if (isElementEnabledByXpath(XPATH_OF_SETTINGS_SCREEN_TITTLE)){
-                valueOfSettingsScreenTitle = driver.findElement(By.xpath(XPATH_OF_SETTINGS_SCREEN_TITTLE)).getText();
+            waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
+            if (isElementDisplayedByXPath(XPATH_OF_SETTINGS_SCREEN_TITTLE)){
+                valueOfSettingsScreenTitle = driver.findElementByXPath(XPATH_OF_SETTINGS_SCREEN_TITTLE).getText();
                 if (valueOfSettingsScreenTitle.equals("Settings")){
                     return true;
                 }else {

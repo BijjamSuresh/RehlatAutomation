@@ -42,7 +42,7 @@ public class FlightsIos extends FlightsBase {
         Logger.logAction("checking the select language modal is displayed or not ?");
         try{
             if (isElementDisplayedByName(SELECT_LANGUAGE)){
-                Logger.logComment("Select Language modal is displayed");
+                Logger.logStep("Select Language modal is displayed");
                 return true;
             }else {
                 return false;
@@ -78,9 +78,9 @@ public class FlightsIos extends FlightsBase {
     public void checkFlightsTabIsDisplayed() {
         Logger.logAction("Checking flights screen tab is displayed");
         try {
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             if (isElementDisplayedByName(MENU_BUTTON)){
-                Thread.sleep(Labels.WAIT_TIME_MIN);
-                String menuButton = driver.findElement(By.name(MENU_BUTTON)).getAttribute(Labels.VISIBLE_ATTRIBUTE);
+                String menuButton = driver.findElementByName(MENU_BUTTON).getAttribute(Labels.VISIBLE_ATTRIBUTE);
                 if (menuButton.equals(Labels.STATUS_TRUE)){
                     Logger.logStep("Flights Screen is displayed");
                 }else{
@@ -209,14 +209,20 @@ public class FlightsIos extends FlightsBase {
     public void checkSearchViewScreenIsDisplayed() {
         Logger.logAction("Checking search view screen is displayed or not?");
         try{
+            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
             // Below if condition is added because on first launch loading indicator is displaying after tapping on FROM text field
-            if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
-                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
-                isElementDisplayedByName(SEARCH_VIEW);
-            }
-            else {
-                isElementDisplayedByName(SEARCH_VIEW);
-            }
+//            if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
+//                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
+//                Logger.logStep("Waiting till the loading indicator is invisible");
+//                isElementDisplayedByName(SEARCH_VIEW);
+//            }
+//            else {
+                if(isElementDisplayedByName(SEARCH_VIEW)){
+                    Logger.logStep("Search view screen is displayed");
+                }else {
+                    Logger.logError("Search view screen is not displayed");
+                }
+//            }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check the screen name");
         }
@@ -230,6 +236,8 @@ public class FlightsIos extends FlightsBase {
         Logger.logAction("Entering the airport name :-"+fromPlace);
         try{
             sendTextByXpath(SEARCH_TEXTFIELD_XPATH,fromPlace);
+            Logger.logComment(fromPlace+" :- value is parsed");
+            closeTheKeyboard_iOS();
         }catch (Exception nullPointerException){
             Logger.logError("Encountered error: Unable to enter from place name in the search view");
         }
@@ -243,7 +251,6 @@ public class FlightsIos extends FlightsBase {
     public void selectAirportCodeFromSearchResults(String airPortCodeOfPlaceName) {
         Logger.logAction("Selecting the airport code :-"+airPortCodeOfPlaceName);
         try {
-            closeTheKeyboard_iOS();
             if (isElementDisplayedByName(airPortCodeOfPlaceName)){
                 driver.findElementByName(airPortCodeOfPlaceName).click();
                 Logger.logStep("Tapped on airport code :- "+airPortCodeOfPlaceName);
@@ -305,7 +312,7 @@ public class FlightsIos extends FlightsBase {
                 //                scrollUp();
                 if (isElementDisplayedByName(departureMonthAndYear)){
                     if (isElementDisplayedByName(departureDay)) {
-                        WebElement  calenderView = driver.findElementByClassName("XCUIElementTypeCollectionView");
+                        WebElement  calenderView = driver.findElementByClassName(Labels.IOS_XCUI_ELEMENT_TYPE_COLLECTION_VIEW);
                         List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
                         int departureDaysSize = departureDays.size();
                         if (departureDaysSize >= 2){
@@ -317,12 +324,15 @@ public class FlightsIos extends FlightsBase {
                             if (departureDaysSize >= 2){
                                 Logger.logWarning("Two accurate dates are displayed in the departure calender, so tapping on nearest possible date");
                                 driver.findElementByName(departureDay).click();
+                                Logger.logComment("Tapped on day:- "+departureDay);
                             }else {
                                 driver.findElementByName(departureDay).click();
+                                Logger.logComment("Tapped on day:- "+departureDay);
                             }
                         }else {
                             Logger.logComment("One departure day is displayed in the calender: "+departureDay+"");
                             driver.findElementByName(departureDay).click();
+                            Logger.logComment("Tapped on day:- "+departureDay);
                         }
                     }else {
                         Logger.logError("Accurate Date is not displayed in the departure");
@@ -331,7 +341,7 @@ public class FlightsIos extends FlightsBase {
                     scrollToAnElementByName(departureMonthAndYear,false);
                     if (isElementDisplayedByName(departureMonthAndYear)){
                         if (isElementDisplayedByName(departureDay)) {
-                            WebElement  calenderView = driver.findElementByClassName("XCUIElementTypeCollectionView");
+                            WebElement  calenderView = driver.findElementByClassName(Labels.IOS_XCUI_ELEMENT_TYPE_COLLECTION_VIEW);
                             List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
                             int departureDaysSize = departureDays.size();
                             if (departureDaysSize >= 2){
@@ -343,12 +353,15 @@ public class FlightsIos extends FlightsBase {
                                 if (departureDaysSize >= 2){
                                     Logger.logWarning("Two accurate dates are displayed in the departure calender, so tapping on nearest possible date");
                                     driver.findElementByName(departureDay).click();
+                                    Logger.logComment("Tapped on day:- "+departureDay);
                                 }else {
                                     driver.findElementByName(departureDay).click();
+                                    Logger.logComment("Tapped on day:- "+departureDay);
                                 }
                             }else {
                                 Logger.logComment("One departure day is displayed in the calender: "+departureDay+"");
                                 driver.findElementByName(departureDay).click();
+                                Logger.logComment("Tapped on day:- "+departureDay);
                             }
                         }else {
                             Logger.logError("Accurate Date is not displayed in the departure");

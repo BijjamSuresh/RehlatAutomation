@@ -7,13 +7,38 @@ public class Labels extends Base{
     public static final String APPIUM_PORT_NUMBER_DEFAULT = "4723";
     public static final String DEVICE_TYPE_DEFAULT = "phone";
 
-                                                                                //////  APPIUM  iOS app capabilities//////
-    public static final String DEVICE_UDID="1e5b8dcad350fb249a73d8dc106efbd9ccea136c";
+
+                                                                              //////  Multiple Run Capabilities//////////
+    //Todo:- Most Important strings while running multiple runs..,Please be careful on editing the below strings..,!!!!
+    ////////iOS ///////////
+    ///Device One///
+        public static final String DEVICE_UDID="1e5b8dcad350fb249a73d8dc106efbd9ccea136c"; // iPhone 7 Plus
+//        public static final String WDA_LOCAL_PORT_DEFAULT= "8001"; // For each device one unique port number
+
+    ///Device Two ///
+    //    public static final String DEVICE_UDID="85108b5bd6265ecc9c4f58a8ad1cdbe1798e21ac"; // iPhone 6
+//        public static final String WDA_LOCAL_PORT_DEFAULT= "8005"; // This helps to run the parallel runs
+
+    ////////Android ///////////
+    ///Device One///
+    //    public static final String APPIUM_DEVICE_ID_DEFAULT = "84254a373730374d";  //Samsung Device Id
+    //    public static final String WDA_LOCAL_PORT_DEFAULT= "8010"; // This helps to run the parallel runs
+
+    ///Device Two ///
+    public static final String APPIUM_DEVICE_ID_DEFAULT = "BH901M4F4C"; // Sony device id
+        public static final String WDA_LOCAL_PORT_DEFAULT= "8015"; // This helps to run the parallel runs
+//            public static final String WDA_LOCAL_PORT_DEFAULT= "192.168.3.108:5555"; // This helps to run the scripts over wifi [WDA Port number == Android device IP address : tcpip address (Used in the terminal to connect the device and PC in same network)]
+
+    ////////Common ///////////
+    // Port 1 and Port 2 email id's are used while running multiple scripts where as on single run we use port one as default
+    public static String EMAIL_ID_SIGN_UP_PORT_1 = "rehlatAutomationPort1TestingEmail107@gmail.com"; // This is for port one connected device [Either iOS or Android]
+    public static String EMAIL_ID_SIGN_UP_PORT_2 = "rehlatAutomationPort2TestingEmail101@gmail.com"; // This is for port two connected device [Either iOS or Android]
+
+                                                                                //////  APPIUM  iOS app capabilities//////////
     public static final String IOS_BUNDLE_ID="com.Rehlat.RehlatMobile";
     public static final String IOS_CAPABILITIES_APP_PATH = "../Rehlat.app";
     public static final String APPIUM_PORT_NUMBER_IOS = System.getProperty("port", APPIUM_PORT_NUMBER_DEFAULT);
     public static final String IOS_CAPABILITIES_URL = "http://localhost:" + APPIUM_PORT_NUMBER_IOS + "/wd/hub";
-    public static final String WDA_LOCAL_PORT_DEFAULT= "8001";
     public static final String IOS_CAPABILITIES_DEVICE_NAME = "iPhone 7 Plus";
     public static final String IOS_CAPABILITIES_PLATFORM_VERSION_IPHONE7PLUS = "11.0";
     public static final String IOS_CAPABILITIES_PLATFORM_NAME = "iOS";
@@ -23,13 +48,13 @@ public class Labels extends Base{
 
                                                                             /////////  APPIUM  android app capabilities /////////
     public static final String ANDROID_PLATFORM = "Android";
-    public static final String SAMSUNG_DEVICE_ID = "84254a373730374d"; // This id needs to be changed when ever the testing device is an Samsung device
-    public static final String ANDROID_CAPABILITIES_DEVICE_NAME = "A001";
-    public static final String ANDROID_CAPABILITIES_PLATFORM_VERSION = "5.0";
+
+
+    public static final String ANDROID_CAPABILITIES_DEVICE_NAME = "Sony";
+    public static final String ANDROID_CAPABILITIES_PLATFORM_VERSION = "8.0";
     public static final String ANDROID_CAPABILITIES_APPIUM_VERSION = "1.8.1";
-    public static final String APPIUM_DEVICE_ID_DEFAULT = "ZX1G42CFDC";
     public static final String APPIUM_PORT_NUMBER = System.getProperty("port", APPIUM_PORT_NUMBER_DEFAULT);
-    protected static final String APPIUM_DEVICE_ID = System.getProperty("deviceId", APPIUM_DEVICE_ID_DEFAULT);
+    protected static final String ANDROID_CAPABILITIES_DEVICE_ID = System.getProperty("deviceId", APPIUM_DEVICE_ID_DEFAULT);
     public static final String ANDROID_CAPABILITIES_URL = "http://localhost:" + APPIUM_PORT_NUMBER + "/wd/hub";
     public static final String ANDROID_CAPABILITIES_PACKAGE_NAME = "com.app.rehlat";
     public static final String ANDROID_CAPABILITIES_PLATFORM_NAME = "Android";
@@ -84,19 +109,23 @@ public class Labels extends Base{
                                                                                         ////////////////////  Types of devices ////////////////////
     public static final String IOS="iOS";
     public static final String ANDROID="Android";
-//    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type everytime w.r.t. the testing device platform
-    public static final String DEFAULT_PLATFORM = "iOS";
+    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type every time w.r.t. the testing device platform
+//    public static final String DEFAULT_PLATFORM = "iOS";
 
 
                                                                                     ////////////////////  Web element attribute values ////////////////////
     public static final String UIA_DATEPICKER ="XCUIElementTypeDatePicker";
+    public static final String IOS_ACTIVITY_INDICATOR = "XCUIElementTypeActivityIndicator";
+    public static final String IOS_XCUI_ELEMENT_TYPE_COLLECTION_VIEW = "XCUIElementTypeCollectionView";
+    public static final String IOS_XCUI_ELEMENT_TYPE_SHEET = "XCUIElementTypeSheet";
+    public static final String IOS_XCUI_ELEMENT_TYPE_STATIC_TEXT = "XCUIElementTypeStaticText";
+    public static final String IOS_XCUI_ELEMENT_TYPE_TEXT_FIELD = "XCUIElementTypeTextField";
     public static final String ANDROID_LINEAR_LAYOUT = "android.widget.LinearLayout";
     public static final String ANDROID_VIEW_GROUP = "android.view.ViewGroup";
     public static final String UIA_KEYBOARD = "UIAKeyboard";
     public static final String ALERT_ID = "android:id/contentPanel";
     public static final String TERMINAL_COMMAND_LIST_CONNECTED_USB_DEVICE = "system_profiler SPUSBDataType";
     public static final String ANDROID_DATE_PICKER = "android:id/datePicker";
-    public static final String IOS_ACTIVITY_INDICATOR = "XCUIElementTypeActivityIndicator";
     public static final String ANDROID_ACTIVITY_INDICATOR = "android:id/progress";
     public static final String VALUE_ONE ="1";
     public static final String VALUE_ZERO ="0";
@@ -105,6 +134,7 @@ public class Labels extends Base{
     public static final String VALUE_ATTRIBUTE="value";
     public static final String CHECKED_ATTRIBUTE = "checked";
     public static final String VISIBLE_ATTRIBUTE="visible";
+    public static final String NAME_ATTRIBUTE = "name";
     public static final String STATUS_TRUE="true";
     public static final String STRING_NULL = "";
 
@@ -207,7 +237,8 @@ public class Labels extends Base{
     public static String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String FIRST_NAME = "Suresh";
     public static final String LAST_NAME = "Reddy";
-    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationTestingEmail107@gmail.com";
+    public static String EMAIL_ID_SIGN_UP = "rehlatAutomationPort0TestingEmail100@gmail.com";
+
     public static final String EMAIL_ID_SIGN_IN = "rehlatAutomationTestEmail1@gmail.com";  // Always add the two digit email number so that on every test script a new email id is generated for to test sign up
     public static final String PASSWORD = "testPasswordFromLabels";
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";
@@ -289,7 +320,7 @@ public class Labels extends Base{
             ////////////////////////// FLIGHT BOOKING TYPE ///////////////////////
             // This Label should changed based on the flight booking type the test scripts needs to be run
 //            Labels.FLIGHT_BOOKING_TYPE = INTERNATIONAL_FLIGHT_BOOKING;
-            Labels.FLIGHT_BOOKING_TYPE = DOMESTIC_FLIGHT_BOOKING;
+            Labels.FLIGHT_BOOKING_TYPE = DOMESTIC_FLIGHT_BOOKING; // This one is act as default flight booking type..In every @Test will declare the flight booking type, else it will consider this default flight type
     }
 
 }

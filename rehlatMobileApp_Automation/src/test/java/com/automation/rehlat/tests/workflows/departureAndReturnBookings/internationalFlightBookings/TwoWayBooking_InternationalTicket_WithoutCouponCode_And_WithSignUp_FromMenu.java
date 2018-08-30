@@ -8,14 +8,11 @@ import org.junit.Test;
 import static com.automation.rehlat.Labels.*;
 
 public class TwoWayBooking_InternationalTicket_WithoutCouponCode_And_WithSignUp_FromMenu extends BaseTest {
-//    public static String  newEmailForSignUp = Labels.EMAIL_ID_SIGN_UP.replace("10","83");
-
     @Test
     public void testTicketBookingWithoutCouponCodeAndWithSignUpFromMenu() throws Exception{
+        Labels.FLIGHT_BOOKING_TYPE = INTERNATIONAL_FLIGHT_BOOKING;
         createNewSignUpEmailId();
         Logger.beginTest("- Ticket booking without coupon code and with sign up from menu");
-//        Labels.EMAIL_ID_SIGN_UP = newEmailForSignUp;
-//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.selectCountryNameInSelectLanguageModal(KUWAIT_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
@@ -73,7 +70,6 @@ public class TwoWayBooking_InternationalTicket_WithoutCouponCode_And_WithSignUp_
             Logger.logError("User is not signed in in booking page where as signed up in menu screen");
         }
         BookingPageScreen.enterUserBookingInfo();
-        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
         if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
             TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -83,6 +79,7 @@ public class TwoWayBooking_InternationalTicket_WithoutCouponCode_And_WithSignUp_
         }
         TravellerDetailsScreen.tapOnSaveButton();
         BookingPageScreen.checkBookingPageScreenIsDisplayed();
+        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnContinueButton();
         if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()){
             BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
@@ -102,7 +99,6 @@ public class TwoWayBooking_InternationalTicket_WithoutCouponCode_And_WithSignUp_
                 Logger.logError("User is not signed in in booking page where as signed up in menu screen");
             }
             BookingPageScreen.enterUserBookingInfo();
-            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
             if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
                 TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -112,6 +108,7 @@ public class TwoWayBooking_InternationalTicket_WithoutCouponCode_And_WithSignUp_
             }
             TravellerDetailsScreen.tapOnSaveButton();
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
+            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnContinueButton();
             if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()) {
                 BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();

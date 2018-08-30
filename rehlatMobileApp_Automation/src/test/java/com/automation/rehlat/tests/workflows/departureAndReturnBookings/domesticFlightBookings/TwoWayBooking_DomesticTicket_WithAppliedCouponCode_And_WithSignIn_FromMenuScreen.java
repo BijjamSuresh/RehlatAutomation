@@ -10,18 +10,16 @@ import org.junit.Test;
 import static com.automation.rehlat.Labels.*;
 
 public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_FromMenuScreen extends BaseTest {
-
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithSignInFromMenuScreen() throws Exception{
+        Labels.FLIGHT_BOOKING_TYPE = DOMESTIC_FLIGHT_BOOKING;
         Logger.beginTest("- Ticket booking with sign in menu screen and with applied coupon code");
-//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.selectCountryNameInSelectLanguageModal(INDIA_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         MenuScreen.checkMenuScreenIsDisplayed();
         if (MenuScreen.isUserSignedIn()){
             Logger.logComment("User is already logged in. so going to signed out from that account and signed with new account");
-//            MenuScreen.tapOnSettingsButton();
             MenuScreen.tapOnLogoutButton();
             FlightsScreen.checkFlightsTabIsDisplayed();
             FlightsScreen.tapOnMenuButton();
@@ -36,7 +34,6 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
         MenuScreen.checkUserIsSignedUpSignedInWithCorrectParsingCredentials(Labels.EMAIL_ID_SIGN_IN);
         MenuScreen.navigateToFlightsTab();
         FlightsScreen.tapOnFromTextField();
-//        driver.runAppInBackground(Labels.BACKGROUND_TIME_MIN);
         FlightsScreen.checkSearchViewScreenIsDisplayed();
         FlightsScreen.checkKeyboardIsDisplayed();
         FlightsScreen.enterAirportName(FROM_DOMESTIC_AIRPORT_NAME); // Automation Defect: search results are not matching w.r.t. the send keys and due to that using Xpath of first element in search results
@@ -72,7 +69,6 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
         }
         BookingPageScreen.enterUserBookingInfo();
         BookingPageScreen.applyTheCouponCode();
-        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
         if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
             TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -82,6 +78,7 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
         }
         TravellerDetailsScreen.tapOnSaveButton();
         BookingPageScreen.checkBookingPageScreenIsDisplayed();
+        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnContinueButton();
         if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()){
             BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
@@ -102,7 +99,6 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
             }
             BookingPageScreen.enterUserBookingInfo();
             BookingPageScreen.applyTheCouponCode();
-            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
             if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
                 TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -112,6 +108,7 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
             }
             TravellerDetailsScreen.tapOnSaveButton();
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
+            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnContinueButton();
             if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()) {
                 BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
@@ -120,43 +117,42 @@ public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithSignIn_F
                 PaymentOptionsScreen.checkPaymentOptionsScreenIsDisplayed();
                 PaymentOptionsScreen.compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen();
                 // KNET PAYMENT PROCESS
-                PaymentOptionsScreen.tapOnKnetPaymentGateWay();
-                PaymentOptionsScreen.checkKnetPaymentOptionsScreenIsDisplayed();
-                PaymentOptionsScreen.selectingBankName(TESTING_BANK_CARD);
-                PaymentOptionsScreen.enterCardNumber(); // Automation Defect: Card number text field is not intractable in iOS Platform
-                PaymentOptionsScreen.enterPinNumber();
-                PaymentOptionsScreen.tapOnSubmitButton();
-                PaymentOptionsScreen.checkPostTransactionScreenIsDisplayed();
-                PaymentOptionsScreen.tapOnConfirmButton();
-                PaymentOptionsScreen.checkTheKnetBookingProcessIsSuccess();
+//                PaymentOptionsScreen.tapOnKnetPaymentGateWay();
+//                PaymentOptionsScreen.checkKnetPaymentOptionsScreenIsDisplayed();
+//                PaymentOptionsScreen.selectingBankName(TESTING_BANK_CARD);
+//                PaymentOptionsScreen.enterCardNumber(); // Automation Defect: Card number text field is not intractable in iOS Platform
+//                PaymentOptionsScreen.enterPinNumber();
+//                PaymentOptionsScreen.tapOnSubmitButton();
+//                PaymentOptionsScreen.checkPostTransactionScreenIsDisplayed();
+//                PaymentOptionsScreen.tapOnConfirmButton();
+//                PaymentOptionsScreen.checkTheKnetBookingProcessIsSuccess();
 
                 // CREDIT OR DEBIT CARD PAYMENT PROCESS
-//            PaymentOptionsScreen.enterCreditOrDebitCardDetails();
-//            PaymentOptionsScreen.enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment();
-//            PaymentOptionsScreen.tapOnContinueButtonIn3DSecurePaymentScreenOfCreditOrDebitCardCheckOutPayment();
-//            PaymentOptionsScreen.checkTheCreditOrDebitCardBookingProcessIsSuccess();
-//        }
+            PaymentOptionsScreen.enterCreditOrDebitCardDetails();
+            PaymentOptionsScreen.enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment();
+            PaymentOptionsScreen.tapOnContinueButtonIn3DSecurePaymentScreenOfCreditOrDebitCardCheckOutPayment();
+            PaymentOptionsScreen.checkTheCreditOrDebitCardBookingProcessIsSuccess();
             }
         }else {
             Thread.sleep(Labels.WAIT_TIME_MIN);
             PaymentOptionsScreen.checkPaymentOptionsScreenIsDisplayed();
             PaymentOptionsScreen.compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen();
             // KNET PAYMENT PROCESS
-            PaymentOptionsScreen.tapOnKnetPaymentGateWay();
-            PaymentOptionsScreen.checkKnetPaymentOptionsScreenIsDisplayed();
-            PaymentOptionsScreen.selectingBankName(TESTING_BANK_CARD);
-            PaymentOptionsScreen.enterCardNumber(); // Automation Defect: Card number text field is not intractable in iOS Platform
-            PaymentOptionsScreen.enterPinNumber();
-            PaymentOptionsScreen.tapOnSubmitButton();
-            PaymentOptionsScreen.checkPostTransactionScreenIsDisplayed();
-            PaymentOptionsScreen.tapOnConfirmButton();
-            PaymentOptionsScreen.checkTheKnetBookingProcessIsSuccess();
+//            PaymentOptionsScreen.tapOnKnetPaymentGateWay();
+//            PaymentOptionsScreen.checkKnetPaymentOptionsScreenIsDisplayed();
+//            PaymentOptionsScreen.selectingBankName(TESTING_BANK_CARD);
+//            PaymentOptionsScreen.enterCardNumber(); // Automation Defect: Card number text field is not intractable in iOS Platform
+//            PaymentOptionsScreen.enterPinNumber();
+//            PaymentOptionsScreen.tapOnSubmitButton();
+//            PaymentOptionsScreen.checkPostTransactionScreenIsDisplayed();
+//            PaymentOptionsScreen.tapOnConfirmButton();
+//            PaymentOptionsScreen.checkTheKnetBookingProcessIsSuccess();
 
             // CREDIT OR DEBIT CARD PAYMENT PROCESS
-//            PaymentOptionsScreen.enterCreditOrDebitCardDetails();
-//            PaymentOptionsScreen.enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment();
-//            PaymentOptionsScreen.tapOnContinueButtonIn3DSecurePaymentScreenOfCreditOrDebitCardCheckOutPayment();
-//            PaymentOptionsScreen.checkTheCreditOrDebitCardBookingProcessIsSuccess();
+            PaymentOptionsScreen.enterCreditOrDebitCardDetails();
+            PaymentOptionsScreen.enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment();
+            PaymentOptionsScreen.tapOnContinueButtonIn3DSecurePaymentScreenOfCreditOrDebitCardCheckOutPayment();
+            PaymentOptionsScreen.checkTheCreditOrDebitCardBookingProcessIsSuccess();
         }
         Logger.endTest("- Ticket booking with sign in menu screen and with applied coupon code");
     }

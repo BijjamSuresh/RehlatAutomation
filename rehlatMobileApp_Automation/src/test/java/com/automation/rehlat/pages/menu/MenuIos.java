@@ -41,6 +41,7 @@ public class MenuIos extends MenuBase {
         try {
             if (isElementDisplayedByName(SIGN_IN_OR_SIGN_UP_BUTTON)){
                 driver.findElement(By.name(SIGN_IN_OR_SIGN_UP_BUTTON)).click();
+                Logger.logAction("Tapped on signin or sign up button");
             }else {
                 Logger.logError("Sign in or sign up button is not displayed");
             }
@@ -77,6 +78,7 @@ public class MenuIos extends MenuBase {
             if (isElementDisplayedByXPath(XPATH_OF_MENU_SCREEN)){
                 WebElement xpathOfMenuScreen = driver.findElementByXPath(XPATH_OF_MENU_SCREEN);
                 tapOnElementBasedOnLocation(xpathOfMenuScreen,"bottomRight");
+                Logger.logComment("Naviagted from menu screen");
             }else {
                 Logger.logError("Menu screen xpath is incorrect :-"+XPATH_OF_MENU_SCREEN);
             }
@@ -141,6 +143,7 @@ public class MenuIos extends MenuBase {
         try {
             if (isElementDisplayedById(LOGOUT_BUTTON)){
                 driver.findElement(By.id(LOGOUT_BUTTON)).click();
+                Logger.logComment("Tapped on logout button");
             }else {
                 Logger.logError("Logout button is not displayed in the current active screen");
             }

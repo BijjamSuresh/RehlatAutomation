@@ -8,11 +8,10 @@ import org.junit.Test;
 import static com.automation.rehlat.Labels.*;
 
 public class TwoWayBooking_DomesticTicket_WithoutCouponCode_And_WithSignIn_FromMenu extends BaseTest {
-
     @Test
     public void testTicketBookingWithoutCouponCodeAndWithSignInFromMenu() throws Exception{
+        Labels.FLIGHT_BOOKING_TYPE = DOMESTIC_FLIGHT_BOOKING;
         Logger.beginTest("- Ticket booking without coupon code and with sign in from menu");
-//        FlightsScreen.checkSelectLanguageModalIsDisplayed();
         FlightsScreen.selectCountryNameInSelectLanguageModal(INDIA_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
@@ -67,7 +66,6 @@ public class TwoWayBooking_DomesticTicket_WithoutCouponCode_And_WithSignIn_FromM
             Logger.logError("User is not logged in in booking page where as logged in menu screen");
         }
         BookingPageScreen.enterUserBookingInfo();
-        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnAdultAddTravellersDetailsButton();
         if (TravellerDetailsScreen.acceptAutoFillPopulateModalIfDisplayed()){
             TravellerDetailsScreen.checkTravellersDetailsScreenIsDisplayed();
@@ -77,6 +75,7 @@ public class TwoWayBooking_DomesticTicket_WithoutCouponCode_And_WithSignIn_FromM
         }
         TravellerDetailsScreen.tapOnSaveButton();
         BookingPageScreen.checkBookingPageScreenIsDisplayed();
+        BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnContinueButton();
         if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()){
             BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
@@ -93,7 +92,6 @@ public class TwoWayBooking_DomesticTicket_WithoutCouponCode_And_WithSignIn_FromM
             ReviewBookingScreen.tapOnContinueButton();
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
             BookingPageScreen.enterUserBookingInfo();
-            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             if (!BookingPageScreen.isUserIsSignedIn()){
                 Logger.logError("User is not logged in in booking page where as logged in menu screen");
             }
@@ -106,6 +104,7 @@ public class TwoWayBooking_DomesticTicket_WithoutCouponCode_And_WithSignIn_FromM
             }
             TravellerDetailsScreen.tapOnSaveButton();
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
+            BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnContinueButton();
             if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()) {
                 BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();

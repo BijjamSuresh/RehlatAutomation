@@ -38,6 +38,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public static final String POST_TRANSACTIONS_SCREEN = "form1";
     public static final String FINAL_AMOUNT_PAYABLE_LINEAR_LAYOUT = "com.app.rehlat:id/totalAmoutPayableLinearLayout";
     public static final String FINAL_AMOUNT_PAYABLE_PRICE = "com.app.rehlat:id/totalAmountPayablePrice";
+    public static final String PAYMENT_FAILED_TITLE = "com.app.rehlat:id/payment_tryAgain";
     public static final String XPATH_OF_KNET_PAYMENT_CELL = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout";
     public static final String XPATH_OF_KNET_PAYMENT_CELL_NAME = XPATH_OF_KNET_PAYMENT_CELL+"/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TextView";
     public static final String XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[";
@@ -157,6 +158,11 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
             waitTillTheProgressIndicatorIsInvisibleById_ANDROID(ACTIVITY_INDICATOR);
             if (isElementDisplayedById(PAYMENT_GATEWAY_SCREEN_TITLE) && (isElementDisplayedById(SUBMIT_BUTTON))){
                 Logger.logStep("KNET Payment gateway screen is displayed and moving to next step");
+            }else if (isElementDisplayedById(PAYMENT_FAILED_TITLE)){
+                System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
+                        "//////////////////////////////////////////  "+"PAYMENT FAILED"+"////////////////////////////////////////////////////\n"+
+                        "        ////////////////////////////////////////////////////////////////////////////////////\n");
+                Logger.logError("Payment failed error screen is displayed");
             }else {
                 Logger.logError("Payment screen is not displayed");
             }
@@ -460,7 +466,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     }
 
 
-
+    //Todo: Initialize or create the variable for the below strings of element names [Which are placed in the strings],after the developers made 'debugging is enabled' for the elements displayed in the payment checkOut screens
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                                                                                          //** CREDIT OR DEBIT CARD METHODS **\\
@@ -492,7 +498,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         Logger.logAction("Entering the credit or debit card number");
         try {
             if (isElementDisplayedById("com.app.rehlat:id/numberTextInputLayout")){
-                driver.findElement(By.id("com.app.rehlat:id/numberTextInputLayout")).sendKeys("4242424242424242");
+                driver.findElement(By.id("com.app.rehlat:id/numberTextInputLayout")).sendKeys(Labels.CREDIT_OR_DEBIT_CARD_NUMBER);
             }else {
                 Logger.logError("Element name is not displayed in the current active screen:- ");
             }
@@ -556,7 +562,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         Logger.logAction("Entering the credit or debit card holder name");
         try {
                 if (isElementDisplayedById("com.app.rehlat:id/nameTextInputLayout")){
-                    driver.findElement(By.id("com.app.rehlat:id/nameTextInputLayout")).sendKeys("rehlatAutomation");
+                    driver.findElement(By.id("com.app.rehlat:id/nameTextInputLayout")).sendKeys(Labels.CREDIT_OR_DEBIT_CARD_HOLDER_NAME);
                 }else {
                     Logger.logError("Element name is not displayed in the current active screen:- ");
                 }
@@ -591,9 +597,15 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
             if (isElementDisplayedById("txtPassword")){
                 driver.findElement(By.id("txtPassword")).sendKeys("Checkout1!");
-            }else {
-                driver.findElement(By.xpath("//XCUIElementTypeOther[@name=\"Checkout 3D Simulator\"]/XCUIElementTypeOther[5]/XCUIElementTypeSecureTextField")).sendKeys("Checkout1!");
-//                Logger.logError("Element name is not displayed in the current active screen:- ");
+            }else if (isElementDisplayedById(PAYMENT_FAILED_TITLE)){
+                System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
+                        "//////////////////////////////////////////  "+"PAYMENT FAILED"+"////////////////////////////////////////////////////\n"+
+                        "        ////////////////////////////////////////////////////////////////////////////////////\n");
+                Logger.logError("Payment failed error screen is displayed");
+            }
+            else {
+//                driver.findElement(By.xpath("//XCUIElementTypeOther[@name=\"Checkout 3D Simulator\"]/XCUIElementTypeOther[5]/XCUIElementTypeSecureTextField")).sendKeys("Checkout1!");
+                Logger.logError("3D secure payment screen is not displayed in the current active screen");
             }
         } catch (Exception exception) {
             Logger.logError("Encountered error: Unable to enter the credit or debit card details");
@@ -609,8 +621,8 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
             if (isElementDisplayedById("txtButton")){
                 driver.findElement(By.id("txtButton")).click();
             }else {
-                driver.findElement(By.id("txtButton")).click();
-//                Logger.logError("Element name is not displayed in the current active screen:- ");
+//                driver.findElement(By.id("txtButton")).click();
+                Logger.logError("3D secure password text field button is not displayed in the current active screen");
             }
         } catch (Exception exception) {
             Logger.logError("Encountered error: Unable to enter the credit or debit card details");

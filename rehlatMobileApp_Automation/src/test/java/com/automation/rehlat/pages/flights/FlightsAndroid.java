@@ -215,7 +215,8 @@ public class FlightsAndroid extends FlightsBase{
 //            String iOSKeyboard = driver.findElement(By.xpath(IOS_KEYBOARD_XPATH)).getAttribute("type");
             if (isKeyboardDisplayed()){
                 Logger.logComment("Keyboard is triggered");
-            }else{
+            }
+            else{
                 Logger.logError("Keyboard is not triggered");
             }
         }catch (Exception exception){
@@ -385,7 +386,7 @@ public class FlightsAndroid extends FlightsBase{
      * @param parsingDay
      */
     public static void tapOnDayInTheCalender(String parsingMonthAndYear, String parsingDay) {
-        Logger.logAction("Tapping on the day "+parsingDay+" in the calender view");
+        Logger.logAction("Trying to tap on the day "+parsingDay+" in the calender view");
         try{
             Thread.sleep(WAIT_TIME_MIN);
             WebElement calenderView = driver.findElement(By.id(CALENDER_MODAL_VIEW));
