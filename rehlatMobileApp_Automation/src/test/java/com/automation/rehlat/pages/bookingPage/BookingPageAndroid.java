@@ -651,7 +651,7 @@ public class BookingPageAndroid extends BookingPageBase {
             disableOnlineCheckInToggleButton();
             Double reviewBookingPriceInFooterView = getTheBookingPriceDisplayedInFooterView();
             Logger.logComment("Review Booking price in footer view :- "+reviewBookingPriceInFooterView);
-            String finalLetterInFinalFareAmountInBookingPage = Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.substring(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.length()-1,Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.length());
+            String finalLetterInFinalFareAmountInBookingPage = Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.substring(Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.length()-1);
             if (finalLetterInFinalFareAmountInBookingPage.equals("0")){
                 String finalFarePayablePriceInBookingPage = Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN.replace("0","");
                 Labels.BOOKING_COST_DISPLAYING_IN_BOOKING_PAGE_SCREEN = finalFarePayablePriceInBookingPage;

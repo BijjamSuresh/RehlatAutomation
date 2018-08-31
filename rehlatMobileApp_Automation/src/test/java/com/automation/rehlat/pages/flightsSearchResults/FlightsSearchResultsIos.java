@@ -85,7 +85,7 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
             //This logic is to find the parsing element by scrolling to the element and if displayed then immediately tap on it else throws error
 //            scrollToAnElementByXPath(xPathOfBookingFlightCellType,true);
             getTheBookingCostOfSelectingFlightInSearchResults(flightSearchResultCellNumber);
-            findElementByXPathAndClick(xPathOfBookingFlightCellType);
+//            findElementByXPathAndClick(xPathOfBookingFlightCellType);
             Logger.logStep("Tapped on flight cell number :- "+flightSearchResultCellNumber);
             // Logic ends here
 
@@ -137,6 +137,7 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
                         String bookingCostExcludingCurrencyName = flightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE+Labels.ONE_CHARACTER_SPACE, Labels.STRING_NULL);
                         Labels.SELECTED_SEAT_BOOKING_COST = bookingCostExcludingCurrencyName;
                         Logger.logComment("Booking cost of the flight cell number - " +selectedFlightCellTypeNumber + "and with index " + cellIndex + " is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
+                        bookingFlightCell.click(); // Todo: This line of code needs to be removed from this method after demo as this will do only getting the book cost
                         return  Labels.SELECTED_SEAT_BOOKING_COST;
                     }else{
                         Logger.logComment("Flight cell number - "+selectedFlightCellTypeNumber+" and with index : " + cellIndex + " is not having any booking flight cost");
@@ -155,6 +156,7 @@ public class FlightsSearchResultsIos extends FlightsSearchResultsBase {
                             String bookingCostExcludingCurrencyName = newFlightCellTypeText.replace(Labels.CURRENT_USER_CURRENCY_TYPE, Labels.STRING_NULL);
                             Labels.SELECTED_SEAT_BOOKING_COST = bookingCostExcludingCurrencyName;
                             Logger.logComment("Booking cost of the flight cell type number - " + selectedFlightCellTypeNumber + "and with index " + cellIndex + "  is :- " + Labels.SELECTED_SEAT_BOOKING_COST);
+                            bookingFlightCell.click(); // Todo: This line of code needs to be removed from this method after demo as this will do only getting the book cost
                             return Labels.SELECTED_SEAT_BOOKING_COST;
                         } else {
                             Logger.logComment("Flight cell number - " + selectedFlightCellTypeNumber + " and with index : " + cellIndex + " is not having any booking flight cost");

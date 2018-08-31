@@ -374,7 +374,7 @@ public class BasePage extends Base {
      * @throws Exception
      */
     public static void waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(String parsingClassName) throws Exception{
-        int count =0;
+        int count =-1;
         while (count<=Labels.MIN_ATTEMPTS){
             try{
                 if (isElementDisplayedByClassName(parsingClassName)){
@@ -395,7 +395,7 @@ public class BasePage extends Base {
      * Get the displayed ticket booking value
      * @return
      */
-    public static Double getTheDisplayedTicketBookingValueInFooterView(String screeName, Integer footerViewCellNumber) throws Exception {
+    public static Double getTheDisplayedTicketBookingValueInFooterView(String screeName, Integer footerViewCellNumber) {
         Logger.logAction("Getting the ticket cost displayed at footer view of the screen");
         String flightCellTypeText = null;
         WebElement bookingFlightCell;

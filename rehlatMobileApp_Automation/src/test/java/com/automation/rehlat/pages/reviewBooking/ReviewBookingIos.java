@@ -23,6 +23,7 @@ public class ReviewBookingIos extends ReviewBookingBase {
     public void checkReviewBookingScreenIsDisplayed() {
         Logger.logAction("Checking the review booking screen is displayed or not ?");
         try{
+            Thread.sleep(4000);
             if (isElementDisplayedByName(REVIEW_BOOKING_SCREEN_TITTLE)){
                 Logger.logStep("Review Booking screen is displayed");
             }else {
@@ -39,38 +40,40 @@ public class ReviewBookingIos extends ReviewBookingBase {
     @Override
     public void tapOnContinueButton() {
         try{
-            if (waitTillInProgressIndicatorIsInvisible()){
+//            if (waitTillInProgressIndicatorIsInvisible()){
                 Logger.logAction("Tapping on continue button");
                 if (isElementDisplayedByName(CONTINUE_BUTTON)){
                     driver.findElementByName(CONTINUE_BUTTON).click();
+                    Logger.logStep("Tapped on continue button");
                 }else {
                     Logger.logError("Continue button is not displayed in the current screen");
                 }
-            }else {
-                Logger.logError("In progress indicator is still visible");
-            }
+//            }
+//            else {
+//                Logger.logError("In progress indicator is still visible");
+//            }
         }catch (Exception exception){
             Logger.logError("Encountered error: unable to tap on continue button");
         }
     }
 
-    /**
-     * Wait till the loading in-progress indicator is in visible
-     * @return
-     */
-    public static boolean waitTillInProgressIndicatorIsInvisible() {
-        Logger.logAction("Waiting till In progress indicator is invisible");
-        try{
-            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
-//
-//            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(IN_PROGRESS_INDICATOR)));
-            Logger.logStep("In progress indicator is not visible");
-            return true;
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to find the visibility of an element");
-        }
-        return false;
-    }
+//    /**
+//     * Wait till the loading in-progress indicator is in visible
+//     * @return
+//     */
+//    public static boolean waitTillInProgressIndicatorIsInvisible() {
+//        Logger.logAction("Waiting till In progress indicator is invisible");
+//        try{
+//            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
+////
+////            driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(IN_PROGRESS_INDICATOR)));
+//            Logger.logStep("In progress indicator is not visible");
+//            return true;
+//        }catch (Exception exception){
+//            Logger.logError("Encountered error: Unable to find the visibility of an element");
+//        }
+//        return false;
+//    }
 
     /**
      * Enable the security check in toggle button

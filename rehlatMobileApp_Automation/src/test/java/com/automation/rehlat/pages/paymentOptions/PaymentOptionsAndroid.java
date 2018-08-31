@@ -93,7 +93,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                 Logger.logAction("Total amount payable price linear layout is displayed");
                 if (isElementDisplayedById(FINAL_AMOUNT_PAYABLE_PRICE)){
                     finalAmountPayablePriceInPaymentCheckOutScreen = driver.findElementById(FINAL_AMOUNT_PAYABLE_PRICE).getText().trim();
-                    String finalLetterInFinalAmountPayablePriceInPaymentCheckOutScreen = finalAmountPayablePriceInPaymentCheckOutScreen.substring(finalAmountPayablePriceInPaymentCheckOutScreen.length()-1,finalAmountPayablePriceInPaymentCheckOutScreen.length());
+                    String finalLetterInFinalAmountPayablePriceInPaymentCheckOutScreen = finalAmountPayablePriceInPaymentCheckOutScreen.substring(finalAmountPayablePriceInPaymentCheckOutScreen.length()-1);
                     if (finalLetterInFinalAmountPayablePriceInPaymentCheckOutScreen.equals("0")){
                         finalAmountPayablePriceInPaymentCheckOutScreen = finalAmountPayablePriceInPaymentCheckOutScreen.replace("0","");
                     }

@@ -47,7 +47,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
     public void checkPaymentOptionsScreenIsDisplayed() {
         Logger.logAction("Checking payment option screen is displayed or not ?");
         try{
-            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
+//            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
 //            if (isElementDisplayedByClassName(Labels.IOS_ACTIVITY_INDICATOR)){
 //                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.className(Labels.IOS_ACTIVITY_INDICATOR)));
                 acceptTheFareDifferAlert();
@@ -220,22 +220,37 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
     @Override
     public void enterCardNumber() {
         Logger.logAction("Tapping on card number text field");
-        String xPathOfCardNumberTextField = null;
+//        String xPathOfCardNumberTextField = null;
         try{
             if (isElementEnabledByXpath(XPATH_OF_CARD_NUMBER_VIEW))
             {
                 WebElement cardNumberLayout = driver.findElementByXPath(XPATH_OF_CARD_NUMBER_VIEW);
                 List<WebElement> listOfTextFields = cardNumberLayout.findElements(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_TEXT_FIELD));
-                Logger.logStep("Entering the card number");
-                xPathOfCardNumberTextField =  XPATH_OF_CARD_NUMBER_VIEW+Labels.IOS_XCUI_ELEMENT_TYPE_TEXT_FIELD+"["+(listOfTextFields.size())+"]";
-                driver.findElement(By.xpath(xPathOfCardNumberTextField)).sendKeys(Labels.KNET_PAYMENT_CARD_NUMBER);
-                Logger.logComment(Labels.KNET_PAYMENT_CARD_NUMBER+" :- is Parsed");
-                closeTheKeyboard_iOS();
+                for (int index =0; index <= listOfTextFields.size()-1;index++){
+                    String elementVisibilityStatus = listOfTextFields.get(index).getAttribute(Labels.VISIBLE_ATTRIBUTE);
+                    if (elementVisibilityStatus.equalsIgnoreCase(Labels.STATUS_TRUE)) {
+//                        index = index +1;
+//                        xPathOfCardNumberTextField =  XPATH_OF_CARD_NUMBER_VIEW+"/"+Labels.IOS_XCUI_ELEMENT_TYPE_TEXT_FIELD+"["+index+"]";
+                        Logger.logStep("Entering the card number");
+                        listOfTextFields.get(index).sendKeys(Labels.KNET_PAYMENT_CARD_NUMBER);
+//                        driver.findElementByXPath(xPathOfCardNumberTextField).sendKeys(Labels.KNET_PAYMENT_CARD_NUMBER);
+                        Logger.logComment(Labels.KNET_PAYMENT_CARD_NUMBER+" :- is Parsed");
+                        closeTheKeyboard_iOS();
+                    }else {
+                        Logger.logComment("Card number text field of type XCUIElementTypeTextField with index - "+index+" is not visible");
+                    }
+                    if (isKeyboardDisplayed()){
+                        Logger.logError("Card number fields all are invisible");
+                    }else {
+                        Logger.logComment("Entered the card number :- "+Labels.KNET_PAYMENT_CARD_NUMBER);
+                    }
+                }
             }else {
-                Logger.logError("Card number field is not displayed" + xPathOfCardNumberTextField);
+                Logger.logError("Card number field is not displayed" + XPATH_OF_CARD_NUMBER_VIEW);
             }
         }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to check the element name by Xpath :- \n" + xPathOfCardNumberTextField);
+            exception.printStackTrace();
+            Logger.logError("Encountered error: Unable to check the element name by Xpath :- " + XPATH_OF_CARD_NUMBER_VIEW);
         }
     }
 
@@ -333,6 +348,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                     Logger.logComment(TRANSACTION_IN_PROGRESS);
                     if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
+                        Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
@@ -354,6 +370,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 }else {
                     if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
+                        Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
@@ -376,6 +393,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                     Logger.logComment(TRANSACTION_IN_PROGRESS);
                     if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
+                        Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
@@ -395,6 +413,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                     }
                 }else if (isElementDisplayedByName(PAYMENT_SUCCESS)) {
                     Logger.logComment(PAYMENT_SUCCESS);
+                    Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                     driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                     if (isElementDisplayedByName(BOOKING_SUCCESS)){
                         System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
@@ -602,6 +621,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                     Logger.logComment(TRANSACTION_IN_PROGRESS);
                     if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
+                        Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
@@ -622,6 +642,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 }else {
                     if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
+                        Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
@@ -644,6 +665,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 Logger.logComment(TRANSACTION_IN_PROGRESS);
                 if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                     Logger.logComment(PAYMENT_SUCCESS);
+                    Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                     driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                     if (isElementDisplayedByName(BOOKING_SUCCESS)){
                         System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +
@@ -663,6 +685,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
                 }
             }else if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                 Logger.logComment(PAYMENT_SUCCESS);
+                Logger.logStep("Payment success screen is displayed, waiting till the screen is invisible");
                 driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(PAYMENT_SUCCESS)));
                 if (isElementDisplayedByName(BOOKING_SUCCESS)){
                     System.out.println( "        ////////////////////////////////////////////////////////////////////////////////////\n" +

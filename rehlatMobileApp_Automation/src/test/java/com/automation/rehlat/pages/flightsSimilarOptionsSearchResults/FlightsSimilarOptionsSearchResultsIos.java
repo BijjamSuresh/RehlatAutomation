@@ -8,7 +8,7 @@ import static com.automation.rehlat.pages.flightsSearchResults.FlightsSearchResu
 public class FlightsSimilarOptionsSearchResultsIos extends FlightsSimilarOptionsSearchResultsBase {
 
 //    public static String TRIP_TYPE ;
-    public static final String TOTAL_AIR_FARE = "Total Airfare";
+    public static final String TOTAL_AIR_FARE = "Total Price";
     public static final String COMBINATIONS_AVAILABLE_AT_SAME_PRICE_LABEL_WITHOUT_SIMILAR_FLIGHTS_NUMBER  = "combinations available at same price";
     public static final String XPATH_OF_FIRST_SIMILAR_OPTION_CELL_ONE_WAY_TRIP = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeTable/XCUIElementTypeCell[1]";
     public static final String XPATH_OF_FIRST_SIMILAR_OPTION_CELL_TWO_WAY_TRIP = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeTable/XCUIElementTypeCell[1]";
@@ -20,7 +20,7 @@ public class FlightsSimilarOptionsSearchResultsIos extends FlightsSimilarOptions
     public boolean checkFlightsSimilarOptionsSearchResultsScreenIsDisplayed() {
         Logger.logAction("Checking the flights similar option search results screen is displayed or not?");
         try {
-            Thread.sleep(Labels.WAIT_TIME_MIN);
+            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
             if (isElementEnabledByName(TOTAL_AIR_FARE)){
                 Logger.logStep("Flights similar search results screen is displayed");
                 return true;

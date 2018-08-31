@@ -13,7 +13,7 @@ public class Labels extends Base{
     ////////iOS ///////////
     ///Device One///
         public static final String DEVICE_UDID="1e5b8dcad350fb249a73d8dc106efbd9ccea136c"; // iPhone 7 Plus
-//        public static final String WDA_LOCAL_PORT_DEFAULT= "8001"; // For each device one unique port number
+        public static final String WDA_LOCAL_PORT_DEFAULT= "8001"; // For each device one unique port number
 
     ///Device Two ///
     //    public static final String DEVICE_UDID="85108b5bd6265ecc9c4f58a8ad1cdbe1798e21ac"; // iPhone 6
@@ -26,8 +26,8 @@ public class Labels extends Base{
 
     ///Device Two ///
     public static final String APPIUM_DEVICE_ID_DEFAULT = "BH901M4F4C"; // Sony device id
-        public static final String WDA_LOCAL_PORT_DEFAULT= "8015"; // This helps to run the parallel runs
-//            public static final String WDA_LOCAL_PORT_DEFAULT= "192.168.3.108:5555"; // This helps to run the scripts over wifi [WDA Port number == Android device IP address : tcpip address (Used in the terminal to connect the device and PC in same network)]
+//        public static final String WDA_LOCAL_PORT_DEFAULT= "8015"; // This helps to run the parallel runs
+//            public static final String WDA_LOCAL_PORT_DEFAULT= "192.168.3.111:5555"; // This helps to run the scripts over wifi [WDA Port number == Android device IP address : tcpip address (Used in the terminal to connect the device and PC in same network)]
 
     ////////Common ///////////
     // Port 1 and Port 2 email id's are used while running multiple scripts where as on single run we use port one as default
@@ -100,7 +100,7 @@ public class Labels extends Base{
     public static final int DIRECTION_RIGHT = 4;
 
                                                                                     ////////////////////  Number of attempts to iterate  ////////////////////
-    public static final int MIN_ATTEMPTS = 2;
+    public static final int MIN_ATTEMPTS = 1;
     public static final int DEFAULT_ATTEMPTS = 5;
     public static final int MAX_ATTEMPTS = 8;
     public static final int DEFAULT_SCROLL_ATTEMPTS = 5;
@@ -109,8 +109,8 @@ public class Labels extends Base{
                                                                                         ////////////////////  Types of devices ////////////////////
     public static final String IOS="iOS";
     public static final String ANDROID="Android";
-    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type every time w.r.t. the testing device platform
-//    public static final String DEFAULT_PLATFORM = "iOS";
+//    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type every time w.r.t. the testing device platform
+    public static final String DEFAULT_PLATFORM = "iOS";
 
 
                                                                                     ////////////////////  Web element attribute values ////////////////////
@@ -229,6 +229,7 @@ public class Labels extends Base{
     public static final String HYDERABAD_AIRPORT_CODE = "HYD";
     public static final String BANGALORE_AIRPORT_CODE = "BLR";
     public static final String DOMESTIC_FLIGHT_BOOKING = "Domestic";
+    public static final String OTHERS_COUNTRY_LABEL = "OTHERS";
 
 
 
@@ -238,7 +239,6 @@ public class Labels extends Base{
     public static final String FIRST_NAME = "Suresh";
     public static final String LAST_NAME = "Reddy";
     public static String EMAIL_ID_SIGN_UP = "rehlatAutomationPort0TestingEmail100@gmail.com";
-
     public static final String EMAIL_ID_SIGN_IN = "rehlatAutomationTestEmail1@gmail.com";  // Always add the two digit email number so that on every test script a new email id is generated for to test sign up
     public static final String PASSWORD = "testPasswordFromLabels";
     public static final String REPEAT_PASSWORD="testPasswordFromLabels";

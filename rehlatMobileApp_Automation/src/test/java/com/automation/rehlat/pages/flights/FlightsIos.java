@@ -102,15 +102,18 @@ public class FlightsIos extends FlightsBase {
         Logger.logAction("selecting the country of user");
         try{
             if (userCountryName.equals(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)){
-                if (isElementDisplayedByName(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)|| isElementDisplayedByName("OTHER")){
-                    Logger.logStep("Tapping on element - " +userCountryName);
+                if (isElementDisplayedByName(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)){
                     driver.findElementByName(userCountryName).click();
+                    Logger.logStep("Tapped on element - " +userCountryName);
+                }else if (isElementDisplayedByName(Labels.OTHERS_COUNTRY_LABEL)){
+                    driver.findElementByName(Labels.OTHERS_COUNTRY_LABEL).click();
+                    Logger.logStep("Tapped on element - " +Labels.OTHERS_COUNTRY_LABEL);
                 }else {
                     Logger.logError(userCountryName+" :- element name is not displaying in the current active screen");
                 }
             } else if (isElementDisplayedByName(userCountryName)){
-                Logger.logStep("Tapping on element - " +userCountryName);
                 driver.findElementByName(userCountryName).click();
+                Logger.logStep("Tapped on element - " +userCountryName);
             }else {
                 Logger.logError(userCountryName+" :- element name is not displaying in the current active screen");
             }
@@ -257,7 +260,6 @@ public class FlightsIos extends FlightsBase {
             }else{
                 Logger.logError("Unable to tap on the airport code of place - " +airPortCodeOfPlaceName);
             }
-
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to select the airport code of place name from search results");
         }
@@ -580,6 +582,7 @@ public class FlightsIos extends FlightsBase {
         try {
             if (isElementDisplayedByName(SEARCH_BUTTON)){
                 driver.findElementByName(SEARCH_BUTTON).click();
+                waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR); //Todo:- Remove this line code after implementing the progress indicator in SRP page
                 Logger.logStep("Tapped on Search button");
             }else {
                 Logger.logError("Search button is not displayed in flights tab");
