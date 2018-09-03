@@ -11,8 +11,11 @@ public class MenuIos extends MenuBase {
     public static final String SETTINGS_OPTION = "Settings";
     public static final String TWENTY_FOUR_BAR_SEVEN_SUPPORT_OPTION = "Rehlat 24X 7 Support";
     public static final String SIGN_IN_OR_SIGN_UP_BUTTON = "Sign In/Sign Up";
+    public static final String REFER_AND_EARN_SUB_MENU_ICON = "new_refer_earn_icon";
     public static final String LOGOUT_BUTTON = "Logout";
+    public static final String PROFILE_EDIT_ICON = "profile edit icon";
     public static final String XPATH_OF_MENU_SCREEN = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]";
+    public static final String[] listOfSubMenuOptions= {"Sign In/Sign Up","Trips","Rehlat 24X 7 Support","Arabic","Settings","Privacy Policy"};
 
     /**
      * Check menu screen is displayed
@@ -149,6 +152,72 @@ public class MenuIos extends MenuBase {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: unable to tap on the logout button");
+        }
+    }
+
+    /**
+     * Check all the sub menu options are displayed in menu screen
+     * @throws Exception
+     */
+    @Override
+    public void checkAllTheSubMenuOptionsAreDisplayed() throws Exception{
+        Logger.logAction("Checking all the sub menu options are displayed");
+        try{
+            for (int count = 0 ; count<= listOfSubMenuOptions.length-1;count++){
+                String elementName = listOfSubMenuOptions[count];
+                if (count==0){
+                    if (isUserSignedIn()){
+                        Logger.logComment("User is signed in.So, no sign in or sign up button");
+                    }else
+                    {
+                        if (isElementDisplayedByName(elementName)){
+                            Logger.logComment(elementName+" :- sub menu element is displayed");
+                        }else {
+                            Logger.logError(elementName+" sub menu element is not displayed");
+                        }
+                    }
+                }else {
+                    if (isElementDisplayedByName(elementName)){
+                        Logger.logComment(elementName+" :- sub menu element is displayed");
+                    }else {
+                        Logger.logError(elementName+" sub menu element is not displayed");
+                    }
+                }
+            }if (isElementEnabledByName(REFER_AND_EARN_SUB_MENU_ICON)){
+                Logger.logComment(REFER_AND_EARN_SUB_MENU_ICON+" :- sub menu element is enabled");
+            }else {
+                Logger.logError(REFER_AND_EARN_SUB_MENU_ICON+" :- sub menu element is not enabled");
+            }
+            if (isUserSignedIn()){
+                if (isElementDisplayedById(LOGOUT_BUTTON)){
+                    Logger.logComment(LOGOUT_BUTTON+" :- sub menu element id is displayed");
+                }else {
+                    Logger.logError(LOGOUT_BUTTON+" :- sub menu element id is not displayed");
+                }
+            }else {
+                Logger.logComment("User is not signed in. So no logout button is displayed in the sub menu screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to check all the sub menu options are displayed");
+        }
+    }
+
+    /**
+     * Tap on profile edit icon
+     * @throws Exception
+     */
+    @Override
+    public void tapOnProfileEditIcon() throws Exception{
+        Logger.logAction("Tapping on profile edit icon");
+        try{
+            if (isElementDisplayedByName(PROFILE_EDIT_ICON)){
+                driver.findElementByName(PROFILE_EDIT_ICON).click();
+                Logger.logComment("Tapped on profile edit button");
+            }else {
+                Logger.logError(PROFILE_EDIT_ICON+" ;- element name is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error:- Unable to tap on profile edit icon");
         }
     }
 

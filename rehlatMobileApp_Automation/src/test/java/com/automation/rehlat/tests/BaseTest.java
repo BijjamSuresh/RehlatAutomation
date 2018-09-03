@@ -9,6 +9,7 @@ import com.automation.rehlat.pages.flights.FlightsBase;
 import com.automation.rehlat.pages.flightsSearchResults.FlightsSearchResultsBase;
 import com.automation.rehlat.pages.flightsSimilarOptionsSearchResults.FlightsSimilarOptionsSearchResultsBase;
 import com.automation.rehlat.pages.menu.MenuBase;
+import com.automation.rehlat.pages.myProfile.MyProfileBase;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsBase;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingBase;
 import com.automation.rehlat.pages.signIn.SignInBase;
@@ -19,7 +20,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
-import static com.automation.rehlat.Labels.WDA_LOCAL_PORT;
 import static com.automation.rehlat.Labels.setCountryLanguageAndAirportFromAndToLabels;
 import static com.automation.rehlat.pages.constructors.PageConstructor.initializePageObject;
 
@@ -37,7 +37,7 @@ public class BaseTest extends Base {
     public static final String NOTIFICATION_ACCEPTANCE = "“Rehlat” Would Like to Send You Notifications";
     public static final String IOS_ALLOW_BUTTON = "Allow";
     public static final String ANDROID_ALLOW_BUTTON = "com.android.packageinstaller:id/permission_allow_button";
-    public static final String DONT_ALLOW = "Don’t Allow";
+    public static final String DONT_ALLOW_BUTTON = "Don’t Allow";
     public static final String DENY = "DENY";
     public static final String ANDROID_SPLASH_SCREEN = "com.app.rehlat:id/splash_please_wait_dots";
     public static final String SPLASH_SCREEN_ID = "com.app.rehlat:id/splash_please_wait_dots";
@@ -67,6 +67,8 @@ public class BaseTest extends Base {
     public static BookingPageBase BookingPageScreen;
     public static TravellerDetailsBase TravellerDetailsScreen;
     public static PaymentOptionsBase PaymentOptionsScreen;
+    public static MyProfileBase MyProfileScreen;
+
 
 
     ////////////////////////////// Before Class For All The Base Tests Folder //////////////////////////////////////
@@ -87,7 +89,7 @@ public class BaseTest extends Base {
         initializePageObject("paymentOptionsScreen", Labels.platform);
 
 
-        waitTillTheSplashScreenIsInvisible();
+        checkAndWaitTillTheSplashScreenIsInvisible();
         setCountryLanguageAndAirportFromAndToLabels();
 //        runTheLiveApp();
 //        acceptAutoAlertsIfDisplayed();
@@ -123,7 +125,7 @@ public class BaseTest extends Base {
             acceptNotificationAlertInIos();
         }else if (Labels.platform.equals(Labels.ANDROID))
         {
-            waitTillTheSplashScreenIsInvisible();
+            checkAndWaitTillTheSplashScreenIsInvisible();
             acceptUserLocationAlertInAndroid();
 //            acceptNotificationAlertInAndroid(); // Notifications alert is by default allowed in the android app [While installing the app from google store user needs to accept notifications alert]
         }else {
@@ -193,6 +195,26 @@ public class BaseTest extends Base {
             if (isElementDisplayedByName(IOS_USER_LOCATION_ACCESS)) {
                 Logger.logComment("Location access alert is displayed and accepting it");
                 driver.findElement(By.name(IOS_ALLOW_BUTTON)).click();
+                Logger.logComment("Tapped on Allow button");
+            } else {
+                Logger.logComment("Location alert is not displayed, moving to next alert verification");
+            }
+        }
+    }
+
+    /**
+     * Decline the User location alerts in iOS
+     * @throws Exception
+     */
+    public static void declineUserLocationAlertInIos() throws Exception {
+        Logger.logStep("Accepting location alert");
+        if (isElementDisplayedByName(SELECT_LANGUAGE)) {
+            Logger.logComment("Location alert is not displayed, moving to test case execution");
+        } else {
+            if (isElementDisplayedByName(IOS_USER_LOCATION_ACCESS)) {
+                Logger.logComment("Location access alert is displayed and declining it");
+                driver.findElement(By.name(DONT_ALLOW_BUTTON)).click();
+                Logger.logComment("Tapped on don't allow button");
             } else {
                 Logger.logComment("Location alert is not displayed, moving to next alert verification");
             }
@@ -211,11 +233,31 @@ public class BaseTest extends Base {
              if (isElementDisplayedByName(NOTIFICATION_ACCEPTANCE)){
                  Logger.logComment("Notification Acceptance access alert is displayed and accepting it");
                  driver.findElement(By.name(IOS_ALLOW_BUTTON)).click();
+                 Logger.logComment("Tapped on allow button");
              }else{
                  Logger.logComment("Notification alert is not displayed, moving to test script execution");
              }
          }
      }
+
+    /**
+     * Decline the User location in iOS
+     * @throws Exception
+     */
+    public static void declineNotificationAlertInIos() throws Exception{
+        Logger.logStep("Accepting notification alert");
+        if(isElementDisplayedByName(SELECT_LANGUAGE)){
+            Logger.logComment("Location alert is not displayed, moving to test script execution");
+        }else{
+            if (isElementDisplayedByName(NOTIFICATION_ACCEPTANCE)){
+                Logger.logComment("Notification Acceptance access alert is displayed and declining it");
+                driver.findElement(By.name(DONT_ALLOW_BUTTON)).click();
+                Logger.logComment("Tapped on don't allow button");
+            }else{
+                Logger.logComment("Notification alert is not displayed, moving to test script execution");
+            }
+        }
+    }
 
     /**
      * Accepting the User location alerts in Android
@@ -231,6 +273,7 @@ public class BaseTest extends Base {
                 if (permissionAlert.equals(ANDROID_USER_LOCATION_ACCESS)) {
                     Logger.logComment("Location access alert is displayed and accepting it");
                     driver.findElement(By.id(ANDROID_ALLOW_BUTTON)).click();
+                    Logger.logComment("Tapped on allow button");
                 } else {
                     Logger.logComment("Location alert is not displayed, moving to next alert verification");
                 }
@@ -253,6 +296,7 @@ public class BaseTest extends Base {
             if (isElementDisplayedByName(NOTIFICATION_ACCEPTANCE)){
                 Logger.logComment("Notification Acceptance access alert is displayed and accepting it");
                 driver.findElement(By.id(ANDROID_ALLOW_BUTTON)).click();
+                Logger.logComment("Tapped on allow button");
             }else{
                 Logger.logComment("Notification alert is not displayed, moving to test script execution");
             }
@@ -262,7 +306,7 @@ public class BaseTest extends Base {
     /**
      * Check the splash screen is displayed and waits till invisibility of the splash screen (Implemented only for android platform)
      */
-    public static void waitTillTheSplashScreenIsInvisible() {
+    public static void checkAndWaitTillTheSplashScreenIsInvisible() {
         Logger.logStep("Checking splash screen is displayed or not ?");
         try {
             if (Labels.platform.equals(Labels.ANDROID)){

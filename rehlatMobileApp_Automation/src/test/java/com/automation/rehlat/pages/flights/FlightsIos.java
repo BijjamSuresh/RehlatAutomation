@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -28,6 +29,7 @@ public class FlightsIos extends FlightsBase {
     public static final String DEPARTURE_BUTTON = "Departure";
     public static final String RETURN_BUTTON = "Return";
     public static final String DONE_BUTTON_IN_CALENDAR_VIEW = "Done";
+    public static final String XPATH_OF_SELECT_COUNTRY_SHEET = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElementTypeTable";
     public static final String XPATH_OF_MONTH_AND_DAY_DEPARTURE_IN_CALENDAR_VIEW = "(//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther";
     public static final String XPATH_OF_MONTH_DEPARTURE_IN_CALENDAR_VIEW = "(//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther";
     public static final String CALENDER_MODAL_VIEW_XPATH = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElementTypeCollectionView";
@@ -51,6 +53,28 @@ public class FlightsIos extends FlightsBase {
             Logger.logWarning("Select Language Modal is not displayed");
         }
         return false;
+    }
+
+    /**
+     * Get the position of current active user location country name
+     * @return
+     */
+    @Override
+    public String getTheLastPositionCountryNameInSelectCountryLayout(){
+        Logger.logAction("Getting the position of current active user location country name");
+        try{
+            if (isElementDisplayedByXPath(XPATH_OF_SELECT_COUNTRY_SHEET)){
+                WebElement selectCountrySheet = driver.findElementByXPath(XPATH_OF_SELECT_COUNTRY_SHEET);
+                List<WebElement> listOfCountries = selectCountrySheet.findElements(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_CELL));
+                String nameOfTheLastLabel = listOfCountries.get(listOfCountries.size()-1).findElement(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_STATIC_TEXT)).getAttribute(Labels.VALUE_ATTRIBUTE);
+                if (nameOfTheLastLabel.equalsIgnoreCase(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)){
+                    return nameOfTheLastLabel;
+                }
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the position of India country Name");
+        }
+        return null;
     }
 
     /**
@@ -313,20 +337,29 @@ public class FlightsIos extends FlightsBase {
                 //                scrollDown();
                 //                scrollUp();
                 if (isElementDisplayedByName(departureMonthAndYear)){
-                    if (isElementDisplayedByName(departureDay)) {
+                    if (isElementEnabledByName(departureDay)) {
                         WebElement  calenderView = driver.findElementByClassName(Labels.IOS_XCUI_ELEMENT_TYPE_COLLECTION_VIEW);
                         List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
                         int departureDaysSize = departureDays.size();
                         if (departureDaysSize >= 2){
-                            Logger.logComment("Two departure days are displayed in the calender view with same departure day: "+departureDay+"");
+                            Logger.logComment("More than one similar departure days are displayed in the calender view with same departure day: "+departureDay+"");
                             // Implement a logic that exactly taps on accurate day when there are multiple days with same name
 //                            scr
 //                            swipeOnElement(calenderView,DIRECTION_UP);
 //                            swipeOnElement(calenderView,DIRECTION_DOWN);
                             if (departureDaysSize >= 2){
-                                Logger.logWarning("Two accurate dates are displayed in the departure calender, so tapping on nearest possible date");
-                                driver.findElementByName(departureDay).click();
-                                Logger.logComment("Tapped on day:- "+departureDay);
+                                Logger.logWarning("More than one similar dates are displayed in the departure calender, so tapping on nearest possible date");
+                                for (int count =0;count<=departureDays.size();count++){
+                                    WebElement visibleDepartureDay = departureDays.get(count);
+                                    if (visibleDepartureDay.isDisplayed()){
+                                        visibleDepartureDay.click();
+                                        Logger.logComment("Tapped on day:- "+departureDay);
+                                        break;
+                                    }else
+                                    {
+                                        continue;
+                                    }
+                                }
                             }else {
                                 driver.findElementByName(departureDay).click();
                                 Logger.logComment("Tapped on day:- "+departureDay);
@@ -347,15 +380,24 @@ public class FlightsIos extends FlightsBase {
                             List<WebElement> departureDays = calenderView.findElements(By.name(departureDay));
                             int departureDaysSize = departureDays.size();
                             if (departureDaysSize >= 2){
-                                Logger.logComment("Two departure days are displayed in the calender view with same departure day: "+departureDay+"");
+                                Logger.logComment("More than one similar dates are displayed in the calender view with same departure day: "+departureDay+"");
                                 // Implement a logic that exactly taps on accurate day when there are multiple days with same name
 //                            scr
 //                            swipeOnElement(calenderView,DIRECTION_UP);
 //                            swipeOnElement(calenderView,DIRECTION_DOWN);
                                 if (departureDaysSize >= 2){
-                                    Logger.logWarning("Two accurate dates are displayed in the departure calender, so tapping on nearest possible date");
-                                    driver.findElementByName(departureDay).click();
-                                    Logger.logComment("Tapped on day:- "+departureDay);
+                                    Logger.logWarning("More than one similar dates are displayed in the departure calender, so tapping on nearest possible date");
+                                    for (int count =0;count<=departureDays.size();count++){
+                                        WebElement visibleDepartureDay = departureDays.get(count);
+                                        if (visibleDepartureDay.isDisplayed()){
+                                            visibleDepartureDay.click();
+                                            Logger.logComment("Tapped on day:- "+departureDay);
+                                            break;
+                                        }else
+                                        {
+                                            continue;
+                                        }
+                                    }
                                 }else {
                                     driver.findElementByName(departureDay).click();
                                     Logger.logComment("Tapped on day:- "+departureDay);

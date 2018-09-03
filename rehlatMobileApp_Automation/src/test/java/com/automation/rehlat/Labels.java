@@ -31,8 +31,8 @@ public class Labels extends Base{
 
     ////////Common ///////////
     // Port 1 and Port 2 email id's are used while running multiple scripts where as on single run we use port one as default
-    public static String EMAIL_ID_SIGN_UP_PORT_1 = "rehlatAutomationPort1TestingEmail107@gmail.com"; // This is for port one connected device [Either iOS or Android]
-    public static String EMAIL_ID_SIGN_UP_PORT_2 = "rehlatAutomationPort2TestingEmail101@gmail.com"; // This is for port two connected device [Either iOS or Android]
+    public static String EMAIL_ID_SIGN_UP_PORT_1 = "rehlatAutomationPort1TestingEmail110@gmail.com"; // This is for port one connected device [Either iOS or Android]
+    public static String EMAIL_ID_SIGN_UP_PORT_2 = "rehlatAutomationPort2TestingEmail106@gmail.com"; // This is for port two connected device [Either iOS or Android]
 
                                                                                 //////  APPIUM  iOS app capabilities//////////
     public static final String IOS_BUNDLE_ID="com.Rehlat.RehlatMobile";
@@ -100,7 +100,7 @@ public class Labels extends Base{
     public static final int DIRECTION_RIGHT = 4;
 
                                                                                     ////////////////////  Number of attempts to iterate  ////////////////////
-    public static final int MIN_ATTEMPTS = 1;
+    public static final int MIN_ATTEMPTS = 2;
     public static final int DEFAULT_ATTEMPTS = 5;
     public static final int MAX_ATTEMPTS = 8;
     public static final int DEFAULT_SCROLL_ATTEMPTS = 5;
@@ -120,6 +120,7 @@ public class Labels extends Base{
     public static final String IOS_XCUI_ELEMENT_TYPE_SHEET = "XCUIElementTypeSheet";
     public static final String IOS_XCUI_ELEMENT_TYPE_STATIC_TEXT = "XCUIElementTypeStaticText";
     public static final String IOS_XCUI_ELEMENT_TYPE_TEXT_FIELD = "XCUIElementTypeTextField";
+    public static final String IOS_XCUI_ELEMENT_TYPE_CELL = "XCUIElementTypeCell";
     public static final String ANDROID_LINEAR_LAYOUT = "android.widget.LinearLayout";
     public static final String ANDROID_VIEW_GROUP = "android.view.ViewGroup";
     public static final String UIA_KEYBOARD = "UIAKeyboard";
@@ -137,6 +138,7 @@ public class Labels extends Base{
     public static final String NAME_ATTRIBUTE = "name";
     public static final String STATUS_TRUE="true";
     public static final String STRING_NULL = "";
+    public static final String DOT_STRING = ".";
 
 
 

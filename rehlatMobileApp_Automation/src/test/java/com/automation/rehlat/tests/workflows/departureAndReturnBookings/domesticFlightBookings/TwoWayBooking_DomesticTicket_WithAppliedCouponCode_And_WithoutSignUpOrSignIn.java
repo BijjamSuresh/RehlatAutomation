@@ -2,20 +2,15 @@ package com.automation.rehlat.tests.workflows.departureAndReturnBookings.domesti
 
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
-import com.automation.rehlat.pages.bookingPage.BookingPageIos;
-import com.automation.rehlat.pages.flights.FlightsIos;
-import com.automation.rehlat.pages.paymentOptions.PaymentOptionsIos;
-import com.automation.rehlat.pages.travellerDetails.TravellerDetailsAndroid;
+import com.automation.rehlat.pages.BasePage;
 import com.automation.rehlat.tests.BaseTest;
 import org.junit.Test;
-import org.openqa.selenium.By;
-
 import static com.automation.rehlat.Labels.*;
 
 public class TwoWayBooking_DomesticTicket_WithAppliedCouponCode_And_WithoutSignUpOrSignIn extends BaseTest {
     @Test
     public void testTicketBookingWithAppliedCouponCodeAndWithoutSignUpOrSignIn() throws Exception{
-
+        BasePage.waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
         Labels.FLIGHT_BOOKING_TYPE = DOMESTIC_FLIGHT_BOOKING;
         Logger.beginTest(" - Ticket booking with applied coupon code and without sign in or sign up ");
         FlightsScreen.selectCountryNameInSelectLanguageModal(INDIA_LANGUAGE_COUNTRY_LABEL); // Country name needs to changed while testing for countries other than Kuwait.

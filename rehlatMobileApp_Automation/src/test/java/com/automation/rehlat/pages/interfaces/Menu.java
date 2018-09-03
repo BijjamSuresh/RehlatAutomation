@@ -42,5 +42,17 @@ public interface Menu {
      * Tap on logout button
      * @throws Exception
      */
-   void tapOnLogoutButton() throws Exception;
+    void tapOnLogoutButton() throws Exception;
+
+    /**
+     * Check all the sub menu options are displayed in menu screen
+     * @throws Exception
+     */
+    void checkAllTheSubMenuOptionsAreDisplayed() throws Exception;
+
+    /**
+     * Tap on profile edit icon
+     * @throws Exception
+     */
+    void tapOnProfileEditIcon() throws Exception;
 }

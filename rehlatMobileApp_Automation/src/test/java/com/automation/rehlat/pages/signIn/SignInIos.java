@@ -24,6 +24,7 @@ public class SignInIos extends SignInBase {
         try {
 //            driverWait.withTimeout(5,TimeUnit.SECONDS);
             declineTheTouchIdAccessSetUpPopupIfDisplayed();
+            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
             if (isElementDisplayedByName(LOGIN_BUTTON) && isElementDisplayedByName(CREATE_ACCOUNT_BUTTON) && isElementDisplayedByName(NOT_REGISTERED_LABEL)){
                 Logger.logStep("Sign In screen is displayed");
             }else {

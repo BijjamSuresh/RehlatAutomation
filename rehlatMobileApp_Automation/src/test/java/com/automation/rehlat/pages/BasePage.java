@@ -9,6 +9,7 @@ import com.automation.rehlat.pages.flights.FlightsBase;
 import com.automation.rehlat.pages.flightsSearchResults.FlightsSearchResultsBase;
 import com.automation.rehlat.pages.flightsSimilarOptionsSearchResults.FlightsSimilarOptionsSearchResultsBase;
 import com.automation.rehlat.pages.menu.MenuBase;
+import com.automation.rehlat.pages.myProfile.MyProfileBase;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsBase;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingBase;
 import com.automation.rehlat.pages.signIn.SignInBase;
@@ -35,6 +36,8 @@ public class BasePage extends Base {
     public static BookingPageBase BookingPageScreen;
     public static TravellerDetailsBase TravellerDetailsScreen;
     public static PaymentOptionsBase PaymentOptionsScreen;
+    public static MyProfileBase MyProfileScreen;
+
 
 
     ////////////////////////////// IOS Strings Related To The Methods In Base Page //////////////////////////////////////
@@ -374,8 +377,8 @@ public class BasePage extends Base {
      * @throws Exception
      */
     public static void waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(String parsingClassName) throws Exception{
-        int count =-1;
-        while (count<=Labels.MIN_ATTEMPTS){
+        int count =1;
+        while (count < Labels.MIN_ATTEMPTS){
             try{
                 if (isElementDisplayedByClassName(parsingClassName)){
                     Logger.logStep("Waiting till the activity indicator is invisible in the current active screen");
@@ -384,7 +387,7 @@ public class BasePage extends Base {
                     Logger.logComment("Activity indicator is not displayed in the current active screen");
                 }
             }catch (Exception exception){
-                Thread.sleep(4000);
+                Thread.sleep(Labels.WAIT_TIME_MIN);
                 Logger.logComment(count+" :- time trying to find the element name");
             }
             count++;

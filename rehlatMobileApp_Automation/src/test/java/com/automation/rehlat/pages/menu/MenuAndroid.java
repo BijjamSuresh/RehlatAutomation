@@ -19,8 +19,10 @@ public class MenuAndroid extends MenuBase {
     public static final String LOGOUT_BUTTON = "com.app.rehlat:id/logoutLayout";
     public static final String SCROLL_VIEW_IN_MENU_SCREEN = "android.widget.ScrollView";
     public static final String TWENTY_FOUR_BAR_SEVEN_SUPPORT_LABEL = "com.app.rehlat:id/sidemenu_supportllyt";
+    public static final String REFER_AND_EARN_SUB_MENU_BUTTON = "Refer & Earn";
+    public static final String PROFILE_EDIT_ICON = "profile edit icon";
     public static final String XPATH_OF_SETTINGS_SCREEN_TITTLE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView";
-//    public static final String
+    public static final String[] listOfSubMenuOptions= {"Sign In/Sign Up","Trips","Rehlat 24X 7 Support","Arabic","Settings","Privacy Policy"};
 
 
     /**
@@ -222,4 +224,57 @@ public class MenuAndroid extends MenuBase {
             Logger.logError("Encountered error: Unable to scroll to the menu view to upwards");
         }
     }
+
+    /**
+     * Check all the sub menu options are displayed in menu screen
+     * @throws Exception
+     */
+    @Override
+    public void checkAllTheSubMenuOptionsAreDisplayed() throws Exception{
+        Logger.logAction("Checking all the sub menu options are displayed");
+        try{
+            for (int count = 0 ; count<= listOfSubMenuOptions.length;count++){
+                String elementName = listOfSubMenuOptions[count];
+                if (isElementDisplayedByName(elementName)){
+                    Logger.logComment(elementName+" :- sub menu element is displayed");
+                }else {
+                    Logger.logError(elementName+" sub menu element is not displayed");
+                }
+            }if (isElementEnabledByName(REFER_AND_EARN_SUB_MENU_BUTTON)){
+                Logger.logComment(REFER_AND_EARN_SUB_MENU_BUTTON+" :- sub menu element is enabled");
+            }else {
+                Logger.logError(REFER_AND_EARN_SUB_MENU_BUTTON+" :- sub menu element is not enabled");
+            }if (isUserSignedIn()){
+                if (isElementDisplayedById(LOGOUT_BUTTON)){
+                    Logger.logComment(LOGOUT_BUTTON+" :- sub menu element id is displayed");
+                }else {
+                    Logger.logError(LOGOUT_BUTTON+" :- sub menu element id is not displayed");
+                }
+            }else {
+                Logger.logComment("User is not signed in. So no logout button is displayed in the sub menu screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to check all the sub menu options are displayed");
+        }
+    }
+
+    /**
+     * Tap on profile edit icon
+     * @throws Exception
+     */
+    @Override
+    public void tapOnProfileEditIcon() throws Exception{
+        Logger.logAction("Tapping on profile edit icon");
+        try{
+            if (isElementDisplayedByName(PROFILE_EDIT_ICON)){
+                driver.findElementByName(PROFILE_EDIT_ICON).click();
+                Logger.logComment("Tapped on profile edit button");
+            }else {
+                Logger.logError(PROFILE_EDIT_ICON+" ;- element name is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error:- Unable to tap on profile edit icon");
+        }
+    }
+
 }

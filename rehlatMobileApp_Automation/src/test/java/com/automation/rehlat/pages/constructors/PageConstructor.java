@@ -13,6 +13,8 @@ import com.automation.rehlat.pages.flightsSimilarOptionsSearchResults.FlightsSim
 import com.automation.rehlat.pages.flightsSimilarOptionsSearchResults.FlightsSimilarOptionsSearchResultsIos;
 import com.automation.rehlat.pages.menu.MenuAndroid;
 import com.automation.rehlat.pages.menu.MenuIos;
+import com.automation.rehlat.pages.myProfile.MyProfileAndroid;
+import com.automation.rehlat.pages.myProfile.MyProfileIos;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsAndroid;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsIos;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingAndroid;
@@ -125,6 +127,15 @@ public class PageConstructor {
                 }else{
                     BasePage.PaymentOptionsScreen = new PaymentOptionsIos();
                     BaseTest.PaymentOptionsScreen = new PaymentOptionsIos();
+                }
+                break;
+            case "myProfileScreen":
+                if (platform.equals(Labels.ANDROID)){
+                    BasePage.MyProfileScreen = new MyProfileAndroid();
+                    BaseTest.MyProfileScreen = new MyProfileAndroid();
+                }else{
+                    BasePage.MyProfileScreen = new MyProfileIos();
+                    BaseTest.MyProfileScreen = new MyProfileIos();
                 }
                 break;
             default:

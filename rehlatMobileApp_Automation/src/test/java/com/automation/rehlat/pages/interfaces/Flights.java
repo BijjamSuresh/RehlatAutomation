@@ -7,6 +7,12 @@ public interface Flights {
     boolean isSelectLanguageModalIsDisplayed() throws Exception;
 
     /**
+     * Get the position of current active user location country name
+     * @return
+     */
+    String getTheLastPositionCountryNameInSelectCountryLayout();
+
+    /**
      * Check the flights tab is displayed
      * @throws Exception
      */

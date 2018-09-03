@@ -578,7 +578,8 @@ public class BookingPageIos extends BookingPageBase {
             if (isElementDisplayedById(APPLY_COUPON_CODE_BUTTON)){
                 driver.findElement(By.id(APPLY_COUPON_CODE_BUTTON)).click();
                 Logger.logComment("Tapped on apply coupon code button");
-                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(APPLY_COUPON_CODE_BUTTON)));
+                waitForAnElementToDisappear_ById(APPLY_COUPON_CODE_BUTTON);
+//                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(APPLY_COUPON_CODE_BUTTON)));
             }else {
                 Logger.logError(APPLY_COUPON_CODE_BUTTON+" - element name is not displayed in the current active screen");
             }

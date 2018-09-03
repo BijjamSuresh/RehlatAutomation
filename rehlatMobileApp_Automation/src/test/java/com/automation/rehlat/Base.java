@@ -186,7 +186,6 @@ public class Base {
     public static boolean elementExists(String elementLocator, int seconds) {
         long timeToWait = (seconds == 0) ? 1 : (seconds * Labels.TAP_DURATION_MIN);
         boolean found;
-
         try {
             driverWait.withTimeout(timeToWait, TimeUnit.MILLISECONDS).until(ExpectedConditions.elementToBeClickable(driver.findElementByName(elementLocator)));
             Logger.logAction(elementLocator + " Found!");
@@ -1904,10 +1903,9 @@ public class Base {
     /**
      * Re install the app as part of the execution
      */
-    public static void reInstallIosApp() {
-        uninstallIosApp();
-        installIosApp();
-        launchApp();
+    public static void reInstallApp() {
+        unInstallApp();
+        installApp();
     }
 
     /**
@@ -1934,7 +1932,7 @@ public class Base {
         if (platform.equals(Labels.ANDROID)){
             Logger.logWarning("Yet to implement this method in Andorid");
         }else if (platform.equals(Labels.IOS)){
-            reInstallIosApp();
+            reInstallApp();
         }else {
             Logger.logError("unable to check the app installation");
         }
@@ -1963,6 +1961,50 @@ public class Base {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to clear the keys using keycode process");
+        }
+    }
+
+    /**
+     * Wait till the element (name) is invisible
+     * @throws Exception
+     */
+    public static void waitForAnElementToDisappear_ByName(String parsingName) throws Exception{
+        int count =0;
+        while (count < Labels.MIN_ATTEMPTS){
+            try{
+                if (isElementDisplayedByName(parsingName)){
+                    Logger.logStep("Waiting till the "+parsingName+" is invisible in the current active screen");
+                    driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.name(parsingName)));
+                }else {
+                    Logger.logComment(parsingName+" is not displayed in the current active screen");
+                }
+            }catch (Exception exception){
+                Thread.sleep(Labels.WAIT_TIME_MIN);
+                Logger.logComment(count+" :- time trying to find the element name");
+            }
+            count++;
+        }
+    }
+
+    /**
+     * Wait till the element (id) is invisible
+     * @throws Exception
+     */
+    public static void waitForAnElementToDisappear_ById(String parsingId) throws Exception{
+        int count =0;
+        while (count<Labels.MIN_ATTEMPTS){
+            try{
+                if (isElementDisplayedById(parsingId)){
+                    Logger.logStep("Waiting till the "+parsingId+" is invisible in the current active screen");
+                    driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(parsingId)));
+                }else {
+                    Logger.logComment(parsingId+" is not displayed in the current active screen");
+                }
+            }catch (Exception exception){
+                Thread.sleep(Labels.WAIT_TIME_MIN);
+                Logger.logComment(count+" :- time trying to find the element name");
+            }
+            count++;
         }
     }
 

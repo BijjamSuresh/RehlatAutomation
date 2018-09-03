@@ -6,14 +6,14 @@ import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.tests.BaseTest;
 import org.junit.Test;
 
-public class RLTC_1 extends BaseTest {
+public class RLTC_5 extends BaseTest {
     @Test
-    // Implementation is not yet finished. Will do once all the workflows are cleared
-    public void testRLTC_1() throws Exception {
-        Logger.beginTest("Verify that application is installed successfully");
+    public void  testRLTC_4() throws Exception{
+        Logger.beginTest("Verify user location access is denied after tapping on deny button");
         reInstallApp();
         General.launchApp();
-        Logger.endTest("Verify that application is installed successfully");
+        General.declineTheLocationAccessAlert();
+        Logger.endTest("Verify user location access is denied after tapping on deny button");
         acceptAutoAlertsIfDisplayed();
         FlightsScreen.selectCountryNameInSelectLanguageModal(Labels.KUWAIT_LANGUAGE_COUNTRY_LABEL);
     }

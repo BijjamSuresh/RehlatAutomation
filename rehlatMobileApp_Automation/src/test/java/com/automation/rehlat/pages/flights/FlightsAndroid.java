@@ -38,6 +38,7 @@ public class FlightsAndroid extends FlightsBase{
     public static final String OTHER_COUNTRY_OPTION ="Other";
     public static final String DONE_BUTTON_IN_CALENDAR_VIEW = "com.app.rehlat:id/closeCalImageView";
     public static final String SEARCH_BUTTON_IN_FLIGHTS_TAB = "com.app.rehlat:id/flightSearchTextView";
+    public static final String XPATH_OF_SELECT_COUNTRY_SHEET = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElementTypeTable";
 
     /**
      * Check select language modal is displayed
@@ -58,6 +59,27 @@ public class FlightsAndroid extends FlightsBase{
         return false;
     }
 
+    /**
+     * Get the position of current active user location country name
+     * @return
+     */
+    @Override
+    public String getTheLastPositionCountryNameInSelectCountryLayout(){
+        Logger.logAction("Getting the position of current active user location country name");
+        try{
+            if (isElementDisplayedByXPath(XPATH_OF_SELECT_COUNTRY_SHEET)){
+                WebElement selectCountrySheet = driver.findElementByXPath(XPATH_OF_SELECT_COUNTRY_SHEET);
+                List<WebElement> listOfCountries = selectCountrySheet.findElements(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_CELL));
+                String nameOfTheLastLabel = listOfCountries.get(listOfCountries.size()-1).findElement(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_STATIC_TEXT)).getAttribute(Labels.VALUE_ATTRIBUTE);
+                if (nameOfTheLastLabel.equalsIgnoreCase(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)){
+                    return nameOfTheLastLabel;
+                }
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the position of India country Name");
+        }
+        return null;
+    }
     /**
      * Check the flights tab is displayed
      */
