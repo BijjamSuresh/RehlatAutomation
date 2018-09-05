@@ -2,6 +2,7 @@ package com.automation.rehlat.pages.paymentOptions;
 
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
+import com.automation.rehlat.tests.BaseTest;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -38,7 +39,8 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
     public static final String XPATH_OF_PASSWORD_FIELD_IN_3D_SECURE_DEBIT_OR_CREDIT_PAYMENT_SCREEN = "//XCUIElementTypeOther[@name=\"Checkout 3D Simulator\"]/XCUIElementTypeOther[5]/XCUIElementTypeSecureTextField";
     public static final String CONTINUE_BUTTON_IN_3D_SECURE_CREDIT_OR_DEBIT_CHECK_OUT_PAYMENT_SCREEN = "Continue";
     public static final String XPATH_OF_FINAL_PAYMENT_CELL_IN_PAYMENT_OPTIONS_SCREEN = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]";
-
+    public static final String TICKET_SOLD_OUT_POPUP = "Ticket had been Sold out";
+    public static final String OK_BUTTON = "OK";
 
     /**
      * Check the payment options screen is displayed
@@ -117,6 +119,47 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to compare the final payment price in payment list screen with the price dispalyed in review booking screen");
+        }
+    }
+
+    /**
+     * Checking the ticket sold out popup is displayed
+     * @return
+     */
+    @Override
+    public boolean isTicketSoldOutPopUpIsDisplayed() {
+        Logger.logAction("Checking the ticket sold out popup is displayed or not ?");
+        try{
+            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
+            if (isElementDisplayedByName(TICKET_SOLD_OUT_POPUP)){
+                BaseTest.takeScreenshotAndSaveInSoldOutsFolder();
+                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is displayed in the current active screen");
+                return true;
+            }else {
+                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is not displayed in the current active screen");
+                return false;
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to check the popup is displayed or not");
+        }
+        return false;
+    }
+
+    /**
+     * Tap on ok button in ticket sold out popup
+     */
+    @Override
+    public void tapOnOkButtonInTicketSoldOutPopup() {
+        Logger.logAction("Tapping on "+OK_BUTTON+ " button");
+        try {
+            if (isElementDisplayedByName(OK_BUTTON)){
+                driver.findElementByName(OK_BUTTON).click();
+                Logger.logComment("Tapped on ok button in the ticket sold out popup");
+            }else {
+                Logger.logError(" - button name is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on OK button in ticket sold out popup");
         }
     }
 
@@ -578,6 +621,7 @@ public class PaymentOptionsIos extends PaymentOptionsBase {
     public void enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment() {
             Logger.logAction("Tapping on pay securely check out button");
             try {
+                waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
                 waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
                 if (isElementDisplayedByXPath(XPATH_OF_PASSWORD_FIELD_IN_3D_SECURE_DEBIT_OR_CREDIT_PAYMENT_SCREEN)){
                     driver.findElementByXPath(XPATH_OF_PASSWORD_FIELD_IN_3D_SECURE_DEBIT_OR_CREDIT_PAYMENT_SCREEN).sendKeys(Labels.PASSWORD_OF_3D_SECURE_DEBIT_OR_CREDIT_PAYMENT);

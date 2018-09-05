@@ -13,4 +13,12 @@ public interface MyProfile {
      * @throws Exception
      */
     void getTheKaramPointsDisplayedInKaramPointsAndTripsLayout() throws Exception;
+
+    /**
+     * Get the trips information displayed in the karam and trips layout
+     * @throws Exception
+     */
+    void getTheTripsCountDisplayedInKaramPointsAndTripsLayout() throws Exception;
+
+
 }

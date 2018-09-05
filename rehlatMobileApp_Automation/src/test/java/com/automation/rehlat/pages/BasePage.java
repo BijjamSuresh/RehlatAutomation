@@ -10,8 +10,11 @@ import com.automation.rehlat.pages.flightsSearchResults.FlightsSearchResultsBase
 import com.automation.rehlat.pages.flightsSimilarOptionsSearchResults.FlightsSimilarOptionsSearchResultsBase;
 import com.automation.rehlat.pages.menu.MenuBase;
 import com.automation.rehlat.pages.myProfile.MyProfileBase;
+import com.automation.rehlat.pages.myTrips.MyTripsBase;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsBase;
+import com.automation.rehlat.pages.referYourFriends.ReferYourFriendsBase;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingBase;
+import com.automation.rehlat.pages.settings.SettingsBase;
 import com.automation.rehlat.pages.signIn.SignInBase;
 import com.automation.rehlat.pages.signIn.SignInIos;
 import com.automation.rehlat.pages.signUp.SignUpBase;
@@ -37,6 +40,11 @@ public class BasePage extends Base {
     public static TravellerDetailsBase TravellerDetailsScreen;
     public static PaymentOptionsBase PaymentOptionsScreen;
     public static MyProfileBase MyProfileScreen;
+    public static ReferYourFriendsBase ReferYourFriendsScreen;
+    public static MyTripsBase MyTripsScreen;
+    public static SettingsBase SettingsScreen;
+
+
 
 
 
@@ -190,8 +198,8 @@ public class BasePage extends Base {
      * @throws Exception
      */
     public static void waitTillTheProgressIndicatorIsInvisibleById_ANDROID( String parsingID) throws Exception{
-        int count =0;
-        while (count<=Labels.MIN_ATTEMPTS){
+        int count =1;
+        while (count<Labels.MIN_ATTEMPTS){
             try{
                 if (isElementDisplayedById(parsingID)){
                     Logger.logStep("Waiting till the activity indicator is invisible in the current active screen");

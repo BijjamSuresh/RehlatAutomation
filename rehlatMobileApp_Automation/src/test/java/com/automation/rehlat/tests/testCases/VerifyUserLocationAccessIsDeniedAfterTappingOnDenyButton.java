@@ -6,14 +6,14 @@ import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.tests.BaseTest;
 import org.junit.Test;
 
-public class RLTC_2 extends BaseTest {
+public class VerifyUserLocationAccessIsDeniedAfterTappingOnDenyButton extends BaseTest {
     @Test
-    public void  testRLTC_2() throws Exception{
-        Logger.beginTest("Verify that splash screen is displayed on launch");
-        General.reInstallApp();
+    public void  testRLTC_4() throws Exception{
+        Logger.beginTest("Verify user location access is denied after tapping on deny button");
+        reInstallApp();
         General.launchApp();
-        checkAndWaitTillTheSplashScreenIsInvisible();
-        Logger.endTest("Verify that splash screen is displayed on launch");
+        General.declineTheLocationAccessAlert();
+        Logger.endTest("Verify user location access is denied after tapping on deny button");
         acceptAutoAlertsIfDisplayed();
         FlightsScreen.selectCountryNameInSelectLanguageModal(Labels.KUWAIT_LANGUAGE_COUNTRY_LABEL);
     }

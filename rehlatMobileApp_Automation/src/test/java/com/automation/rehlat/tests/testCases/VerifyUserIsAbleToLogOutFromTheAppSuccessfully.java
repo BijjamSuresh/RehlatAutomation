@@ -5,27 +5,26 @@ import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.tests.BaseTest;
 import org.junit.Test;
 
-public class RLTC_10 extends BaseTest {
+public class VerifyUserIsAbleToLogOutFromTheAppSuccessfully extends BaseTest {
     @Test
-    public void testRLTC_8() throws Exception{
-        Logger.beginTest("Verify karam points are displayed in My profile screen");
-        FlightsScreen.selectCountryNameInSelectLanguageModal(Labels.KUWAIT_LANGUAGE_COUNTRY_LABEL);
+    public void testRLTC_31() throws Exception{
+        Logger.beginTest("Verify user is able to logout from the app successfully");
         FlightsScreen.checkFlightsTabIsDisplayed();
         FlightsScreen.tapOnMenuButton();
         MenuScreen.checkMenuScreenIsDisplayed();
-        if (!MenuScreen.isUserSignedIn()){
+        if (MenuScreen.isUserSignedIn()){
             MenuScreen.tapOnSignUpOrSignInButton();
+            SignInScreen.declineTheTouchIdAccessSetUpPopupIfDisplayed();
             SignInScreen.checkSignInScreenIsDisplayed();
             SignInScreen.enterLoginCredentials();
             SignInScreen.tapOnLoginButton();
             FlightsScreen.checkFlightsTabIsDisplayed();
             FlightsScreen.tapOnMenuButton();
             MenuScreen.checkMenuScreenIsDisplayed();
+            MenuScreen.checkUserIsSignedUpSignedInWithCorrectParsingCredentials(Labels.EMAIL_ID_SIGN_IN);
         }
-        MenuScreen.checkUserIsSignedUpSignedInWithCorrectParsingCredentials(Labels.EMAIL_ID_SIGN_IN);
-        MenuScreen.tapOnProfileEditIcon();
-        MyProfileScreen.checkMyProfileScreenIsDisplayed();
-        MyProfileScreen.getTheKaramPointsDisplayedInKaramPointsAndTripsLayout();
-        Logger.endTest("Verify karam points are displayed in My profile screen");
+        MenuScreen.tapOnLogoutButton();
+        Logger.endTest("Verify user is able to logout from the app successfully");
+
     }
 }

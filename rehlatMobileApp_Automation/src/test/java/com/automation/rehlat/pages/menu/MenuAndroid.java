@@ -7,23 +7,28 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
+import static com.automation.rehlat.pages.menu.MenuIos.REFER_AND_EARN_SUB_MENU_ICON;
+
 public class MenuAndroid extends MenuBase {
 
     public static final String NAVIGATION_MENU_VIEW = "com.app.rehlat:id/nav_view";
     public static final String SIGNED_IN_EMAIL_ID_IN_MENU_SCREEN = "com.app.rehlat:id/userEmailAddress";
     public static final String SETTINGS_OPTION = "com.app.rehlat:id/sidemenu_settingllyt";
     public static final String LANGUAGE_ICON = "language_icon";
-    public static final String TRIPS_OPTION = "Trips";
+    public static final String TRIPS_OPTION = "My Trips";
     public static final String SIGN_IN_OR_SIGN_UP_BUTTON = "com.app.rehlat:id/menu_signup";
     public static final String FULL_SCREEN_LAYOUT = "com.app.rehlat:id/drawer_layout";
     public static final String LOGOUT_BUTTON = "com.app.rehlat:id/logoutLayout";
     public static final String SCROLL_VIEW_IN_MENU_SCREEN = "android.widget.ScrollView";
     public static final String TWENTY_FOUR_BAR_SEVEN_SUPPORT_LABEL = "com.app.rehlat:id/sidemenu_supportllyt";
-    public static final String REFER_AND_EARN_SUB_MENU_BUTTON = "Refer & Earn";
-    public static final String PROFILE_EDIT_ICON = "profile edit icon";
+    public static final String REFER_AND_EARN_SUB_MENU_BUTTON = "com.app.rehlat:id/sidemenu_referllyt";
+    public static final String PRIVACY_POLICY_OPTION = "com.app.rehlat:id/sidemenu_referllyt";
+    public static final String PROFILE_EDIT_ICON = "com.app.rehlat:id/edit_button";
     public static final String XPATH_OF_SETTINGS_SCREEN_TITTLE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.TextView";
-    public static final String[] listOfSubMenuOptions= {"Sign In/Sign Up","Trips","Rehlat 24X 7 Support","Arabic","Settings","Privacy Policy"};
-
+    public static final String[] listOfSubMenuOptions= {"com.app.rehlat:id/menu_signup","com.app.rehlat:id/sidemenu_referllyt","com.app.rehlat:id/sidemenu_inspllyt","com.app.rehlat:id/sidemenu_dealsllyt","com.app.rehlat:id/sidemenu_supportllyt","com.app.rehlat:id/sidemenu_langllyt"};
+    public static final String LANGUAGE_TITLE = "com.app.rehlat:id/lang_title";
+    public static final String LANGUAGE_TYPE = "com.app.rehlat:id/lang_type";
+    public static final String MAIN_TAB_BAR = "com.app.rehlat:id/types_tab";
 
     /**
      * Check menu screen is displayed
@@ -137,17 +142,17 @@ public class MenuAndroid extends MenuBase {
      */
     @Override
     public void tapOnSettingsButton() {
-        Logger.logAction("Tapping on settings button");
+        Logger.logAction("Tapping on Settings button");
         try {
 //            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){
                 if (isElementDisplayedById(SETTINGS_OPTION)){
                     driver.findElementById(SETTINGS_OPTION).click();
-                    Logger.logComment("Tapped on settings button");
+                    Logger.logComment("Tapped on Settings button");
                 }else {
                     scrollTheMenuViewUp(SCROLL_VIEW_IN_MENU_SCREEN);
                     if (isElementDisplayedById(SETTINGS_OPTION)) {
                         driver.findElementById(SETTINGS_OPTION).click();
-                        Logger.logComment("Tapped on settings button");
+                        Logger.logComment("Tapped on Settings button");
                     }else {
                         Logger.logError(SETTINGS_OPTION+" :- element name is not displayed in the current active screen");
                     }
@@ -185,11 +190,11 @@ public class MenuAndroid extends MenuBase {
     }
 
     /**
-     * Checking the settings screen is displayed or not ?
+     * Checking the Settings screen is displayed or not ?
      * @return
      */
     public static boolean isSettingsScreenIsDisplayed() {
-        Logger.logAction("Checking the settings screen is displayed");
+        Logger.logAction("Checking the Settings screen is displayed");
         String valueOfSettingsScreenTitle;
         try{
             waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
@@ -235,24 +240,32 @@ public class MenuAndroid extends MenuBase {
         try{
             for (int count = 0 ; count<= listOfSubMenuOptions.length;count++){
                 String elementName = listOfSubMenuOptions[count];
-                if (isElementDisplayedByName(elementName)){
-                    Logger.logComment(elementName+" :- sub menu element is displayed");
+                if (isElementEnabledById(elementName)){
+                    Logger.logComment(elementName+" :- sub menu element is enabled");
                 }else {
-                    Logger.logError(elementName+" sub menu element is not displayed");
+                    Logger.logError(elementName+" sub menu element is not enabled");
                 }
-            }if (isElementEnabledByName(REFER_AND_EARN_SUB_MENU_BUTTON)){
-                Logger.logComment(REFER_AND_EARN_SUB_MENU_BUTTON+" :- sub menu element is enabled");
+            }
+            scrollTheScreenUpwards();
+            if (isElementEnabledById(PRIVACY_POLICY_OPTION)){
+                Logger.logComment(PRIVACY_POLICY_OPTION+" :- sub menu element is enabled");
             }else {
-                Logger.logError(REFER_AND_EARN_SUB_MENU_BUTTON+" :- sub menu element is not enabled");
-            }if (isUserSignedIn()){
-                if (isElementDisplayedById(LOGOUT_BUTTON)){
-                    Logger.logComment(LOGOUT_BUTTON+" :- sub menu element id is displayed");
+                Logger.logError(PRIVACY_POLICY_OPTION+" :- sub menu element is not enabled");
+            }if (isElementEnabledById(SETTINGS_OPTION)){
+                Logger.logComment(SETTINGS_OPTION+" :- sub menu element is enabled");
+            }else {
+                Logger.logError(SETTINGS_OPTION+" :- sub menu element is not enabled");
+            }
+            if (isUserSignedIn()){
+                if (isElementEnabledById(LOGOUT_BUTTON)){
+                    Logger.logComment(LOGOUT_BUTTON+" :- sub menu element id is enabled");
                 }else {
-                    Logger.logError(LOGOUT_BUTTON+" :- sub menu element id is not displayed");
+                    Logger.logError(LOGOUT_BUTTON+" :- sub menu element id is not enabled");
                 }
             }else {
                 Logger.logComment("User is not signed in. So no logout button is displayed in the sub menu screen");
             }
+            scrollTheScreenDownwards();// This method is to set the menu bar in default state
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check all the sub menu options are displayed");
         }
@@ -266,8 +279,8 @@ public class MenuAndroid extends MenuBase {
     public void tapOnProfileEditIcon() throws Exception{
         Logger.logAction("Tapping on profile edit icon");
         try{
-            if (isElementDisplayedByName(PROFILE_EDIT_ICON)){
-                driver.findElementByName(PROFILE_EDIT_ICON).click();
+            if (isElementDisplayedById(PROFILE_EDIT_ICON)){
+                driver.findElementById(PROFILE_EDIT_ICON).click();
                 Logger.logComment("Tapped on profile edit button");
             }else {
                 Logger.logError(PROFILE_EDIT_ICON+" ;- element name is not displayed in the current active screen");
@@ -276,5 +289,98 @@ public class MenuAndroid extends MenuBase {
             Logger.logError("Encountered error:- Unable to tap on profile edit icon");
         }
     }
+
+    /**
+     * Tap on Refer and earn icon in the menu screen
+     */
+    @Override
+    public void tapOnReferAndEarnIcon(){
+        Logger.logAction("Tapping on refer and earn icon in the menu screen");
+        try{
+            if (isElementEnabledById(REFER_AND_EARN_SUB_MENU_ICON)){
+                Logger.logComment(REFER_AND_EARN_SUB_MENU_ICON+" :- sub menu element is enabled");
+                driver.findElementById(REFER_AND_EARN_SUB_MENU_ICON).click();
+                Logger.logStep("Tapped on refer and earn button");
+            }else {
+                Logger.logError(REFER_AND_EARN_SUB_MENU_ICON+" :- sub menu element is not enabled");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on refer and earn icon");
+        }
+    }
+
+    /**
+     * Tap on trips sub menu option
+     */
+    @Override
+    public void tapOnMyTripsSubMenuButton(){
+        Logger.logAction("Tapping on My Trips option in menu list");
+        try{
+            //Todo: This method need to be rechecked after implementation of new UI in iOS because MyTrips is displaying in menu screen in iOS and in main tab bar in Android app
+            MenuScreen.navigateToFlightsTab();
+            FlightsScreen.checkFlightsTabIsDisplayed();
+            if (isElementEnabledById(MAIN_TAB_BAR)){
+                List<WebElement> listOfTabs = driver.findElementById(MAIN_TAB_BAR).findElements(By.id(Labels.ANDROID_TEXT_VIEW));
+                String tripsTabName = listOfTabs.get(3).getText();
+                if (tripsTabName.equalsIgnoreCase(TRIPS_OPTION)){
+                    listOfTabs.get(3).click();
+                    Logger.logStep("Tapped on trips option");
+                }else {
+                    Logger.logError("Trips option is not displayed");
+            }
+            }else {
+                Logger.logError("Tab bar is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on my trips sub menu button");
+        }
+    }
+
+    /**
+     * Tap on Arabic option in sub menu button
+     */
+    @Override
+    public void tapOnArabicInSubMenuButton(){
+        Logger.logAction("Tapping on Arabic option in menu list");
+        try{
+            if (isElementEnabledById(LANGUAGE_TITLE)){
+                WebElement languageTitle = driver.findElementById(LANGUAGE_TITLE);
+                String languageTitleName = languageTitle.getText();
+                if (languageTitleName.equalsIgnoreCase(Labels.ARABIC_LANGUAGE)){
+                    Logger.logComment(Labels.ARABIC_LANGUAGE+" :- sub menu element is displayed");
+                    languageTitle.click();
+                    Logger.logStep("Arabic option is tapped");
+                }
+            }else {
+                Logger.logError(Labels.ARABIC_LANGUAGE+" sub menu element is not displayed");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on my trips sub menu button");
+        }
+    }
+
+    /**
+     * Tap on English option in sub menu button
+     */
+    @Override
+    public void tapOnEnglishInSubMenuButton(){
+        Logger.logAction("Tapping on Arabic option in menu list");
+        try{
+            if (isElementEnabledById(LANGUAGE_TYPE)){
+                WebElement languageTitle = driver.findElementById(LANGUAGE_TYPE);
+                String languageTitleName = languageTitle.getText();
+                if (languageTitleName.equalsIgnoreCase(Labels.ENGLISH_LANGUAGE)){
+                    Logger.logComment(Labels.ENGLISH_LANGUAGE+" :- sub menu element is displayed");
+                    languageTitle.click();
+                    Logger.logStep("English option is tapped");
+                }
+            }else {
+                Logger.logError(Labels.ENGLISH_LANGUAGE+" sub menu element is not displayed");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on my trips sub menu button");
+        }
+    }
+
 
 }

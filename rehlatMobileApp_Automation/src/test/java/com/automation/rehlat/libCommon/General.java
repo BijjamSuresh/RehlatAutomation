@@ -85,7 +85,7 @@ public class General extends Base {
         if (platform.equalsIgnoreCase(Labels.IOS)){
             try {
                 if (isAppInstalled(IOS_BUNDLE_ID)){
-                    Logger.logComment("App is installed going to un-install the app");
+                    Logger.logComment("App is installed, going to un-install the app");
                     driver.removeApp(IOS_BUNDLE_ID);
                     Logger.logComment("App is uninstalled");
                 }else {
@@ -97,7 +97,7 @@ public class General extends Base {
         }else if (platform.equalsIgnoreCase(Labels.ANDROID)) {
             try {
                 if (isAppInstalled(IOS_BUNDLE_ID)){
-                    Logger.logComment("App is installed going to un-install the app");
+                    Logger.logComment("App is installed, going to un-install the app");
                     driver.removeApp(Labels.ANDROID_CAPABILITIES_PACKAGE_NAME);
                     Logger.logComment("App is uninstalled");
                 }else {
@@ -120,7 +120,7 @@ public class General extends Base {
             if (platform.equalsIgnoreCase(Labels.IOS)){
                 try {
                     if (!isAppInstalled(IOS_BUNDLE_ID)){
-                        Logger.logComment("App is not installed going to install the app");
+                        Logger.logComment("App is not installed, going to install the app");
                         driver.installApp(FULL_PATH_OF_IOS_APP);
                         Logger.logComment("App is installed");
                     }else {
@@ -132,7 +132,7 @@ public class General extends Base {
             }else if (platform.equalsIgnoreCase(Labels.ANDROID)) {
                 try {
                     if (!isAppInstalled(IOS_BUNDLE_ID)){
-                        Logger.logComment("App is not installed going to install the app");
+                        Logger.logComment("App is not installed, going to install the app");
                         driver.installApp(FULL_PATH_OF_ANDROID_APP);
                         Logger.logComment("App is installed");
                     }else {

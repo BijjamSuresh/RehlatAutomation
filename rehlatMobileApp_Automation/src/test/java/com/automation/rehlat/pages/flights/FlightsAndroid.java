@@ -38,7 +38,12 @@ public class FlightsAndroid extends FlightsBase{
     public static final String OTHER_COUNTRY_OPTION ="Other";
     public static final String DONE_BUTTON_IN_CALENDAR_VIEW = "com.app.rehlat:id/closeCalImageView";
     public static final String SEARCH_BUTTON_IN_FLIGHTS_TAB = "com.app.rehlat:id/flightSearchTextView";
-    public static final String XPATH_OF_SELECT_COUNTRY_SHEET = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeOther/XCUIElementTypeTable";
+    public static final String ONE_WAY_IN_ARABIC_LANGUAGE = "رحلة الذهاب";
+    public static final String ONE_WAY_IN_ENGLISH_LANGUAGE = "One way";
+    public static final String ONE_WAY_SEGMENT_CONTROL_BUTTON = "com.app.rehlat:id/oneway_rb";
+    public static final String[] listOfElementsInFlightsTab = {"com.app.rehlat:id/oneway_rb","com.app.rehlat:id/roundtrip_rb","com.app.rehlat:id/fromCity","com.app.rehlat:id/toCity","com.app.rehlat:id/departureLayout","com.app.rehlat:id/returnJourneyLayout","com.app.rehlat:id/pax_search_icon","com.app.rehlat:id/travellers_class_type","com.app.rehlat:id/flightSearchTextView"};
+    public static final String SWAP_BUTTON = "com.app.rehlat:id/journeyIndicationImageView";
+    public static final String PASSENGER_ICON = "com.app.rehlat:id/pax_search_icon";
 
     /**
      * Check select language modal is displayed
@@ -67,11 +72,11 @@ public class FlightsAndroid extends FlightsBase{
     public String getTheLastPositionCountryNameInSelectCountryLayout(){
         Logger.logAction("Getting the position of current active user location country name");
         try{
-            if (isElementDisplayedByXPath(XPATH_OF_SELECT_COUNTRY_SHEET)){
-                WebElement selectCountrySheet = driver.findElementByXPath(XPATH_OF_SELECT_COUNTRY_SHEET);
-                List<WebElement> listOfCountries = selectCountrySheet.findElements(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_CELL));
-                String nameOfTheLastLabel = listOfCountries.get(listOfCountries.size()-1).findElement(By.className(Labels.IOS_XCUI_ELEMENT_TYPE_STATIC_TEXT)).getAttribute(Labels.VALUE_ATTRIBUTE);
-                if (nameOfTheLastLabel.equalsIgnoreCase(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)){
+            if (isElementDisplayedByXPath(DOMAIN_LIST_VIEW)){
+                WebElement selectCountrySheet = driver.findElementByXPath(DOMAIN_LIST_VIEW);
+                List<WebElement> listOfCountries = selectCountrySheet.findElements(By.className(TEXT_VIEW));
+                String nameOfTheLastLabel = listOfCountries.get(listOfCountries.size()-1).getAttribute(Labels.VALUE_ATTRIBUTE);
+                if (nameOfTheLastLabel.equalsIgnoreCase(Labels.INDIA_LANGUAGE_COUNTRY_LABEL) || nameOfTheLastLabel.equalsIgnoreCase(Labels.OTHERS_COUNTRY_LABEL)){
                     return nameOfTheLastLabel;
                 }
             }
@@ -124,38 +129,40 @@ public class FlightsAndroid extends FlightsBase{
         Logger.logAction("selecting the country of user");
         try{
             if (isElementDisplayedById(DOMAIN_LIST_VIEW)) {
-                WebElement displayedCountriesListView = driver.findElement(By.id(DOMAIN_LIST_VIEW));
+                WebElement displayedCountriesListView = driver.findElementById(DOMAIN_LIST_VIEW);
                 if (userCountryName.equals(Labels.INDIA_LANGUAGE_COUNTRY_LABEL)) {
                     List<WebElement> displayedCountriesList = displayedCountriesListView.findElements(By.className(TEXT_VIEW));
                     for (int index = 0; index <= displayedCountriesList.size(); index++) {
                         WebElement countryNameTextView = displayedCountriesList.get(index);
                         String countryNameLabel = countryNameTextView.getText();
-                        if (countryNameLabel.equals(userCountryName) || countryNameLabel.equals(OTHER_COUNTRY_OPTION)) {
+                        if (countryNameLabel.equalsIgnoreCase(userCountryName) || countryNameLabel.equalsIgnoreCase(OTHER_COUNTRY_OPTION)) {
                             Logger.logComment("Tapping on element - " + userCountryName);
                             index = index + 1;
                             driver.findElement(By.xpath(XPATH_OF_COUNTRY_NAME + index + "]")).click();
+                            Logger.logStep("Tapped on element - "+userCountryName);
                             break;
                         } else {
-                            Logger.logComment(userCountryName + " and " + countryNameLabel + " is not matching");
+                            continue;
                         }
                     }
-                } else if (isElementDisplayedById(userCountryName)) {
+                } else {
                     List<WebElement> displayedCountriesList = displayedCountriesListView.findElements(By.className(TEXT_VIEW));
                     for (int index = 0; index <= displayedCountriesList.size(); index++) {
                         WebElement countryNameTextView = displayedCountriesList.get(index);
                         String countryNameLabel = countryNameTextView.getText();
-                        if (countryNameLabel.equals(userCountryName)) {
+                        if (countryNameLabel.equalsIgnoreCase(userCountryName)) {
                             Logger.logComment("Tapping on element - " + userCountryName);
                             index = index + 1;
                             driver.findElement(By.xpath(XPATH_OF_COUNTRY_NAME + index + "]")).click();
+                            Logger.logStep("Tapped on element - "+userCountryName);
                             break;
                         } else {
-                            Logger.logComment(userCountryName + " and " + countryNameLabel + " is not matching");
+                            continue;
                         }
                     }
-                } else {
-                    Logger.logError(DOMAIN_LIST_VIEW + " - element name is not displayed in the current active screen");
                 }
+            }else {
+                Logger.logError(DOMAIN_LIST_VIEW+" - element name is not displayed in the current active screen");
             }
         }catch (Exception exception){
             Logger.logError("Error in selecting the user country from select country modal");
@@ -320,7 +327,7 @@ public class FlightsAndroid extends FlightsBase{
      * Tap on Departure button in flights tab
      */
     @Override
-    public void tapOnDepartureButton() {
+    public void tapOnDepartureDateBookingButton() {
         Logger.logAction("Tapping on departure button");
         try{
             if (isElementDisplayedById(DEPARTURE_BUTTON)){
@@ -594,6 +601,170 @@ public class FlightsAndroid extends FlightsBase{
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to tap on search button in flights tab");
+        }
+    }
+
+    /**
+     * Check the app localization in flights tab
+     * @return
+     */
+    @Override
+    public String checkAppLocalizationInFlightsTab(){
+        Logger.logAction("Check the app localization in flights tab");
+        try {
+            if (isElementDisplayedById(ONE_WAY_SEGMENT_CONTROL_BUTTON)){
+                String oneWayButtonLanguageInFlightsTab = driver.findElementById(ONE_WAY_SEGMENT_CONTROL_BUTTON).getText();
+                if (oneWayButtonLanguageInFlightsTab.equalsIgnoreCase(ONE_WAY_IN_ENGLISH_LANGUAGE)){
+                    return Labels.ENGLISH_LANGUAGE;
+                }else if (oneWayButtonLanguageInFlightsTab.equalsIgnoreCase(ONE_WAY_IN_ARABIC_LANGUAGE)){
+                    return Labels.ARABIC_LANGUAGE;
+                }
+            }else {
+                Logger.logError("The localization displayed in the app is neither English nor Arabic");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error:- Unable to check the flights tab localization");
+        }
+        return null;
+    }
+
+    /**
+     * Check all the fields are visible in flights tab
+     */
+    @Override
+    public void checkAllTheFieldsAreVisibleInFlightsTab(){
+        Logger.logAction("Verify all the fields are visible in flights tab");
+        try {
+            for (int index=0;index<=listOfElementsInFlightsTab.length-1;index++){
+                String elementName = listOfElementsInFlightsTab[index];
+                if (isElementEnabledById(elementName)){
+                    Logger.logComment(elementName+" :- element is enabled in the flight tabs screen");
+                }else {
+                    Logger.logError(elementName+" :- element is not enabled in the flight tabs screen");
+                }
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to find the fields are visible in flights tab");
+        }
+    }
+
+    /**
+     * Tap on adult plus button
+     */
+    @Override
+    public void tapOnAdultPlusButton(){
+        Logger.logAction("Tapping on adult plus button");
+        try {
+            findElementByIdAndClick(PASSENGER_ICON);
+            Logger.logComment("Tapped on passenger icon");
+            WebElement adultNumberPickerView = driver.findElementById("com.app.rehlat:id/adultNumberPicker");
+            tapOnElementBasedOnLocation(adultNumberPickerView,"bottomRight");
+            Logger.logComment("Tapped on adult plus button");
+            findElementByIdAndClick("com.app.rehlat:id/travellersLayoutPassengersDone");
+            Logger.logComment("Tapped on done button");
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on adult plus button");
+        }
+    }
+
+    /**
+     * Tap on children plus button
+     */
+    @Override
+    public void tapOnChildrenPlusButton(){
+        Logger.logAction("Tapping on adult plus button");
+        try {
+            findElementByIdAndClick(PASSENGER_ICON);
+            Logger.logComment("Tapped on passenger icon");
+            WebElement adultNumberPickerView = driver.findElementById("com.app.rehlat:id/childNumberPicker");
+            tapOnElementBasedOnLocation(adultNumberPickerView,"bottomRight");
+            Logger.logComment("Tapped on children plus button");
+            findElementByIdAndClick("com.app.rehlat:id/travellersLayoutPassengersDone");
+            Logger.logComment("Tapped on done button");
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on children plus button");
+        }
+    }
+
+    /**
+     * Tap on infants plus button
+     */
+    @Override
+    public void tapOnInfantsPlusButton(){
+        Logger.logAction("Tapping on adult plus button");
+        try {
+            findElementByIdAndClick(PASSENGER_ICON);
+            Logger.logComment("Tapped on passenger icon");
+            WebElement adultNumberPickerView = driver.findElementById("com.app.rehlat:id/infantNumberPicker");
+            tapOnElementBasedOnLocation(adultNumberPickerView,"bottomRight");
+            Logger.logComment("Tapped on infants plus button");
+            findElementByIdAndClick("com.app.rehlat:id/travellersLayoutPassengersDone");
+            Logger.logComment("Tapped on done button");
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on infants plus button");
+        }
+    }
+
+    /**
+     * Get the location of From airport name
+     * @return
+     */
+    @Override
+    public Integer[] getTheLocationOfFromAirPortName(String parsingFromFlightName){
+        Logger.logAction("Getting the location of From airport name");
+        try {
+            WebElement locationOfFromAirportName = driver.findElementById(FROM_TEXTFIELD);
+            if (parsingFromFlightName.equalsIgnoreCase(locationOfFromAirportName.getText())){
+                Point table = locationOfFromAirportName.getLocation();
+                int elementXAxisValue = table.getX();
+                int elementYAxisValue = table.getY();
+                Integer [] elementLocation = new Integer[] { elementXAxisValue,elementYAxisValue};
+                return elementLocation;
+            }else {
+                Logger.logError("From airport id is incorrect");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the location from airport name");
+        }
+        return null;
+    }
+
+    /**
+     * Get the location of To airport name
+     * @return
+     */
+    @Override
+    public Integer[] getTheLocationOfToAirPortName(String parsingToFlightName){
+        Logger.logAction("Getting the location of To airport name");
+        try {
+            WebElement locationOfToAirportName = driver.findElementById(FROM_TEXTFIELD);
+            if (parsingToFlightName.equalsIgnoreCase(locationOfToAirportName.getText())){
+                Point table = locationOfToAirportName.getLocation();
+                int elementXAxisValue = table.getX();
+                int elementYAxisValue = table.getY();
+                Integer [] elementLocation = new Integer[] { elementXAxisValue,elementYAxisValue};
+                return elementLocation;
+            }else {
+                Logger.logError("To airport id is incorrect");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the location from airport name");
+        }
+        return null;
+    }
+
+    /**
+     * Tap on swap button
+     * @return
+     */
+    @Override
+    public void tapOnSwapButton(){
+        Logger.logAction("Tapping on swap button");
+        try {
+            findElementByIdAndClick(SWAP_BUTTON);
+            Logger.logComment("Tapped on swap button");
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to get the location from airport name");
         }
     }
 }

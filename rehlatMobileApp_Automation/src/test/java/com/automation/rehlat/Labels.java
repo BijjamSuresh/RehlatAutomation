@@ -16,7 +16,7 @@ public class Labels extends Base{
         public static final String WDA_LOCAL_PORT_DEFAULT= "8001"; // For each device one unique port number
 
     ///Device Two ///
-    //    public static final String DEVICE_UDID="85108b5bd6265ecc9c4f58a8ad1cdbe1798e21ac"; // iPhone 6
+//        public static final String DEVICE_UDID="85108b5bd6265ecc9c4f58a8ad1cdbe1798e21ac"; // iPhone 6
 //        public static final String WDA_LOCAL_PORT_DEFAULT= "8005"; // This helps to run the parallel runs
 
     ////////Android ///////////
@@ -109,8 +109,8 @@ public class Labels extends Base{
                                                                                         ////////////////////  Types of devices ////////////////////
     public static final String IOS="iOS";
     public static final String ANDROID="Android";
-//    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type every time w.r.t. the testing device platform
-    public static final String DEFAULT_PLATFORM = "iOS";
+    public static final String DEFAULT_PLATFORM = "Android"; // Need to change the default type every time w.r.t. the testing device platform
+//    public static final String DEFAULT_PLATFORM = "iOS";
 
 
                                                                                     ////////////////////  Web element attribute values ////////////////////
@@ -123,6 +123,7 @@ public class Labels extends Base{
     public static final String IOS_XCUI_ELEMENT_TYPE_CELL = "XCUIElementTypeCell";
     public static final String ANDROID_LINEAR_LAYOUT = "android.widget.LinearLayout";
     public static final String ANDROID_VIEW_GROUP = "android.view.ViewGroup";
+    public static final String ANDROID_TEXT_VIEW = "android.widget.TextView";
     public static final String UIA_KEYBOARD = "UIAKeyboard";
     public static final String ALERT_ID = "android:id/contentPanel";
     public static final String TERMINAL_COMMAND_LIST_CONNECTED_USB_DEVICE = "system_profiler SPUSBDataType";
@@ -219,8 +220,10 @@ public class Labels extends Base{
     public static final String KUWAIT_AIRPORT_CODE = "KWI";
     public static final String INTERNATIONAL_FLIGHT_BOOKING = "International";
     public static final String CURRENT_USER_CURRENCY_TYPE = "KWD";
+    public static final String CURRENT_USER_COUNTRY_NAME = "Kuwait";
+//    public static final String CURRENT_USER_CURRENCY_TYPE = "AED";
 
-                                                                                             ///////////////// India Country Labels /////////////////
+    ///////////////// India Country Labels /////////////////
 
     public static final String INDIA_LANGUAGE_COUNTRY_LABEL_FOR_IOS = "INDIA";
     public static final String INDIA_LANGUAGE_COUNTRY_LABEL_FOR_ANDROID = "India";
@@ -232,10 +235,13 @@ public class Labels extends Base{
     public static final String BANGALORE_AIRPORT_CODE = "BLR";
     public static final String DOMESTIC_FLIGHT_BOOKING = "Domestic";
     public static final String OTHERS_COUNTRY_LABEL = "OTHERS";
+    public static final String ENGLISH_LANGUAGE = "English";
+    public static final String ARABIC_LANGUAGE = "Arabic";
 
 
 
-                                                                                      ///////////////// User login credentials /////////////////
+
+    ///////////////// User login credentials /////////////////
 
     public static String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String FIRST_NAME = "Suresh";

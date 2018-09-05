@@ -1,6 +1,8 @@
 package com.automation.rehlat.pages.menu;
 
+import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
+import com.automation.rehlat.pages.interfaces.Menu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -11,8 +13,10 @@ public class MenuIos extends MenuBase {
     public static final String SETTINGS_OPTION = "Settings";
     public static final String TWENTY_FOUR_BAR_SEVEN_SUPPORT_OPTION = "Rehlat 24X 7 Support";
     public static final String SIGN_IN_OR_SIGN_UP_BUTTON = "Sign In/Sign Up";
-    public static final String REFER_AND_EARN_SUB_MENU_ICON = "new_refer_earn_icon";
+    public static final String REFER_AND_EARN_SUB_MENU_ICON = "com.app.rehlat:id/sidemenu_referllyt";
     public static final String LOGOUT_BUTTON = "Logout";
+    public static final String ARABIC_OPTION = "Arabic";
+    public static final String ENGLISH_OPTION = "English";
     public static final String PROFILE_EDIT_ICON = "profile edit icon";
     public static final String XPATH_OF_MENU_SCREEN = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]";
     public static final String[] listOfSubMenuOptions= {"Sign In/Sign Up","Trips","Rehlat 24X 7 Support","Arabic","Settings","Privacy Policy"};
@@ -116,23 +120,14 @@ public class MenuIos extends MenuBase {
      */
     @Override
     public void tapOnSettingsButton() {
-        Logger.logAction("Tapping on settings button");
+        Logger.logAction("Tapping on Settings button");
         try {
-//            if (isElementDisplayedByClassName(SCROLL_VIEW_IN_MENU_SCREEN)){
-//                if (isElementDisplayedById(SETTINGS_OPTION)){
-//                    driver.findElementById(SETTINGS_OPTION).click();
-//                }else {
-//                    scrollTheMenuViewUp(SCROLL_VIEW_IN_MENU_SCREEN);
-//                    if (isElementDisplayedById(SETTINGS_OPTION)) {
-//                        driver.findElementById(SETTINGS_OPTION).click();
-//                    }else {
-//                        Logger.logError(SETTINGS_OPTION+" :- element name is not displayed in the current active screen");
-//                    }
-//                }
-//            }else {
-//                Logger.logError(SCROLL_VIEW_IN_MENU_SCREEN+" :- element id is not displayed in the current active screen");
-//            }
-        }catch (Exception exception){
+            if (isElementDisplayedById(SETTINGS_OPTION)){
+                driver.findElementById(SETTINGS_OPTION).click();
+            }else {
+                Logger.logError(SETTINGS_OPTION+" :- element name is not displayed in the current active screen");
+            }
+        } catch (Exception exception){
             Logger.logError("Encountered error: unable to tap on the logout button");
         }
     }
@@ -218,6 +213,82 @@ public class MenuIos extends MenuBase {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error:- Unable to tap on profile edit icon");
+        }
+    }
+
+    /**
+     * Tap on Refer and earn icon in the menu screen
+     */
+    @Override
+    public void tapOnReferAndEarnIcon(){
+        Logger.logAction("Tapping on refer and earn icon in the menu screen");
+        try{
+            if (isElementEnabledByName(REFER_AND_EARN_SUB_MENU_ICON)){
+                Logger.logComment(REFER_AND_EARN_SUB_MENU_ICON+" :- sub menu element is enabled");
+                driver.findElementByName(REFER_AND_EARN_SUB_MENU_ICON).click();
+                Logger.logStep("Tapped on refer and earn button");
+            }else {
+                Logger.logError(REFER_AND_EARN_SUB_MENU_ICON+" :- sub menu element is not enabled");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on refer and earn icon");
+        }
+    }
+
+    /**
+     * Tap on my trips sub menu option
+     */
+    @Override
+    public void tapOnMyTripsSubMenuButton(){
+        Logger.logAction("Tapping on My Trips option in menu list");
+        try{
+            if (isElementDisplayedByName(TRIPS_OPTION)){
+                Logger.logComment(TRIPS_OPTION+" :- sub menu element is displayed");
+                driver.findElementByName(TRIPS_OPTION).click();
+                Logger.logStep("Trips option is tapped");
+            }else {
+                Logger.logError(TRIPS_OPTION+" sub menu element is not displayed");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on my trips sub menu button");
+        }
+    }
+
+    /**
+     * Tap on Arabic option in sub menu button
+     */
+    @Override
+    public void tapOnArabicInSubMenuButton(){
+        Logger.logAction("Tapping on Arabic option in menu list");
+        try{
+            if (isElementDisplayedByName(ARABIC_OPTION)){
+                Logger.logComment(ARABIC_OPTION+" :- sub menu element is displayed");
+                driver.findElementByName(ARABIC_OPTION).click();
+                Logger.logStep("Arabic option is tapped");
+            }else {
+                Logger.logError(ARABIC_OPTION+" sub menu element is not displayed");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on my trips sub menu button");
+        }
+    }
+
+    /**
+     * Tap on English option in sub menu button
+     */
+    @Override
+    public void tapOnEnglishInSubMenuButton(){
+        Logger.logAction("Tapping on Arabic option in menu list");
+        try{
+            if (isElementDisplayedByName(ENGLISH_OPTION)){
+                Logger.logComment(ENGLISH_OPTION+" :- sub menu element is displayed");
+                driver.findElementByName(ENGLISH_OPTION).click();
+                Logger.logStep("English option is tapped");
+            }else {
+                Logger.logError(ENGLISH_OPTION+" sub menu element is not displayed");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on my trips sub menu button");
         }
     }
 

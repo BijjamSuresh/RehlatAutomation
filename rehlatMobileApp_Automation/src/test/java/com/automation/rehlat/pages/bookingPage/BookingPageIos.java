@@ -2,6 +2,7 @@ package com.automation.rehlat.pages.bookingPage;
 
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
+import com.automation.rehlat.tests.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,8 +17,6 @@ public class BookingPageIos extends BookingPageBase {
     public static final String XPATH_OF_PHONENUMBER_FIELD = "//XCUIElementTypeApplication[@name=\"Rehlat\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeTextField[2]";
     public static final String PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD = "Enter your PhoneNumber";
     public static final String ADULT_BUTTON = "ADULT";
-    public static final String TICKET_SOLD_OUT_POPUP = "Ticket had been Sold out";
-    public static final String OK_BUTTON = "OK";
     public static final String CONTACT_DETAILS_VIEW ="Contact Details";
     public static final String ADD_TRAVELLERS_DETAILS = "Add Travellers Details";
     public static final String SIGNED_IN_FOR_FAST_BOOKINGS_BUTTON = "Sign in for faster bookings";
@@ -85,35 +84,43 @@ public class BookingPageIos extends BookingPageBase {
         try {
             if (isUserIsSignedIn()){
                 Logger.logComment("User is signed in.., so no need to parse the email string");
-                if (isElementDisplayedByXPath(XPATH_OF_PHONENUMBER_FIELD)){
-                    Logger.logComment("Parsing the string to phone number field");
-                    String phoneNumberField = driver.findElementByXPath(XPATH_OF_PHONENUMBER_FIELD).getAttribute(Labels.VALUE_ATTRIBUTE);
-                    if (phoneNumberField.equals(PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD)){
-                        sendTextByXpath(XPATH_OF_PHONENUMBER_FIELD,Labels.phoneNumber);
-                        Logger.logComment(Labels.phoneNumber+" :- is parsed");
-                        closeTheKeyboard_iOS();
-                    }else {
-                        Logger.logComment(Labels.phoneNumber+" - is already entered in the in the phone number text field");
-                    }
-                }
+                enterTextInPhoneNumberTextField();
             }else{
-                sendTextByXpath(XPATH_OF_EMAIL_FIELD, Labels.EMAIL_ID_SIGN_IN);
-                Logger.logComment(Labels.EMAIL_ID_SIGN_IN+" :- is parsed");
-                closeTheKeyboard_iOS();
-                if (isElementDisplayedByXPath(XPATH_OF_PHONENUMBER_FIELD)){
-                    Logger.logComment("Parsing the string to phone number field");
-                    String phoneNumberField = driver.findElementByXPath(XPATH_OF_PHONENUMBER_FIELD).getAttribute(Labels.VALUE_ATTRIBUTE);
-                    if (phoneNumberField.equals(PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD)){
-                        sendTextByXpath(XPATH_OF_PHONENUMBER_FIELD,Labels.phoneNumber);
-                        Logger.logComment(Labels.phoneNumber+" :- is parsed");
-                        closeTheKeyboard_iOS();
-                    }else {
-                        Logger.logComment(Labels.phoneNumber+" - is already entered in the in the phone number text field");
-                    }
-                }
+                enterTextInEmailTextField();
+                enterTextInPhoneNumberTextField();
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to enter the user info in the respected fields");
+        }
+    }
+
+    /**
+     * Enter the text in phone number text field
+     */
+    @Override
+    public void enterTextInPhoneNumberTextField() {
+        Logger.logAction("Entering the text in phone number text field");
+        try {
+            sendTextByXpath(XPATH_OF_PHONENUMBER_FIELD, Labels.phoneNumber);
+            Logger.logComment(Labels.phoneNumber+" :- is parsed");
+            closeTheKeyboard_iOS();
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to enter tje text in phone number text field");
+        }
+    }
+
+    /**
+     * Enter the text in email text field
+     */
+    @Override
+    public void enterTextInEmailTextField() {
+        Logger.logAction("Entering the text in email text field");
+        try {
+            sendTextByXpath(XPATH_OF_EMAIL_FIELD, Labels.EMAIL_ID_SIGN_IN);
+            Logger.logComment(Labels.EMAIL_ID_SIGN_IN+" :- is parsed");
+            closeTheKeyboard_iOS();
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to enter tje text in phone number text field");
         }
     }
 
@@ -152,46 +159,6 @@ public class BookingPageIos extends BookingPageBase {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Add travellers details button is not displayed in the current active screen");
-        }
-    }
-
-    /**
-     * Checking the ticket sold out popup is displayed
-     * @return
-     */
-    @Override
-    public boolean isTicketSoldOutPopUpIsDisplayed() {
-        Logger.logAction("Checking the ticket sold out popup is displayed or not ?");
-        try{
-            waitTillTheProgressIndicatorIsInvisibleByClassName_IOS(Labels.IOS_ACTIVITY_INDICATOR);
-            if (isElementDisplayedByName(TICKET_SOLD_OUT_POPUP)){
-                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is displayed in the current active screen");
-                return true;
-            }else {
-                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is not displayed in the current active screen");
-                return false;
-            }
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to check the popup is displayed or not");
-        }
-        return false;
-    }
-
-    /**
-     * Tap on ok button in ticket sold out popup
-     */
-    @Override
-    public void tapOnOkButtonInTicketSoldOutPopup() {
-        Logger.logAction("Tapping on "+OK_BUTTON+ " button");
-        try {
-            if (isElementDisplayedByName(OK_BUTTON)){
-                driver.findElementByName(OK_BUTTON).click();
-                Logger.logComment("Tapped on ok button in the ticket sold out popup");
-            }else {
-                Logger.logError(" - button name is not displayed in the current active screen");
-            }
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to tap on OK button in ticket sold out popup");
         }
     }
 

@@ -15,10 +15,16 @@ import com.automation.rehlat.pages.menu.MenuAndroid;
 import com.automation.rehlat.pages.menu.MenuIos;
 import com.automation.rehlat.pages.myProfile.MyProfileAndroid;
 import com.automation.rehlat.pages.myProfile.MyProfileIos;
+import com.automation.rehlat.pages.myTrips.MyTripsAndroid;
+import com.automation.rehlat.pages.myTrips.MyTripsIos;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsAndroid;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsIos;
+import com.automation.rehlat.pages.referYourFriends.ReferYourFriendsAndroid;
+import com.automation.rehlat.pages.referYourFriends.ReferYourFriendsIOS;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingAndroid;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingIos;
+import com.automation.rehlat.pages.settings.SettingsAndroid;
+import com.automation.rehlat.pages.settings.SettingsIos;
 import com.automation.rehlat.pages.signIn.SignInAndroid;
 import com.automation.rehlat.pages.signIn.SignInIos;
 import com.automation.rehlat.pages.signUp.SignUpAndroid;
@@ -136,6 +142,33 @@ public class PageConstructor {
                 }else{
                     BasePage.MyProfileScreen = new MyProfileIos();
                     BaseTest.MyProfileScreen = new MyProfileIos();
+                }
+                break;
+            case "referYourFriendsScreen":
+                if (platform.equals(Labels.ANDROID)){
+                    BasePage.ReferYourFriendsScreen = new ReferYourFriendsAndroid();
+                    BaseTest.ReferYourFriendsScreen = new ReferYourFriendsAndroid();
+                }else{
+                    BasePage.ReferYourFriendsScreen = new ReferYourFriendsIOS();
+                    BaseTest.ReferYourFriendsScreen = new ReferYourFriendsIOS();
+                }
+                break;
+            case "myTrips":
+                if (platform.equals(Labels.ANDROID)){
+                    BasePage.MyTripsScreen = new MyTripsAndroid();
+                    BaseTest.MyTripsScreen = new MyTripsAndroid();
+                }else{
+                    BasePage.MyTripsScreen = new MyTripsIos();
+                    BaseTest.MyTripsScreen = new MyTripsIos();
+                }
+                break;
+            case "settings":
+                if (platform.equals(Labels.ANDROID)){
+                    BasePage.SettingsScreen = new SettingsAndroid();
+                    BaseTest.SettingsScreen = new SettingsAndroid();
+                }else{
+                    BasePage.SettingsScreen = new SettingsIos();
+                    BaseTest.SettingsScreen = new SettingsIos();
                 }
                 break;
             default:

@@ -447,11 +447,7 @@ public class Base {
         WebElement element = null;
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
-                if (Labels.platform.equals(Labels.ANDROID)) {
-                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
-                } else {
-                    element = driver.findElementByAccessibilityId(elementName);
-                }
+                element = driver.findElementById(elementName);
                 if (element.isEnabled()) {
                     Logger.logComment(elementName + " - element is enabled and moving forward to next action");
                     return true;
@@ -459,7 +455,7 @@ public class Base {
             } catch (Exception e) {
                 Logger.logComment(counter + " time trying to find " + elementName);
             }
-            Thread.sleep(Labels.WAIT_TIME_DEFAULT);
+            Thread.sleep(Labels.WAIT_TIME_MIN);
             counter++;
         }
         Logger.logWarning( elementName+" is not enabled");
@@ -1200,7 +1196,7 @@ public class Base {
     public static String getElementValueByClass(String className) {
         String elementValue = null;
         try {
-            elementValue = driver.findElement(By.className(className)).getAttribute("value");
+            elementValue = driver.findElement(By.className(className)).getAttribute(Labels.VALUE_ATTRIBUTE);
         } catch (Exception exceptionDetail) {
             fail(exceptionDetail.toString());
         }
@@ -1215,7 +1211,7 @@ public class Base {
     public static String getElementValueByName(String name) {
         String elementValue = null;
         try {
-            elementValue = driver.findElement(By.name(name)).getAttribute("value");
+            elementValue = driver.findElement(By.name(name)).getAttribute(Labels.VALUE_ATTRIBUTE);
         } catch (Exception exceptionDetail) {
             fail(exceptionDetail.toString());
         }
@@ -1230,7 +1226,7 @@ public class Base {
     public static String getElementValue(WebElement element) {
         String elementValue = null;
         try {
-            elementValue = element.getAttribute("value");
+            elementValue = element.getAttribute(Labels.VALUE_ATTRIBUTE);
         } catch (Exception exceptionDetail) {
             fail(exceptionDetail.toString());
         }
@@ -1673,26 +1669,63 @@ public class Base {
         WebElement element = null;
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
-                if (Labels.platform.equals(Labels.ANDROID)) {
-                    element = ((AndroidDriver) driver).findElementByAndroidUIAutomator("new UiSelector().text(\"" + elementName + "\")");
-                    if (element.isDisplayed()) {
-                        element.click();
-                        return true;
-                    }
-                } else {
                     element = driver.findElementByName(elementName);
                     element.click();
                     return true;
-                }
-
-
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + elementName);
+                Logger.logComment(counter + " time trying to find " + elementName);
             }
             counter++;
             Thread.sleep(Labels.WAIT_TIME_MIN);
         }
         return false;
+    }
+
+    /**
+     * Verify tapping element using element name as parameter.
+     * @param elementId element class name.
+     * @return status returns true if element is tapped else false.
+     * @throws Exception
+     */
+    public static boolean findElementByIdAndClick(String elementId) throws Exception {
+        int counter = 0;
+        WebElement element = null;
+        while (counter < Labels.MIN_ATTEMPTS) {
+            try {
+                element = driver.findElementById(elementId);
+                element.click();
+                return true;
+            } catch (Exception e) {
+                Logger.logComment(counter + " time trying to find " + elementId);
+            }
+            counter++;
+            Thread.sleep(Labels.WAIT_TIME_MIN);
+        }
+        return false;
+    }
+
+    /**
+     * Verify tapping element using element name as parameter.
+     * @param elementName element class name.
+     * @return status returns true if element is tapped else false.
+     * @throws Exception
+     */
+    public static String findElementByXpathAndReturnItsAttributeValue(String elementName) throws Exception {
+        int counter = 0;
+        String elementValue = null;
+        while (counter < Labels.MIN_ATTEMPTS) {
+            try {
+                elementValue = driver.findElementByXPath(elementName).getAttribute(Labels.VALUE_ATTRIBUTE);
+                if (!elementName.isEmpty()){
+                    return elementValue;
+                }
+            } catch (Exception e) {
+               Logger.logComment(counter + " time trying to find " + elementName);
+            }
+            counter++;
+            Thread.sleep(Labels.WAIT_TIME_MIN);
+        }
+        return elementValue;
     }
 
     /**
@@ -1707,17 +1740,12 @@ public class Base {
         while (counter < Labels.MIN_ATTEMPTS) {
             try {
                 WebElement element = driver.findElementByClassName(elementClassName);
-                if (platform.equals(ANDROID)) {
-                    if (element.isDisplayed()) {
-                        element.click();
-                        return true;
-                    }
-                } else {
+                if (element.isDisplayed()) {
                     element.click();
                     return true;
                 }
             } catch (Exception e) {
-                System.out.println(counter + " time trying to find " + elementClassName);
+                Logger.logComment(counter + " time trying to find " + elementClassName);
             }
             counter++;
         }

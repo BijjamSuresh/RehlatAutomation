@@ -6,10 +6,10 @@ import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.tests.BaseTest;
 import org.junit.Test;
 
-public class RLTC_3 extends BaseTest {
+public class VerifyUserLocationCountryNameIsDisplayedInFifthPlaceOfSelectCountryLayout extends BaseTest {
     @Test
     public void  testRLTC_3() throws Exception{
-        Logger.beginTest("Verify user location country name is displayed in the fourth place of select country layout");
+        Logger.beginTest("Verify user location country name is displayed in the fifth place of select country layout");
         reInstallApp();
         General.launchApp();
         General.accpetTheLocationAccessAlert();

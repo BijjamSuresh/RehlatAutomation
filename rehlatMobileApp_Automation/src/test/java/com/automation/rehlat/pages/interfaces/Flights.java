@@ -82,7 +82,7 @@ public interface Flights {
      * Tap on Departure button in flights tab
      * @throws Exception
      */
-     void tapOnDepartureButton() throws Exception;
+     void tapOnDepartureDateBookingButton() throws Exception;
 
      /**
      * Tap on return booking button in flights tab
@@ -111,4 +111,50 @@ public interface Flights {
      * @throws Exception
      */
      void tapOnSearchButton() throws Exception;
+
+    /**
+     * Check the app localization in flights tab
+     * @return
+     */
+    String checkAppLocalizationInFlightsTab();
+
+    /**
+     * Check all the fields are visible in flights tab
+     */
+    void checkAllTheFieldsAreVisibleInFlightsTab();
+
+    /**
+     * Tap on adult plus button
+     */
+    void tapOnAdultPlusButton();
+
+    /**
+     * Tap on children plus button
+     */
+    void tapOnChildrenPlusButton();
+
+    /**
+     * Tap on infants plus button
+     */
+    void tapOnInfantsPlusButton();
+
+    /**
+     * Get the location of From airport name
+     * @return
+     */
+    Integer[] getTheLocationOfFromAirPortName(String parsingFromFlightName);
+
+    /**
+     * Get the location of To airport name
+     * @return
+     */
+    Integer[] getTheLocationOfToAirPortName(String parsingToFlightName);
+
+    /**
+     * Tap on swap button
+     * @return
+     */
+    void tapOnSwapButton();
+
+
     }

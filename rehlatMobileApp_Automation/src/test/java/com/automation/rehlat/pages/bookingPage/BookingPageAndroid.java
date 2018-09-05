@@ -2,6 +2,7 @@ package com.automation.rehlat.pages.bookingPage;
 
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
+import com.automation.rehlat.tests.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -15,8 +16,6 @@ public class BookingPageAndroid extends BookingPageBase {
     public static final String PLACEHOLDER_TEXT_OF_PHONENUMBER_TEXTFIELD = "Phone Number";
     public static final String PLACEHOLDER_TEXT_OF_EMAILID_TEXTFIELD = "Please enter your email id";
     public static final String ADULT_BUTTON = "com.app.rehlat:id/adultCountImageView";
-    public static final String TICKET_SOLD_OUT_POPUP = "com.app.rehlat:id/searchForDifferentFlights";
-    public static final String OK_BUTTON = "OK";
     public static final String BOOKING_PAGE_CONTINUE_BUTTON = "com.app.rehlat:id/traveller_details_continue_layout";
     public static final String CONTACT_DETAILS_VIEW ="com.app.rehlat:id/paymentContainer";
     public static final String SIGN_IN_OR_SIGN_UP_FOR_FAST_BOOKINGS_BUTTON = "com.app.rehlat:id/login_textview";
@@ -84,11 +83,11 @@ public class BookingPageAndroid extends BookingPageBase {
         Logger.logAction("Entering the user information");
         try {
             if (isUserIsSignedIn()){
-               sendKeysToEmailTextField();
-               sendKeysToPhoneNumberTextField();
+                enterTextInEmailTextField();
+                enterTextInPhoneNumberTextField();
             }else{
-                sendKeysToEmailTextField();
-                sendKeysToPhoneNumberTextField();
+                enterTextInEmailTextField();
+                enterTextInPhoneNumberTextField();
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to enter the user info in the respected fields");
@@ -98,7 +97,8 @@ public class BookingPageAndroid extends BookingPageBase {
     /**
      * Send keys to email text field
      */
-    public static void sendKeysToEmailTextField() {
+    @Override
+    public void enterTextInEmailTextField() {
         Logger.logAction("Entering the email id "+Labels.EMAIL_ID_SIGN_IN+" in email id text field");
         try{
             if (isElementDisplayedById(EMAIL_FIELD)){
@@ -131,7 +131,8 @@ public class BookingPageAndroid extends BookingPageBase {
     /**
      * Send keys to phone number text field
      */
-    public static void sendKeysToPhoneNumberTextField() {
+    @Override
+    public void enterTextInPhoneNumberTextField() {
         Logger.logAction("Entering the number "+Labels.phoneNumber+" in number text field");
         try{
             if (isElementDisplayedById(PHONENUMBER_FIELD)){
@@ -224,45 +225,6 @@ public class BookingPageAndroid extends BookingPageBase {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Add travellers details button is not displayed in the current active screen");
-        }
-    }
-
-    /**
-     * Checking the ticket sold out popup is displayed
-     * @return
-     */
-    @Override
-    public boolean isTicketSoldOutPopUpIsDisplayed() {
-        Logger.logAction("Checking the ticket sold out popup is displayed or not ?");
-        try{
-            if (isElementDisplayedById(TICKET_SOLD_OUT_POPUP)){
-                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is displayed in the current active screen");
-                return true;
-            }else {
-                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is not displayed in the current active screen");
-                return false;
-            }
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to check the popup is displayed or not");
-        }
-        return false;
-    }
-
-    /**
-     * Tap on ok button in ticket sold out popup
-     */
-    @Override
-    public void tapOnOkButtonInTicketSoldOutPopup() {
-        Logger.logAction("Tapping on "+TICKET_SOLD_OUT_POPUP+ " button");
-        try {
-            if (isElementDisplayedById(TICKET_SOLD_OUT_POPUP)){
-                driver.findElementById(TICKET_SOLD_OUT_POPUP).click();
-                Logger.logComment("Tapped on ticket sold out button");
-            }else {
-                Logger.logError(" - button name is not displayed in the current active screen");
-            }
-        }catch (Exception exception){
-            Logger.logError("Encountered error: Unable to tap on OK button in ticket sold out popup");
         }
     }
 
@@ -531,7 +493,7 @@ public class BookingPageAndroid extends BookingPageBase {
             if (isElementDisplayedById(COUPON_CODE_TEXT_VIEW)){
                 driver.findElementById(COUPON_CODE_TEXT_VIEW).sendKeys(Labels.COUPON_CODE);
                 Logger.logComment(Labels.COUPON_CODE+":- coupon code is parsed");
-//                driver.hideKeyboard();
+                driver.hideKeyboard();
             }else {
                 Logger.logError(COUPON_CODE_TEXT_VIEW+" - element name is not displayed in the current active screen");
             }
@@ -617,7 +579,7 @@ public class BookingPageAndroid extends BookingPageBase {
                     Logger.logComment("Online check in toggle button is already disabled");
                 }
             }else {
-                scrollTheScreenUpwards();
+                scrollToAnElementById_ANDROID(ONLINE_CHECKIN_TOGGLE_BUTTON,false);
                 if(isElementDisplayedById(ONLINE_CHECKIN_TOGGLE_BUTTON)){
                     WebElement locationOfDay = driver.findElementById(ONLINE_CHECKIN_TOGGLE_BUTTON);
                     Point table = locationOfDay.getLocation();

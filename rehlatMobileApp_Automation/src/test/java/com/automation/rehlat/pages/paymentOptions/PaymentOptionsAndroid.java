@@ -2,6 +2,7 @@ package com.automation.rehlat.pages.paymentOptions;
 
 import com.automation.rehlat.Labels;
 import com.automation.rehlat.libCommon.Logger;
+import com.automation.rehlat.tests.BaseTest;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
@@ -36,12 +37,15 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public static final String PAYMENT_SUCCESS = "Payment Success Please wait for a while and do not refresh the page..........";
     public static final String BOOKING_SUCCESS = "BOOKING SUCCESS";
     public static final String POST_TRANSACTIONS_SCREEN = "form1";
+    public static final String TICKET_SOLD_OUT_POPUP = "com.app.rehlat:id/searchForDifferentFlights";
+    public static final String OK_BUTTON = "OK";
     public static final String FINAL_AMOUNT_PAYABLE_LINEAR_LAYOUT = "com.app.rehlat:id/totalAmoutPayableLinearLayout";
     public static final String FINAL_AMOUNT_PAYABLE_PRICE = "com.app.rehlat:id/totalAmountPayablePrice";
     public static final String PAYMENT_FAILED_TITLE = "com.app.rehlat:id/payment_tryAgain";
     public static final String XPATH_OF_KNET_PAYMENT_CELL = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout";
     public static final String XPATH_OF_KNET_PAYMENT_CELL_NAME = XPATH_OF_KNET_PAYMENT_CELL+"/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TextView";
     public static final String XPATH_OF_PAYMENT_BANK_WITHOUT_INDEX = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.CheckedTextView[";
+
     /**
      * Check the payment options screen is displayed
      */
@@ -60,6 +64,46 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to check the screen name");
+        }
+    }
+
+    /**
+     * Checking the ticket sold out popup is displayed
+     * @return
+     */
+    @Override
+    public boolean isTicketSoldOutPopUpIsDisplayed() {
+        Logger.logAction("Checking the ticket sold out popup is displayed or not ?");
+        try{
+            if (isElementDisplayedById(TICKET_SOLD_OUT_POPUP)){
+                BaseTest.takeScreenshotAndSaveInSoldOutsFolder();
+                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is displayed in the current active screen");
+                return true;
+            }else {
+                Logger.logStep(TICKET_SOLD_OUT_POPUP +" - popup is not displayed in the current active screen");
+                return false;
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to check the popup is displayed or not");
+        }
+        return false;
+    }
+
+    /**
+     * Tap on ok button in ticket sold out popup
+     */
+    @Override
+    public void tapOnOkButtonInTicketSoldOutPopup() {
+        Logger.logAction("Tapping on "+TICKET_SOLD_OUT_POPUP+ " button");
+        try {
+            if (isElementDisplayedById(OK_BUTTON)){
+                driver.findElementById(OK_BUTTON).click();
+                Logger.logComment("Tapped on ok button in sold out popup");
+            }else {
+                Logger.logError(" - button name is not displayed in the current active screen");
+            }
+        }catch (Exception exception){
+            Logger.logError("Encountered error: Unable to tap on OK button in ticket sold out popup");
         }
     }
 
@@ -442,7 +486,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
             if (isElementDisplayedByName(ACTIVITY_INDICATOR)){
                 Logger.logComment("Booking process is started");
-                driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(ACTIVITY_INDICATOR)));
+                waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
                 if (isElementDisplayedById("com.app.rehlat:id/paymentDoneLayout")){
                     Logger.logStep("Payment is success");
                 }else if (isElementDisplayedById("com.app.rehlat:id/paymentFailureLayout")){
@@ -499,6 +543,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
             if (isElementDisplayedById("com.app.rehlat:id/numberTextInputLayout")){
                 driver.findElement(By.id("com.app.rehlat:id/numberTextInputLayout")).sendKeys(Labels.CREDIT_OR_DEBIT_CARD_NUMBER);
+                Logger.logComment("Entered the card number :- "+Labels.CREDIT_OR_DEBIT_CARD_NUMBER);
             }else {
                 Logger.logError("Element name is not displayed in the current active screen:- ");
             }
@@ -515,6 +560,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
             if (isElementDisplayedById("com.app.rehlat:id/mmEditText")){
                 driver.findElement(By.id("com.app.rehlat:id/mmEditText")).sendKeys("05");
+                Logger.logComment("Entered the card expiry number :- "+"05");
             }else {
                 Logger.logError("Element name is not displayed in the current active screen:- ");
             }
@@ -531,6 +577,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
             if (isElementDisplayedById("com.app.rehlat:id/yearEditText")){
                 driver.findElement(By.id("com.app.rehlat:id/yearEditText")).sendKeys("2021");
+                Logger.logComment("Entered the card expiry year :- "+"2021");
             }else {
                 Logger.logError("Element name is not displayed in the current active screen:- ");
             }
@@ -547,6 +594,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
             if (isElementDisplayedById("com.app.rehlat:id/cvv")){
                 driver.findElement(By.id("com.app.rehlat:id/cvv")).sendKeys("100");
+                Logger.logComment("Entered the card expiry year :- "+"100");
             }else {
                 Logger.logError("Element name is not displayed in the current active screen:- ");
             }
@@ -563,6 +611,8 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
                 if (isElementDisplayedById("com.app.rehlat:id/nameTextInputLayout")){
                     driver.findElement(By.id("com.app.rehlat:id/nameTextInputLayout")).sendKeys(Labels.CREDIT_OR_DEBIT_CARD_HOLDER_NAME);
+                    Logger.logComment("Entered the card expiry year :- "+Labels.CREDIT_OR_DEBIT_CARD_HOLDER_NAME);
+                    driver.hideKeyboard();
                 }else {
                     Logger.logError("Element name is not displayed in the current active screen:- ");
                 }
@@ -579,6 +629,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
         try {
             if (isElementDisplayedById("com.app.rehlat:id/checkoutPayButton")){
                 driver.findElement(By.id("com.app.rehlat:id/checkoutPayButton")).click();
+                Logger.logStep("Tapped on checkout payment button");
             }else {
                 driver.findElement(By.id("com.app.rehlat:id/checkoutPayButton")).click();
 //                Logger.logError("Element name is not displayed in the current active screen:- ");
@@ -595,6 +646,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
     public void enterKeysInThePasswordFieldOf3DSecureCreditOrDebitCardCheckOutPayment() {
         Logger.logAction("Tapping on pay securely check out button");
         try {
+            waitTillTheProgressIndicatorIsInvisibleById_ANDROID(Labels.ANDROID_ACTIVITY_INDICATOR);
             if (isElementDisplayedById("txtPassword")){
                 driver.findElement(By.id("txtPassword")).sendKeys("Checkout1!");
             }else if (isElementDisplayedById(PAYMENT_FAILED_TITLE)){
@@ -642,6 +694,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                     Logger.logComment(TRANSACTION_IN_PROGRESS);
                     if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
+                        waitForAnElementToDisappear_ByName(PAYMENT_SUCCESS);
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             Logger.logComment(PAYMENT_SUCCESS);
                         }else {
@@ -657,6 +710,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                 }else {
                     if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
+                        waitForAnElementToDisappear_ByName(PAYMENT_SUCCESS);
                         if (isElementDisplayedByName(BOOKING_SUCCESS)){
                             Logger.logComment(PAYMENT_SUCCESS);
                         }else {
@@ -674,6 +728,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                 Logger.logComment(TRANSACTION_IN_PROGRESS);
                 if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                     Logger.logComment(PAYMENT_SUCCESS);
+                    waitForAnElementToDisappear_ByName(PAYMENT_SUCCESS);
                     if (isElementDisplayedByName(BOOKING_SUCCESS)){
                         Logger.logComment(PAYMENT_SUCCESS);
                     }else {
@@ -688,6 +743,7 @@ public class PaymentOptionsAndroid extends PaymentOptionsBase {
                 }
             }else if (isElementDisplayedByName(PAYMENT_SUCCESS)){
                 Logger.logComment(PAYMENT_SUCCESS);
+                waitForAnElementToDisappear_ByName(PAYMENT_SUCCESS);
                 if (isElementDisplayedByName(BOOKING_SUCCESS)){
                     Logger.logComment(PAYMENT_SUCCESS);
                 }else {

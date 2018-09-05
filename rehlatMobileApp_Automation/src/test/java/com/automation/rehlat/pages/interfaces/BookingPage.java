@@ -26,18 +26,6 @@ public interface BookingPage {
      */
     void tapOnAdultAddTravellersDetailsButton()throws Exception;
 
-    /**
-     * Checking the ticket sold out popup is displayed
-     * @return
-     * @throws Exception
-     */
-    boolean isTicketSoldOutPopUpIsDisplayed() throws Exception;
-
-    /**
-     * Tap on ok button in ticket sold out popup
-     * @throws Exception
-     */
-    void tapOnOkButtonInTicketSoldOutPopup() throws Exception;
 
     /**
      * Tap on sign in for faster bookings button
@@ -62,5 +50,15 @@ public interface BookingPage {
      * @throws Exception
      */
     void applyTheCouponCode() throws Exception;
+
+    /**
+     * Enter the text in phone number text field
+     */
+    void enterTextInPhoneNumberTextField();
+
+    /**
+     * Enter the text in email text field
+     */
+    void enterTextInEmailTextField();
 
 }

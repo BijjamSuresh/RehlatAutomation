@@ -5,7 +5,7 @@ import com.automation.rehlat.libCommon.Logger;
 import com.automation.rehlat.tests.BaseTest;
 import org.junit.Test;
 
-public class RLTC_8 extends BaseTest {
+public class VerifyUserIsSignedUpWithValidCredentials extends BaseTest {
     @Test
     public void  testRLTC_7() throws Exception{
         Logger.beginTest("Verify user is signed in with valid credentials");

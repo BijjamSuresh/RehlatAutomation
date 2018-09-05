@@ -45,7 +45,7 @@ public class OneWayBooking_InternationalTicket_WithAppliedCouponCode_And_WithSig
         FlightsScreen.enterAirportName(TO_INTERNATIONAL_AIRPORT_NAME);
         FlightsScreen.selectAirportCodeFromSearchResults(TO_INTERNATIONAL_AIRPORT_CODE);
         FlightsScreen.checkFlightsTabIsDisplayed();
-        FlightsScreen.tapOnDepartureButton();
+        FlightsScreen.tapOnDepartureDateBookingButton();
         FlightsScreen.selectDepartureDate(DEPARTURE_MONTH,DEPARTURE_DAY); // Automation Defect: Due to improper element names in calendar view unable to tap on accurate departure date
         FlightsScreen.tapOnDoneButton();
         FlightsScreen.checkFlightsTabIsDisplayed();
@@ -77,8 +77,8 @@ public class OneWayBooking_InternationalTicket_WithAppliedCouponCode_And_WithSig
         BookingPageScreen.checkBookingPageScreenIsDisplayed();
         BookingPageScreen.checkFinalFareCalculationIsCorrect();
         BookingPageScreen.tapOnContinueButton();
-        if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()){
-            BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
+        if (PaymentOptionsScreen.isTicketSoldOutPopUpIsDisplayed()){
+            PaymentOptionsScreen.tapOnOkButtonInTicketSoldOutPopup();
             Logger.logComment("Second time selecting the seat for different flight");
             FlightsSearchResultsScreen.checkFlightsSearchResultsScreenIsDisplayed();
             FlightsSearchResultsScreen.tapOnACellInFlightSearchResults(CELL_NUMBER_OF_FLIGHT_SEARCH_RESULTS_WHEN_SOLDOUT_POPUP_INTERRUPTRED); //Change this method to tap on a flight cell by sending the cell number as string/integer like this : //  FlightsSearchResultsIos.getTheBookingCostOfSelectedFlightInSearchResults("6");
@@ -107,8 +107,8 @@ public class OneWayBooking_InternationalTicket_WithAppliedCouponCode_And_WithSig
             BookingPageScreen.checkBookingPageScreenIsDisplayed();
             BookingPageScreen.checkFinalFareCalculationIsCorrect();
             BookingPageScreen.tapOnContinueButton();
-            if (BookingPageScreen.isTicketSoldOutPopUpIsDisplayed()) {
-                BookingPageScreen.tapOnOkButtonInTicketSoldOutPopup();
+            if (PaymentOptionsScreen.isTicketSoldOutPopUpIsDisplayed()) {
+                PaymentOptionsScreen.tapOnOkButtonInTicketSoldOutPopup();
                 Logger.logError("Tried booking seats for two flights, both tickets are sold out......, Please re-run the script with different dates");
             }else {
                 PaymentOptionsScreen.checkPaymentOptionsScreenIsDisplayed();

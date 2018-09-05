@@ -55,4 +55,24 @@ public interface Menu {
      * @throws Exception
      */
     void tapOnProfileEditIcon() throws Exception;
+
+    /**
+     * Tap on Refer and earn icon in the menu screen
+     */
+    void tapOnReferAndEarnIcon();
+
+    /**
+     * Tap on trips sub menu button
+     */
+    void tapOnMyTripsSubMenuButton();
+
+    /**
+     * Tap on Arabic option in sub menu button
+     */
+    void tapOnArabicInSubMenuButton();
+
+    /**
+     * Tap on English option in sub menu button
+     */
+    void tapOnEnglishInSubMenuButton();
 }

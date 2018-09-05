@@ -10,15 +10,24 @@ import com.automation.rehlat.pages.flightsSearchResults.FlightsSearchResultsBase
 import com.automation.rehlat.pages.flightsSimilarOptionsSearchResults.FlightsSimilarOptionsSearchResultsBase;
 import com.automation.rehlat.pages.menu.MenuBase;
 import com.automation.rehlat.pages.myProfile.MyProfileBase;
+import com.automation.rehlat.pages.myTrips.MyTripsBase;
 import com.automation.rehlat.pages.paymentOptions.PaymentOptionsBase;
+import com.automation.rehlat.pages.referYourFriends.ReferYourFriendsBase;
 import com.automation.rehlat.pages.reviewBooking.ReviewBookingBase;
+import com.automation.rehlat.pages.settings.SettingsBase;
 import com.automation.rehlat.pages.signIn.SignInBase;
 import com.automation.rehlat.pages.signUp.SignUpBase;
 import com.automation.rehlat.pages.travellerDetails.TravellerDetailsBase;
+import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.automation.rehlat.Labels.setCountryLanguageAndAirportFromAndToLabels;
 import static com.automation.rehlat.pages.constructors.PageConstructor.initializePageObject;
@@ -68,6 +77,11 @@ public class BaseTest extends Base {
     public static TravellerDetailsBase TravellerDetailsScreen;
     public static PaymentOptionsBase PaymentOptionsScreen;
     public static MyProfileBase MyProfileScreen;
+    public static ReferYourFriendsBase ReferYourFriendsScreen;
+    public static MyTripsBase MyTripsScreen;
+    public static SettingsBase SettingsScreen;
+
+
 
 
 
@@ -87,6 +101,13 @@ public class BaseTest extends Base {
         initializePageObject("bookingPageScreen", Labels.platform);
         initializePageObject("travellerDetailsScreen", Labels.platform);
         initializePageObject("paymentOptionsScreen", Labels.platform);
+        initializePageObject("myProfileScreen", Labels.platform);
+        initializePageObject("referYourFriendsScreen", Labels.platform);
+        initializePageObject("myTrips", Labels.platform);
+        initializePageObject("settings", Labels.platform);
+
+
+
 
 
         checkAndWaitTillTheSplashScreenIsInvisible();
@@ -321,6 +342,24 @@ public class BaseTest extends Base {
             }
         }catch (Exception exception){
             Logger.logError("Encountered error: Unable to find the current active screen name");
+        }
+    }
+
+    /**
+     * Used to take a screen shot of the screen when ever sold out popup is is displayed.
+     * @return void
+     */
+    public static void takeScreenshotAndSaveInSoldOutsFolder() {
+        try {
+            Logger.logComment(" Failure in the script, so taking the screenshot");
+            String nameOfTestCase = getTestCaseName();
+            String pathOfScreenshot = "Screenshots/SoldOut"+ nameOfTestCase + "_" + getPlatform();
+            String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+            System.out.println(new File(pathOfScreenshot + "_" + time + ".jpg"));
+            File screenshot = driver.getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(screenshot, new File(pathOfScreenshot + "_" + time + ".jpg"));
+        } catch (Exception e) {
+            Logger.logWarning(" couldn't take screenshot");
         }
     }
 }

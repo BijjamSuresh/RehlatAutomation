@@ -91,4 +91,17 @@ public interface PaymentOptions {
      */
     void compareTheFinalPaymentDisplayedInPaymentsCheckOutScreenWithPaymentDisplayedInReviewBookingScreen() throws Exception;
 
+    /**
+     * Checking the ticket sold out popup is displayed
+     * @return
+     * @throws Exception
+     */
+    boolean isTicketSoldOutPopUpIsDisplayed() throws Exception;
+
+    /**
+     * Tap on ok button in ticket sold out popup
+     * @throws Exception
+     */
+    void tapOnOkButtonInTicketSoldOutPopup() throws Exception;
+
 }
